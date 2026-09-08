@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Growth transformation — Social DNA Labs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --accent: #2B49DB; --accent-hover: #1E35B8; --heading: #162833; --body-text: #46535F;
+    --success: #28C76F; --attention: #F4C430; --critical: #E64A3C;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #F6F8FC; overflow-x: hidden; font-family: 'Inter', sans-serif; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { color: var(--accent-hover); }
+
+  .sdl-header { position: sticky; top: 0; z-index: 50; background: #F6F8FC; border-bottom: 1px solid rgba(16,24,40,0.07); }
+  .sdl-header-inner { max-width: 1360px; margin: 0 auto; padding: 0 48px; height: 88px; display: flex; align-items: center; }
+  .sdl-logo { height: 38px; width: auto; display: block; flex-shrink: 0; }
+
+  .sdl-header-left { display: flex; align-items: center; flex: 0 0 auto; }
+  .sdl-header-nav-wrap { flex: 1 1 auto; display: flex; align-items: center; justify-content: center; min-width: 0; }
+  .sdl-header-right { display: flex; align-items: center; gap: 32px; flex: 0 0 auto; }
+
+  .sdl-desktop-nav { display: flex; align-items: center; gap: 6px; }
+  .sdl-nav-item { position: relative; }
+  .sdl-nav-btn {
+    position: relative; display: flex; align-items: center; gap: 6px; background: none; border: none;
+    font-family: inherit; font-size: 15px; font-weight: 600; color: #162833;
+    cursor: pointer; padding: 12px 13px; border-radius: 8px; white-space: nowrap; flex-shrink: 0;
+  }
+  .sdl-nav-btn:hover { background: rgba(43,73,219,0.06); }
+  .sdl-nav-btn .caret { font-size: 10px; color: #8891A0; margin-top: 2px; transition: transform 0.15s ease; }
+  .sdl-nav-btn.active { color: var(--accent); }
+  .sdl-nav-btn.active .caret { color: var(--accent); transform: rotate(180deg); }
+  .sdl-nav-btn.active::after {
+    content: ''; position: absolute; left: 13px; right: 13px; bottom: 3px; height: 2px; border-radius: 2px;
+    background: linear-gradient(90deg, var(--accent), #6AA8FA);
+  }
+
+  .sdl-cta {
+    display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid var(--accent);
+    color: var(--accent); font-weight: 700; font-size: 14px; padding: 10px 22px;
+    border-radius: 999px; white-space: nowrap; flex-shrink: 0;
+  }
+  .sdl-cta:hover { background: rgba(43,73,219,0.06); color: var(--accent); }
+
+  .sdl-mobile-toggle {
+    display: none; align-items: center; justify-content: center; width: 40px; height: 40px;
+    background: none; border: none; cursor: pointer; flex-shrink: 0;
+  }
+
+  .sdl-mega-panel {
+    position: absolute; top: 100%; left: 48px; padding-top: 14px;
+    z-index: 100; display: none;
+  }
+  .sdl-mega-panel.open { display: block; }
+  .sdl-mega-panel-inner {
+    width: max-content; max-width: min(760px, calc(100vw - 96px)); padding: 30px 32px 24px;
+    display: grid; grid-template-columns: repeat(2, minmax(240px, 1fr));
+    column-gap: 36px; row-gap: 26px;
+    background: #FFFFFF; border-radius: 20px; border: 1px solid rgba(16,24,40,0.06);
+    box-shadow: 0 30px 60px rgba(16,24,40,0.16), 0 4px 14px rgba(16,24,40,0.06);
+    overflow: hidden;
+  }
+  .sdl-mega-item { display: flex; align-items: flex-start; gap: 14px; }
+  .sdl-mega-item-icon {
+    width: 36px; height: 36px; border-radius: 9px; background: rgba(43,73,219,0.08); color: var(--accent);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .sdl-mega-item-title { font-weight: 700; color: #162833; margin-bottom: 5px; font-size: 15px; }
+  .sdl-mega-item-desc { color: #46535F; font-size: 13px; line-height: 1.55; }
+  .sdl-mega-cta { grid-column: 1 / -1; border-top: 1px solid #EEF1F6; padding-top: 18px; }
+  .sdl-mega-cta a { color: var(--accent); font-weight: 700; font-size: 14px; display: inline-flex; align-items: center; gap: 6px; }
+
+  .sdl-mobile-panel {
+    display: none; background: #FFFFFF; border-top: 1px solid rgba(16,24,40,0.07);
+    padding: 8px 24px 24px; max-height: calc(100vh - 88px); overflow-y: auto;
+  }
+  .sdl-mobile-panel.open { display: block; }
+  .sdl-mobile-item { border-bottom: 1px solid #EEF1F6; }
+  .sdl-mobile-item-btn {
+    width: 100%; display: flex; align-items: center; justify-content: space-between;
+    background: none; border: none; font-family: inherit; font-size: 16px; font-weight: 700;
+    color: #162833; padding: 16px 4px; cursor: pointer;
+  }
+  .sdl-mobile-item-btn .caret { font-size: 12px; color: #8891A0; }
+  .sdl-mobile-sub { padding: 0 4px 18px; display: none; flex-direction: column; gap: 14px; }
+  .sdl-mobile-sub.open { display: flex; }
+  .sdl-mobile-sub-title { font-weight: 700; color: #162833; font-size: 14px; }
+  .sdl-mobile-sub-desc { color: #46535F; font-size: 13px; line-height: 1.5; margin-top: 2px; }
+  .sdl-mobile-sub a { color: var(--accent); font-weight: 700; font-size: 14px; }
+  .sdl-mobile-cta {
+    display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--accent);
+    color: #FFFFFF; font-weight: 700; font-size: 15px; padding: 14px; border-radius: 999px; margin-top: 20px;
+  }
+  .sdl-mobile-cta:hover { color: #FFFFFF; }
+
+  .sdl-hero {
+    max-width: 1360px; margin: 0 auto; padding: 84px 48px 56px;
+    display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px; align-items: center;
+  }
+  .sdl-hero-copy-wrap { max-width: 640px; }
+  .sdl-hero-copy {
+    font-family: 'Manrope', sans-serif;
+    font-size: clamp(40px, 4.6vw, 58px); line-height: 1.18; font-weight: 500;
+    letter-spacing: -0.01em; color: #162833;
+  }
+  .sdl-hero-copy .accent { color: var(--accent); }
+  .sdl-hero-sub { margin-top: 28px; font-size: 19px; line-height: 1.65; color: #46535F; max-width: 460px; }
+  .sdl-hero-actions { display: flex; align-items: center; gap: 28px; margin-top: 44px; flex-wrap: wrap; }
+  .sdl-hero-primary {
+    display: inline-flex; align-items: center; gap: 10px; background: var(--accent);
+    color: #FFFFFF; font-weight: 700; font-size: 16px; padding: 16px 30px; border-radius: 999px;
+  }
+  .sdl-hero-primary:hover { background: var(--accent-hover); color: #FFFFFF; }
+  .sdl-hero-secondary { display: inline-flex; align-items: center; gap: 8px; color: var(--accent); font-weight: 700; font-size: 16px; }
+  .sdl-hero-visual { width: 100%; aspect-ratio: 520/480; display: flex; align-items: center; }
+  .sdl-hero-visual canvas { width: 100%; height: 100%; display: block; }
+
+  /* ---------- shared section primitives ---------- */
+  .sdl-section { padding: 96px 48px 108px; }
+  .sdl-section--tight { padding-top: 56px; padding-bottom: 64px; }
+  .sdl-section-inner { max-width: 1360px; margin: 0 auto; }
+  .sdl-section--alt { background: #F6F8FC; }
+  .sdl-section--white { background: #FFFFFF; }
+  .sdl-eyebrow { font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
+  .sdl-section-title {
+    font-family: 'Manrope', sans-serif;
+    font-size: clamp(30px, 3.2vw, 40px); line-height: 1.22; font-weight: 500;
+    letter-spacing: -0.01em; color: #162833;
+  }
+  .sdl-section-title--sm { font-size: clamp(24px, 2.4vw, 30px); }
+  .sdl-section-sub { margin-top: 16px; font-size: 18px; line-height: 1.6; color: #46535F; max-width: 640px; }
+  .sdl-cta-link { display: inline-flex; align-items: center; gap: 8px; color: var(--accent); font-weight: 700; font-size: 16px; }
+  .sdl-cta-link--sm { font-size: 13px; gap: 6px; transition: color 0.15s ease; }
+  .sdl-cta-link--sm:hover { color: var(--accent-hover); }
+
+  /* ---------- shared kicker ---------- */
+  .sdl-kicker {
+    display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase; color: #8891A0;
+  }
+  .sdl-kicker .kicker-num { color: var(--success); }
+
+  /* ---------- footer ---------- */
+  .sdl-footer { position: relative; background: #101826; color: #A9B2C0; padding: 56px 48px 28px; }
+  .sdl-footer-inner { max-width: 1360px; margin: 0 auto; }
+
+  .sdl-footer-top {
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 48px; flex-wrap: wrap;
+    padding-bottom: 32px; margin-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .sdl-footer-brand { max-width: 280px; flex-shrink: 0; }
+  .sdl-footer-logo { height: 34px; width: auto; display: block; filter: brightness(0) invert(1); }
+  .sdl-footer-tagline { margin-top: 14px; font-size: 14px; line-height: 1.6; color: #8891A0; }
+
+  .sdl-footer-cols { flex: 1 1 auto; display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; }
+  .sdl-footer-col-title { font-size: 12px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #FFFFFF; margin-bottom: 14px; }
+  .sdl-footer-links { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .sdl-footer-links a { color: #A9B2C0; font-size: 13.5px; transition: color 0.15s ease; }
+  .sdl-footer-links a:hover { color: #FFFFFF; }
+
+  .sdl-footer-social-icon {
+    width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.06); color: #A9B2C0 !important;
+    display: flex; align-items: center; justify-content: center; transition: background 0.15s ease, color 0.15s ease !important;
+  }
+  .sdl-footer-social-icon:hover { background: var(--accent); color: #FFFFFF !important; }
+
+  .sdl-footer-bottom {
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+    font-size: 13px; color: #7A8494;
+  }
+  .sdl-footer-bottom-right { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+
+  /* ---------- GT page: shared accents ---------- */
+  .gt-kicker {
+    display: inline-flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase; color: #3E5FE0;
+  }
+  .gt-kicker .kicker-line { display: inline-block; width: 22px; height: 1px; background: #3E5FE0; }
+  .gt-kicker--dark { color: rgba(255,255,255,0.7); }
+  .gt-kicker--dark .kicker-line { background: var(--success); }
+
+  /* ---------- GT page: hero ---------- */
+  .sdl-hero--gt .sdl-hero-copy { font-size: clamp(36px, 3.7vw, 48px); line-height: 1.2; font-weight: 500; }
+  .sdl-hero--gt .sdl-hero-copy .accent { color: #3E5FE0; }
+  .sdl-hero--gt .sdl-kicker-wrap { margin-bottom: 20px; }
+  .sdl-hero--gt .sdl-hero-sub { max-width: 500px; }
+
+  /* Hero motif: the same growth-arrow glyph used for the "Growth
+     transformation" pillar card on the homepage (Where technology can make
+     a difference), at hero scale, in that card's own indigo tokens. */
+  .gt-hero-visual { position: relative; width: 100%; aspect-ratio: 520/480; display: flex; align-items: center; justify-content: center; }
+  .gt-arrow-glow {
+    position: absolute; width: 62%; aspect-ratio: 1/1; z-index: 0; pointer-events: none; border-radius: 50%;
+    background: radial-gradient(circle, rgba(62,95,224,0.30) 0%, rgba(62,95,224,0) 68%);
+    filter: blur(36px);
+  }
+  .gt-arrow {
+    position: relative; width: 56%; aspect-ratio: 1/1; z-index: 1;
+    filter: drop-shadow(0 28px 52px rgba(30,50,150,0.32));
+    animation: gtArrowRise 8s ease-in-out infinite;
+  }
+  .gt-arrow svg { display: block; width: 100%; height: 100%; }
+  @keyframes gtArrowRise {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(4px, -6px); }
+  }
+
+  /* Fine particles gathering around the arrow — same technique as the
+     other service pages' hero, recoloured to this page's indigo family */
+  .gt-particles { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+  .gt-particle {
+    opacity: 0; transform-origin: center;
+    animation-name: gtParticleDrift; animation-duration: var(--dur, 8s);
+    animation-delay: var(--delay, 0s); animation-timing-function: ease-in-out; animation-iteration-count: infinite;
+  }
+  @keyframes gtParticleDrift {
+    0% { opacity: 0; transform: translate(0, 0) scale(0.5); }
+    18% { opacity: 0.85; }
+    72% { opacity: 0.7; transform: translate(var(--dx, 10px), var(--dy, -8px)) scale(1); }
+    100% { opacity: 0; transform: translate(calc(var(--dx, 10px) * 1.7), calc(var(--dy, -8px) * 1.7)) scale(0.6); }
+  }
+
+  /* ---------- GT page: narrative ---------- */
+  .gt-narrative { display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 72px; align-items: start; }
+  .gt-narrative-lead {
+    margin-top: 22px; font-family: 'Manrope', sans-serif; font-weight: 500;
+    font-size: clamp(23px, 2.3vw, 30px); line-height: 1.4; letter-spacing: -0.015em; color: #162833;
+  }
+  .gt-narrative-body { padding-top: 6px; }
+  .gt-narrative-body p {
+    margin: 0; padding: 22px 0; border-top: 1px solid #EEF1F6;
+    font-size: 16.5px; line-height: 1.75; color: #46535F;
+  }
+  .gt-narrative-body p:first-child { border-top: none; padding-top: 0; }
+  .gt-narrative-body p:last-child { padding-bottom: 0; }
+
+  /* ---------- GT page: capabilities ---------- */
+  .gt-cap-section { position: relative; overflow: hidden; }
+  .gt-cap-section .sdl-section-inner { position: relative; z-index: 1; }
+  .gt-cap-mesh { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+  .gt-cap-mesh span { position: absolute; border-radius: 50%; filter: blur(70px); }
+  .gt-cap-mesh span:nth-child(1) {
+    width: 440px; height: 440px; top: -160px; left: -100px;
+    background: radial-gradient(circle, rgba(62,95,224,0.28) 0%, rgba(62,95,224,0) 72%);
+  }
+  .gt-cap-mesh span:nth-child(2) {
+    width: 400px; height: 400px; top: -60px; right: -140px;
+    background: radial-gradient(circle, rgba(169,187,255,0.30) 0%, rgba(169,187,255,0) 72%);
+  }
+  .gt-cap-mesh span:nth-child(3) {
+    width: 360px; height: 360px; bottom: -180px; left: 28%;
+    background: radial-gradient(circle, rgba(40,199,111,0.16) 0%, rgba(40,199,111,0) 72%);
+  }
+  .gt-cap-mesh span:nth-child(4) {
+    width: 260px; height: 260px; bottom: -80px; right: 8%;
+    background: radial-gradient(circle, rgba(244,196,48,0.16) 0%, rgba(244,196,48,0) 72%);
+  }
+  @media (max-width: 900px) {
+    .gt-cap-mesh span { filter: blur(50px); }
+    .gt-cap-mesh span:nth-child(1) { width: 300px; height: 300px; }
+    .gt-cap-mesh span:nth-child(2) { width: 260px; height: 260px; }
+    .gt-cap-mesh span:nth-child(3), .gt-cap-mesh span:nth-child(4) { display: none; }
+  }
+  .gt-cap-head { max-width: 720px; }
+  .gt-cap-intro { margin-top: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .gt-cap-intro p { margin: 0; font-size: 16px; line-height: 1.75; color: #46535F; }
+
+  /* asymmetric bento grid: tiles of mixed width and material (tinted
+     "featured" tile, plain white tiles, one full-width dark closing tile) —
+     a fourth distinct pattern alongside the other three service pages'
+     stacked rows, accordion and tab selector */
+  .gt-cap-bento { margin-top: 52px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .gt-cap-tile {
+    position: relative; overflow: hidden; border-radius: 20px; padding: 32px;
+    display: flex; flex-direction: column; transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .gt-cap-tile:hover { transform: translateY(-3px); }
+  .gt-cap-tile--white { background: #FFFFFF; border: 1px solid #EEF1F6; }
+  .gt-cap-tile--white:hover { box-shadow: 0 22px 46px rgba(16,24,40,0.09); border-color: rgba(62,95,224,0.28); }
+  .gt-cap-tile--tint { background: linear-gradient(155deg, #EEF1FF 0%, #E1E7FF 100%); border: 1px solid rgba(62,95,224,0.18); }
+  .gt-cap-tile--dark { background: #101826; border: 1px solid rgba(255,255,255,0.08); }
+  .gt-cap-tile--span2 { grid-column: span 2; }
+  .gt-cap-tile--span4 { grid-column: span 4; }
+  .gt-cap-tile-icon { flex-shrink: 0; width: 42px; height: 42px; }
+  .gt-cap-tile--featured .gt-cap-tile-icon { width: 54px; height: 54px; }
+  .gt-cap-tile-icon svg { display: block; width: 100%; height: 100%; }
+  .gt-cap-tile-num {
+    margin-top: 18px; font-family: 'Manrope', sans-serif; font-size: 12px; font-weight: 700;
+    letter-spacing: 0.1em; color: #3E5FE0; font-variant-numeric: tabular-nums;
+  }
+  .gt-cap-tile--dark .gt-cap-tile-num { color: #A9BBFF; }
+  .gt-cap-tile-title {
+    margin-top: 8px; font-family: 'Manrope', sans-serif; font-size: 19px; font-weight: 700;
+    letter-spacing: -0.01em; color: #162833;
+  }
+  .gt-cap-tile--featured .gt-cap-tile-title { font-size: 23px; }
+  .gt-cap-tile--dark .gt-cap-tile-title { color: #FFFFFF; }
+  .gt-cap-tile-desc { margin-top: 10px; font-size: 14.5px; line-height: 1.65; color: #46535F; }
+  .gt-cap-tile--dark .gt-cap-tile-desc { color: rgba(255,255,255,0.68); }
+  .gt-cap-tile--span4 .gt-cap-tile-desc { max-width: 720px; }
+  @media (max-width: 900px) {
+    .gt-cap-bento { grid-template-columns: 1fr; }
+    .gt-cap-tile--span2, .gt-cap-tile--span4 { grid-column: span 1; }
+  }
+
+  /* ---------- GT page: value (dark) ---------- */
+  .gt-value-section { position: relative; overflow: hidden; background: #101826; padding: 96px 48px 108px; }
+  .gt-value-inner { position: relative; max-width: 1360px; margin: 0 auto; }
+  .gt-value-head { max-width: 720px; }
+  .gt-value-title {
+    margin-top: 18px; font-family: 'Manrope', sans-serif; font-weight: 500;
+    font-size: clamp(30px, 3.2vw, 40px); line-height: 1.2; letter-spacing: -0.01em; color: #FFFFFF;
+  }
+  /* big-number stat rows, recolored to GT's blue accent */
+  .gt-value-list { margin-top: 56px; border-top: 1px solid rgba(255,255,255,0.09); }
+  .gt-value-row {
+    display: flex; align-items: center; gap: 28px; padding: 28px 4px;
+    border-bottom: 1px solid rgba(255,255,255,0.09); transition: background 0.2s ease;
+  }
+  .gt-value-row:hover { background: rgba(255,255,255,0.03); }
+  .gt-value-row-num {
+    flex-shrink: 0; width: 78px; font-family: 'Manrope', sans-serif; font-size: 40px; font-weight: 800;
+    color: rgba(255,255,255,0.14); line-height: 1; font-variant-numeric: tabular-nums; transition: color 0.2s ease;
+  }
+  .gt-value-row:hover .gt-value-row-num { color: rgba(62,95,224,0.55); }
+  .gt-value-row-icon {
+    flex-shrink: 0; width: 40px; height: 40px; border-radius: 11px; background: rgba(62,95,224,0.18);
+    display: flex; align-items: center; justify-content: center; color: #A9BBFF;
+  }
+  .gt-value-row-body { flex: 1; min-width: 0; display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 24px; }
+  .gt-value-row-title { flex: 0 0 auto; font-family: 'Manrope', sans-serif; font-size: 18px; font-weight: 700; color: #FFFFFF; }
+  .gt-value-row-desc { flex: 1 1 300px; font-size: 14.5px; line-height: 1.6; color: rgba(255,255,255,0.6); }
+  @media (max-width: 900px) {
+    .gt-value-row { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .gt-value-row-num { width: auto; font-size: 32px; }
+    .gt-value-row-body { flex: none; flex-direction: column; align-items: flex-start; gap: 4px; width: 100%; }
+    .gt-value-row-title, .gt-value-row-desc { flex: none; width: 100%; }
+  }
+
+  /* ---------- GT page: selected work ---------- */
+  .gt-case { margin-top: 52px; display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+  .gt-case-media {
+    position: relative; border-radius: 20px; overflow: hidden; border: 1px solid #EEF1F6;
+    aspect-ratio: 4 / 3; background: #F1F4FA;
+  }
+  .gt-case-mock { position: absolute; inset: 0; background: #FAFBFE; display: flex; flex-direction: column; gap: 16px; padding: 22px; }
+  .gt-mock-bar { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  .gt-mock-bar span { width: 7px; height: 7px; border-radius: 50%; background: #DDE3EE; }
+  .gt-mock-pill { margin-left: 10px; height: 8px; width: 128px; border-radius: 999px; background: #E7ECF6; }
+  .gt-mock-funnel {
+    flex: 1; background: #FFFFFF; border: 1px solid #EBEFF7; border-radius: 12px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 18px;
+  }
+  .gt-mock-funnel-stage {
+    height: 30px; border-radius: 8px; background: rgba(62,95,224,0.14); color: #2A3FA8;
+    display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700;
+  }
+  .gt-mock-funnel-stage:nth-child(1) { background: rgba(62,95,224,0.85); color: #FFFFFF; }
+  .gt-mock-funnel-stage:nth-child(2) { background: rgba(62,95,224,0.45); color: #FFFFFF; }
+  .gt-mock-funnel-stage:nth-child(3) { background: rgba(62,95,224,0.2); }
+  .gt-mock-panels { flex-shrink: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .gt-mock-panel {
+    background: #FFFFFF; border: 1px solid #EBEFF7; border-radius: 12px; padding: 14px 10px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+  }
+  .gt-mock-stat { font-family: 'Manrope', sans-serif; font-size: 26px; font-weight: 800; color: #2A3FA8; }
+  .gt-mock-stat-label { font-size: 12px; font-weight: 600; color: #8891A0; text-align: center; }
+  .gt-case-tag {
+    position: absolute; left: 18px; top: 18px; background: rgba(16,24,38,0.72); backdrop-filter: blur(6px);
+    color: #FFFFFF; font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 6px 12px; border-radius: 999px;
+  }
+  .gt-case-title {
+    font-family: 'Manrope', sans-serif; font-size: clamp(22px, 2.2vw, 27px); font-weight: 700;
+    line-height: 1.3; letter-spacing: -0.01em; color: #162833;
+  }
+  .gt-case-blocks { margin-top: 24px; }
+  .gt-case-block { padding: 20px 0; border-top: 1px solid #EEF1F6; }
+  .gt-case-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #3E5FE0; }
+  .gt-case-text { margin-top: 8px; font-size: 15px; line-height: 1.72; color: #46535F; }
+  .gt-case-cta { margin-top: 26px; }
+
+  /* ---------- GT page: closing CTA ---------- */
+  .gt-cta-section { padding: 72px 48px 72px; }
+  .gt-cta-card {
+    position: relative; overflow: hidden; max-width: 1360px; margin: 0 auto;
+    background: #101826; border: 1px solid rgba(255,255,255,0.08); border-radius: 28px;
+    padding: 78px 56px 82px; text-align: center;
+  }
+  .gt-cta-card::before {
+    content: ''; position: absolute; top: -160px; left: 50%; transform: translateX(-50%);
+    width: 620px; height: 400px; pointer-events: none;
+    background: radial-gradient(ellipse at center, rgba(62,95,224,0.32), rgba(62,95,224,0) 68%);
+  }
+  .gt-cta-inner { position: relative; }
+  .gt-cta-title {
+    margin-top: 20px; font-family: 'Manrope', sans-serif; font-weight: 500;
+    font-size: clamp(28px, 3.3vw, 42px); line-height: 1.2; letter-spacing: -0.015em; color: #FFFFFF;
+  }
+  .gt-cta-sub { margin: 18px auto 0; max-width: 520px; font-size: 17px; line-height: 1.65; color: rgba(255,255,255,0.62); }
+  .gt-cta-btn {
+    display: inline-flex; align-items: center; gap: 10px; margin-top: 34px; background: var(--accent);
+    color: #FFFFFF; font-weight: 700; font-size: 16px; padding: 16px 32px; border-radius: 999px;
+    transition: background 0.15s ease, transform 0.15s ease;
+  }
+  .gt-cta-btn:hover { background: var(--accent-hover); color: #FFFFFF; transform: translateY(-1px); }
+  .gt-cta-btn .arrow { display: inline-block; transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .gt-cta-btn:hover .arrow { transform: translateX(4px); }
+
+  @media (max-width: 1060px) {
+    .sdl-desktop-nav, .sdl-desktop-cta { display: none !important; }
+    .sdl-mobile-toggle { display: flex !important; }
+    .sdl-header-inner { padding-left: 24px !important; padding-right: 24px !important; }
+    .sdl-hero { grid-template-columns: 1fr !important; padding: 56px 24px 64px !important; }
+    .sdl-hero-visual, .gt-hero-visual { max-width: 420px; margin: 0 auto; order: -1; }
+    .sdl-section { padding: 72px 24px 80px; }
+    .sdl-section--tight { padding-top: 48px; padding-bottom: 56px; }
+    .gt-value-section { padding: 72px 24px 80px; }
+    .gt-cta-section { padding: 56px 24px 56px; }
+    .gt-cta-card { padding: 56px 28px 60px; }
+    .sdl-footer { padding: 64px 24px 28px; }
+    .sdl-footer-cols { max-width: none; grid-template-columns: repeat(2, 1fr); row-gap: 32px; }
+    .gt-narrative { grid-template-columns: 1fr; gap: 32px; }
+    .gt-cap-intro { grid-template-columns: 1fr; gap: 18px; }
+    .gt-case { grid-template-columns: 1fr; gap: 32px; }
+  }
+
+  @media (max-width: 560px) {
+    .sdl-footer-top { flex-direction: column; align-items: flex-start; }
+    .sdl-footer-cols { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- scroll-reveal motion ---------- */
+  .reveal, .reveal-group > * { opacity: 0; transform: translateY(24px); }
+  .reveal.is-visible, .reveal-group.is-visible > * {
+    animation: sdlRevealIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  @keyframes sdlRevealIn { to { opacity: 1; transform: translateY(0); } }
+  .reveal-group > *:nth-child(1) { animation-delay: 0s; }
+  .reveal-group > *:nth-child(2) { animation-delay: 0.07s; }
+  .reveal-group > *:nth-child(3) { animation-delay: 0.14s; }
+  .reveal-group > *:nth-child(4) { animation-delay: 0.21s; }
+  .reveal-group > *:nth-child(5) { animation-delay: 0.28s; }
+  .reveal-group > *:nth-child(6) { animation-delay: 0.35s; }
+
+  .sdl-hero-copy-wrap, .gt-hero-visual {
+    opacity: 0; transform: translateY(18px);
+    animation: sdlRevealIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  .gt-hero-visual { animation-delay: 0.15s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal, .reveal-group > *, .sdl-hero-copy-wrap, .gt-hero-visual, .gt-arrow {
+      animation: none !important; opacity: 1 !important; transform: none !important;
+    }
+    .gt-particle { animation: none !important; opacity: 0 !important; }
+  }
+</style>
+</head>
+<body>
+
+<div style="font-family:'Inter',sans-serif;background:#F6F8FC;min-height:100vh">
+
+  <header class="sdl-header" id="sdlHeader">
+    <div class="sdl-header-inner">
+      <div class="sdl-header-left">
+        <a href="index.html" style="display: flex; align-items: center; flex-shrink: 0; color: inherit; text-decoration: none;">
+          <img src="assets/sdl-logo.svg" alt="Social DNA Labs" class="sdl-logo" />
+        </a>
+      </div>
+
+      <div class="sdl-header-nav-wrap">
+        <nav class="sdl-desktop-nav" id="desktopNav"></nav>
+      </div>
+
+      <div class="sdl-header-right">
+        <a href="#contact" class="sdl-cta sdl-desktop-cta">Let's talk →</a>
+
+        <button class="sdl-mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+          <svg width="22" height="16" viewBox="0 0 22 16"><rect width="22" height="2" fill="#162833"></rect><rect y="7" width="22" height="2" fill="#162833"></rect><rect y="14" width="22" height="2" fill="#162833"></rect></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="sdl-mega-panel" id="megaPanel"></div>
+    <div class="sdl-mobile-panel" id="mobilePanel"></div>
+  </header>
+
+  <section class="sdl-hero sdl-hero--gt">
+    <div class="sdl-hero-copy-wrap">
+      <div class="sdl-kicker-wrap">
+        <span class="gt-kicker"><span class="kicker-line"></span> Growth transformation</span>
+      </div>
+      <div class="sdl-hero-copy">
+        <div>Turn attention into</div>
+        <div><span class="accent">measurable growth.</span></div>
+      </div>
+      <p class="sdl-hero-sub">
+        Bring search, content, campaigns, digital channels and conversion together to create qualified demand and better business outcomes.
+      </p>
+      <div class="sdl-hero-actions">
+        <a href="index.html#contact" class="sdl-hero-primary">Talk to a growth expert →</a>
+        <a href="#capabilities" class="sdl-hero-secondary">Explore growth capabilities →</a>
+      </div>
+    </div>
+
+    <div class="gt-hero-visual" aria-hidden="true">
+      <div class="gt-arrow-glow"></div>
+      <div class="gt-arrow">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="gtArrowGrad" x1="10%" y1="90%" x2="90%" y2="10%">
+              <stop offset="0%" stop-color="#EEF1FF" />
+              <stop offset="35%" stop-color="#A9BBFF" />
+              <stop offset="100%" stop-color="#3E5FE0" />
+            </linearGradient>
+          </defs>
+          <path d="M18 82 L82 18" stroke="url(#gtArrowGrad)" stroke-width="14" stroke-linecap="round" fill="none" />
+          <path d="M46 18 L82 18 L82 54" stroke="url(#gtArrowGrad)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+        </svg>
+      </div>
+
+      <svg class="gt-particles" viewBox="0 0 520 480" aria-hidden="true">
+        <circle class="gt-particle" cx="140" cy="310" r="3"   fill="#3E5FE0" style="--dx:12px;--dy:-7px;--dur:8.2s;--delay:0s" />
+        <circle class="gt-particle" cx="110" cy="260" r="2.5" fill="#A9BBFF" style="--dx:14px;--dy:-2px;--dur:9.1s;--delay:0.6s" />
+        <circle class="gt-particle" cx="95"  cy="330" r="3.5" fill="#3E5FE0" style="--dx:12px;--dy:-7px;--dur:7.6s;--delay:1.2s" />
+        <circle class="gt-particle" cx="160" cy="370" r="2"   fill="#28C76F" style="--dx:9px;--dy:-11px;--dur:8.7s;--delay:1.8s" />
+        <circle class="gt-particle" cx="70"  cy="290" r="2.8" fill="#A9BBFF" style="--dx:14px;--dy:-4px;--dur:9.4s;--delay:2.4s" />
+        <circle class="gt-particle" cx="190" cy="400" r="3"   fill="#3E5FE0" style="--dx:6px;--dy:-13px;--dur:8.1s;--delay:3s" />
+        <circle class="gt-particle" cx="50"  cy="230" r="2"   fill="#3E5FE0" style="--dx:14px;--dy:1px;--dur:7.3s;--delay:3.6s" />
+        <circle class="gt-particle" cx="120" cy="190" r="2.5" fill="#A9BBFF" style="--dx:13px;--dy:5px;--dur:8.9s;--delay:4.2s" />
+        <circle class="gt-particle" cx="220" cy="420" r="2.2" fill="#28C76F" style="--dx:3px;--dy:-14px;--dur:9.2s;--delay:4.8s" />
+        <circle class="gt-particle" cx="80"  cy="160" r="3"   fill="#3E5FE0" style="--dx:13px;--dy:6px;--dur:7.8s;--delay:5.4s" />
+        <circle class="gt-particle" cx="150" cy="140" r="2"   fill="#A9BBFF" style="--dx:10px;--dy:9px;--dur:9.7s;--delay:0.3s" />
+        <circle class="gt-particle" cx="250" cy="430" r="2.6" fill="#3E5FE0" style="--dx:1px;--dy:-14px;--dur:8.4s;--delay:1.5s" />
+        <circle class="gt-particle" cx="40"  cy="340" r="2"   fill="#3E5FE0" style="--dx:13px;--dy:-6px;--dur:9s;--delay:2.1s" />
+        <circle class="gt-particle" cx="180" cy="115" r="2.4" fill="#A9BBFF" style="--dx:8px;--dy:12px;--dur:8.5s;--delay:2.7s" />
+        <circle class="gt-particle" cx="280" cy="420" r="2"   fill="#3E5FE0" style="--dx:-2px;--dy:-14px;--dur:7.7s;--delay:3.9s" />
+        <circle class="gt-particle" cx="60"  cy="380" r="1.8" fill="#3E5FE0" style="--dx:11px;--dy:-8px;--dur:9.3s;--delay:5.1s" />
+      </svg>
+    </div>
+  </section>
+
+  <section class="sdl-section sdl-section--white">
+    <div class="sdl-section-inner">
+      <div class="gt-narrative">
+        <div class="reveal">
+          <span class="gt-kicker"><span class="kicker-line"></span> Growth needs more than more traffic</span>
+          <p class="gt-narrative-lead">
+            Getting noticed is only the beginning.
+          </p>
+        </div>
+
+        <div class="gt-narrative-body reveal">
+          <p>Growth happens when the right people discover the business, find something relevant, take action and have a reason to come back. That requires more than running campaigns or publishing content.</p>
+          <p>Search visibility, content, paid media, digital experiences, conversion and measurement need to work together around clear business goals.</p>
+          <p>The focus is on creating a growth engine that attracts the right audience, turns interest into action and shows what is actually driving results.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sdl-section sdl-section--alt gt-cap-section" id="capabilities">
+    <div class="gt-cap-mesh" aria-hidden="true">
+      <span></span><span></span><span></span><span></span>
+    </div>
+    <div class="sdl-section-inner">
+      <div class="gt-cap-head reveal">
+        <span class="gt-kicker"><span class="kicker-line"></span> Capabilities</span>
+        <div class="sdl-section-title" style="margin-top:18px">From visibility to conversion.</div>
+      </div>
+
+      <div class="gt-cap-intro reveal">
+        <p>Every stage of the customer journey creates an opportunity to improve growth.</p>
+        <p>The right mix of search, content, campaigns, optimization and measurement turns digital activity into a more predictable source of demand.</p>
+      </div>
+
+      <div class="gt-cap-bento reveal-group" id="gtCapabilities"></div>
+    </div>
+  </section>
+
+  <section class="gt-value-section">
+    <div class="gt-value-inner">
+      <div class="gt-value-head reveal">
+        <span class="gt-kicker gt-kicker--dark"><span class="kicker-line"></span> Where it creates value</span>
+        <div class="gt-value-title">Make every digital effort count.</div>
+      </div>
+
+      <div class="gt-value-list reveal-group" id="gtValueGrid"></div>
+    </div>
+  </section>
+
+  <section class="sdl-section sdl-section--alt">
+    <div class="sdl-section-inner">
+      <div class="reveal">
+        <span class="gt-kicker"><span class="kicker-line"></span> Selected work</span>
+        <div class="sdl-section-title" style="margin-top:18px">Growth in action.</div>
+        <p class="sdl-section-sub">Explore campaigns, digital programs and growth initiatives that turned attention into measurable business outcomes.</p>
+      </div>
+
+      <div class="gt-case">
+        <div class="gt-case-media reveal">
+          <div class="gt-case-mock" role="img" aria-label="Illustration of a visitor-to-lead-to-customer conversion funnel alongside organic traffic and conversion improvement metrics">
+            <div class="gt-mock-bar">
+              <span></span><span></span><span></span>
+              <div class="gt-mock-pill"></div>
+            </div>
+            <div class="gt-mock-funnel">
+              <div class="gt-mock-funnel-stage" style="width:92%">Visitors</div>
+              <div class="gt-mock-funnel-stage" style="width:64%">Leads</div>
+              <div class="gt-mock-funnel-stage" style="width:38%">Customers</div>
+            </div>
+            <div class="gt-mock-panels">
+              <div class="gt-mock-panel">
+                <div class="gt-mock-stat">+64%</div>
+                <div class="gt-mock-stat-label">Organic traffic</div>
+              </div>
+              <div class="gt-mock-panel">
+                <div class="gt-mock-stat">2.1×</div>
+                <div class="gt-mock-stat-label">Lead conversion</div>
+              </div>
+            </div>
+          </div>
+          <span class="gt-case-tag">Sample case study</span>
+        </div>
+
+        <div class="reveal">
+          <div class="gt-case-title">Rebuilding organic visibility for a plateaued B2B pipeline</div>
+
+          <div class="gt-case-blocks">
+            <div class="gt-case-block">
+              <div class="gt-case-label">Challenge</div>
+              <p class="gt-case-text">Organic traffic had plateaued and marketing spend was going further each quarter without a clear read on what was actually driving qualified pipeline.</p>
+            </div>
+            <div class="gt-case-block">
+              <div class="gt-case-label">What we changed</div>
+              <p class="gt-case-text">A refreshed SEO and content strategy targeting real buying intent, paired with conversion improvements across key landing pages and clearer performance measurement tied to pipeline, not just traffic.</p>
+            </div>
+            <div class="gt-case-block">
+              <div class="gt-case-label">Impact</div>
+              <p class="gt-case-text">More qualified organic traffic, a higher visitor-to-lead conversion rate, and marketing decisions grounded in what was actually driving business results.</p>
+            </div>
+          </div>
+
+          <div class="gt-case-cta">
+            <a class="sdl-cta-link" href="#">View project →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="gt-cta-section">
+    <div class="gt-cta-card reveal">
+      <div class="gt-cta-inner">
+        <span class="gt-kicker gt-kicker--dark"><span class="kicker-line"></span> Start a conversation</span>
+        <div class="gt-cta-title">Ready to turn digital activity into growth?</div>
+        <p class="gt-cta-sub">Let's identify where visibility, conversion and performance can create a bigger business impact.</p>
+        <a href="index.html#contact" class="gt-cta-btn">Talk to a growth expert <span class="arrow" aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer class="sdl-footer">
+  <div class="sdl-footer-inner">
+    <div class="sdl-footer-top">
+      <div class="sdl-footer-brand">
+        <img src="assets/sdl-logo.svg" alt="Social DNA Labs" class="sdl-footer-logo" />
+        <p class="sdl-footer-tagline">Technology, experience and AI for businesses building what comes next.</p>
+      </div>
+
+      <div class="sdl-footer-cols" id="footerCols"></div>
+    </div>
+
+    <div class="sdl-footer-bottom">
+      <div id="footerYear">© Social DNA Labs</div>
+      <div class="sdl-footer-bottom-right">
+        <div>Business impact, by design.</div>
+        <a href="#" class="sdl-footer-social-icon" aria-label="LinkedIn"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zm7 0h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.6c0-1.34-.02-3.06-1.87-3.06-1.87 0-2.16 1.46-2.16 2.96V21h-4z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+<script>
+(function () {
+  "use strict";
+
+  var ACCENT = '#2B49DB';
+  var MEGA_MENU_ENABLED = true;
+
+  var MENUS = [
+    { key: 'services', label: 'Services', href: 'services.html', cta: { label: 'View all services', href: 'services.html' }, items: [
+      { title: 'AI transformation', desc: 'Turn AI potential into practical business value.', href: 'ai-transformation.html' },
+      { title: 'Digital engineering', desc: 'Build, modernize and scale digital products.', href: 'digital-engineering.html' },
+      { title: 'Business transformation', desc: 'Rethink systems, processes and ways of working.', href: 'business-transformation.html' },
+      { title: 'Digital experience', desc: 'Create better experiences across every touchpoint.', href: 'digital-experience.html' },
+      { title: 'Growth transformation', desc: 'Turn digital attention into qualified demand.', href: 'growth-transformation.html' }
+    ]},
+    { key: 'products', label: 'Products & Platforms', cta: { label: 'Explore EVOQ', href: 'evoq.html' }, items: [
+      { title: 'EVOQ', desc: 'The unified business suite for modern operations.', href: 'evoq.html' }
+    ]},
+    { key: 'insights', label: 'Insights', cta: { label: 'Explore insights', href: '#' }, items: [
+      { title: 'Blogs', desc: 'Ideas, perspectives and practical thinking.' },
+      { title: 'Case studies', desc: 'Real projects. Real business outcomes.' },
+      { title: 'Whitepapers', desc: 'In-depth research and perspectives.' },
+      { title: 'Featured projects', desc: 'Selected work and digital experiences.' }
+    ]},
+    { key: 'company', label: 'Company', cta: null, items: [
+      { title: 'About', desc: 'The people and experience behind SDL.' },
+      { title: 'Our approach', desc: 'How SDL thinks, builds and works.' },
+      { title: 'Clients', desc: 'The businesses SDL works with.' },
+      { title: 'Careers', desc: "Build what's next with SDL." }
+    ]}
+  ];
+
+  var ICONS = {
+    'AI transformation': '<path d="M24 6l4.2 9.4L38 20l-9.8 4.6L24 34l-4.2-9.4L10 20l9.8-4.6L24 6z"/><circle cx="24" cy="20" r="3.4"/>',
+    'Digital engineering': '<path d="M17 15l-8 8 8 8M31 15l8 8-8 8M27 12l-6 24"/>',
+    'Business transformation': '<circle cx="24" cy="24" r="7"/><path d="M24 8v5M24 39v5M8 24h5M39 24h5M12.9 12.9l3.5 3.5M31.6 31.6l3.5 3.5M35.1 12.9l-3.5 3.5M16.4 31.6l-3.5 3.5"/>',
+    'Digital experience': '<rect x="10" y="12" width="28" height="20" rx="2.5"/><path d="M18 40h12M24 32v8"/>',
+    'Growth transformation': '<path d="M9 33l9-11 7 7 14-17"/><path d="M31 12h8v8"/>',
+    'Products & platforms': '<rect x="9" y="9" width="13" height="13" rx="2"/><rect x="26" y="9" width="13" height="13" rx="2"/><rect x="9" y="26" width="13" height="13" rx="2"/><rect x="26" y="26" width="13" height="13" rx="2"/>',
+    'EVOQ': '<rect x="9" y="9" width="13" height="13" rx="2"/><rect x="26" y="9" width="13" height="13" rx="2"/><rect x="9" y="26" width="13" height="13" rx="2"/><rect x="26" y="26" width="13" height="13" rx="2"/>',
+    'Blogs': '<path d="M14 8h14l6 6v22a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2z"/><path d="M28 8v6h6M17 24h14M17 30h14"/>',
+    'Case studies': '<path d="M14 8h14l6 6v22a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2z"/><path d="M28 8v6h6M18 26l4 4 8-9"/>',
+    'Whitepapers': '<path d="M14 8h14l6 6v22a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2z"/><path d="M28 8v6h6M17 22h14M17 28h9"/>',
+    'Featured projects': '<path d="M24 6l4.6 12.6L42 21l-9 9 2.3 13-11.3-6.5L12.7 43 15 30l-9-9 13.4-2.4L24 6z"/>',
+    'About': '<rect x="12" y="10" width="24" height="28" rx="2"/><path d="M18 18h4M26 18h4M18 26h4M26 26h4M20 38v-6h8v6"/>',
+    'Our approach': '<circle cx="24" cy="24" r="13"/><circle cx="24" cy="24" r="7"/><circle cx="24" cy="24" r="1.6" fill="currentColor" stroke="none"/>',
+    'Clients': '<circle cx="18" cy="18" r="5"/><circle cx="32" cy="20" r="4"/><path d="M9 38c1-6 5-10 9-10s8 4 9 10M27 38c1-5 4-9 8-9 3 0 6 2 7 6"/>',
+    'Careers': '<rect x="8" y="16" width="32" height="20" rx="3"/><path d="M17 16v-4a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v4"/><path d="M8 25h32"/>'
+  };
+  var ICON_DEFAULT = '<circle cx="24" cy="24" r="4" fill="currentColor" stroke="none"/>';
+  // ---------- Footer ----------
+  var FOOTER_COLS = [
+    { title: 'Services', links: [
+      { label: 'AI transformation', href: 'ai-transformation.html' },
+      { label: 'Digital engineering', href: 'digital-engineering.html' },
+      { label: 'Business transformation', href: 'business-transformation.html' },
+      { label: 'Digital experience', href: 'digital-experience.html' },
+      { label: 'Growth transformation', href: 'growth-transformation.html' }
+    ]},
+    { title: 'Products & Platforms', links: [
+      { label: 'EVOQ', href: 'evoq.html' }
+    ]},
+    { title: 'Insights', links: [
+      { label: 'Blogs', href: '#' },
+      { label: 'Case studies', href: '#' },
+      { label: 'Whitepapers', href: '#' },
+      { label: 'Featured projects', href: '#' }
+    ]},
+    { title: 'Company', links: [
+      { label: 'About', href: '#' },
+      { label: 'Our approach', href: '#' },
+      { label: 'Clients', href: '#' },
+      { label: 'Careers', href: '#' }
+    ]},
+    { title: 'Connect', links: [
+      { label: "Let's talk", href: '#contact' },
+      { label: 'Contact us', href: '#contact' }
+    ]}
+  ];
+  var footerCols = document.getElementById('footerCols');
+  FOOTER_COLS.forEach(function (col) {
+    var wrap = document.createElement('div');
+    var title = document.createElement('div');
+    title.className = 'sdl-footer-col-title';
+    title.textContent = col.title;
+    var list = document.createElement('ul');
+    list.className = 'sdl-footer-links';
+    col.links.forEach(function (l) {
+      var li = document.createElement('li');
+      var a = document.createElement('a');
+      a.href = l.href;
+      a.textContent = l.label;
+      li.appendChild(a);
+      list.appendChild(li);
+    });
+    wrap.appendChild(title);
+    wrap.appendChild(list);
+    footerCols.appendChild(wrap);
+  });
+
+  document.getElementById('footerYear').textContent = '© ' + new Date().getFullYear() + ' Social DNA Labs';
+
+  // ---------- Desktop nav + mega menu ----------
+  var desktopNav = document.getElementById('desktopNav');
+  var megaPanel = document.getElementById('megaPanel');
+  var header = document.getElementById('sdlHeader');
+
+  var navButtons = [];
+
+  function closeMegaMenu() {
+    megaPanel.classList.remove('open');
+    megaPanel.innerHTML = '';
+    navButtons.forEach(function (b) { b.classList.remove('active'); });
+  }
+
+  function renderMegaMenu(menu, triggerBtn, triggerItem) {
+    if (!MEGA_MENU_ENABLED) return;
+    var inner = document.createElement('div');
+    inner.className = 'sdl-mega-panel-inner';
+    if (menu.items.length < 2) inner.style.gridTemplateColumns = '1fr';
+    menu.items.forEach(function (item) {
+      var wrap = document.createElement('div');
+      wrap.className = 'sdl-mega-item';
+      var icon = document.createElement('div');
+      icon.className = 'sdl-mega-item-icon';
+      icon.innerHTML = '<svg width="18" height="18" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">' + (ICONS[item.title] || ICON_DEFAULT) + '</svg>';
+      var textWrap = document.createElement('div');
+      var title = document.createElement('div');
+      title.className = 'sdl-mega-item-title';
+      title.textContent = item.title;
+      var desc = document.createElement('div');
+      desc.className = 'sdl-mega-item-desc';
+      desc.textContent = item.desc;
+      textWrap.appendChild(title);
+      textWrap.appendChild(desc);
+      wrap.appendChild(icon);
+      wrap.appendChild(textWrap);
+
+      if (item.href) {
+        var link = document.createElement('a');
+        link.href = item.href;
+        link.style.display = 'contents';
+        link.style.cursor = 'pointer';
+        link.style.color = 'inherit';
+        link.style.textDecoration = 'none';
+        link.appendChild(wrap);
+        inner.appendChild(link);
+      } else {
+        inner.appendChild(wrap);
+      }
+    });
+    if (menu.cta) {
+      var ctaWrap = document.createElement('div');
+      ctaWrap.className = 'sdl-mega-cta';
+      var ctaLink = document.createElement('a');
+      ctaLink.href = menu.cta.href;
+      ctaLink.textContent = menu.cta.label + ' →';
+      ctaLink.style.color = ACCENT;
+      ctaWrap.appendChild(ctaLink);
+      inner.appendChild(ctaWrap);
+    }
+    megaPanel.innerHTML = '';
+    megaPanel.appendChild(inner);
+    megaPanel.classList.add('open');
+
+    navButtons.forEach(function (b) { b.classList.toggle('active', b === triggerBtn); });
+
+    var headerRect = header.getBoundingClientRect();
+    var itemRect = triggerItem.getBoundingClientRect();
+    var panelWidth = megaPanel.offsetWidth;
+    var itemCenter = (itemRect.left - headerRect.left) + itemRect.width / 2;
+    var left = itemCenter - panelWidth / 2;
+    var maxLeft = header.offsetWidth - panelWidth - 24;
+    if (maxLeft < 24) maxLeft = 24;
+    left = Math.max(24, Math.min(left, maxLeft));
+    megaPanel.style.left = left + 'px';
+  }
+
+  MENUS.forEach(function (menu) {
+    var item = document.createElement('div');
+    item.className = 'sdl-nav-item';
+
+    if (menu.href && !menu.items.length) {
+      var link = document.createElement('a');
+      link.className = 'sdl-nav-btn';
+      link.href = menu.href;
+      link.textContent = menu.label;
+      item.appendChild(link);
+    } else {
+      var btn = document.createElement('button');
+      btn.className = 'sdl-nav-btn';
+      btn.innerHTML = menu.label + ' <span class="caret">▾</span>';
+      item.appendChild(btn);
+      item.addEventListener('mouseenter', function () { renderMegaMenu(menu, btn, item); });
+      navButtons.push(btn);
+    }
+
+    desktopNav.appendChild(item);
+  });
+
+  header.addEventListener('mouseleave', closeMegaMenu);
+
+  // ---------- Mobile nav ----------
+  var mobileToggle = document.getElementById('mobileToggle');
+  var mobilePanel = document.getElementById('mobilePanel');
+  var mobileOpenKey = null;
+
+  function renderMobilePanel() {
+    mobilePanel.innerHTML = '';
+    MENUS.forEach(function (menu) {
+      var itemEl = document.createElement('div');
+      itemEl.className = 'sdl-mobile-item';
+
+      if (menu.href && !menu.items.length) {
+        var link = document.createElement('a');
+        link.className = 'sdl-mobile-item-btn';
+        link.href = menu.href;
+        link.textContent = menu.label;
+        link.style.display = 'block';
+        link.style.cursor = 'pointer';
+        itemEl.appendChild(link);
+      } else {
+        var btn = document.createElement('button');
+        btn.className = 'sdl-mobile-item-btn';
+        btn.innerHTML = menu.label + ' <span class="caret">▾</span>';
+        btn.addEventListener('click', function () {
+          mobileOpenKey = mobileOpenKey === menu.key ? null : menu.key;
+          renderMobilePanel();
+        });
+        itemEl.appendChild(btn);
+
+        var sub = document.createElement('div');
+        sub.className = 'sdl-mobile-sub' + (mobileOpenKey === menu.key ? ' open' : '');
+        menu.items.forEach(function (subItem) {
+          var subWrap = document.createElement('div');
+          var t = document.createElement('div');
+          t.className = 'sdl-mobile-sub-title';
+          t.textContent = subItem.title;
+          var d = document.createElement('div');
+          d.className = 'sdl-mobile-sub-desc';
+          d.textContent = subItem.desc;
+          subWrap.appendChild(t);
+          subWrap.appendChild(d);
+          sub.appendChild(subWrap);
+        });
+        if (menu.cta) {
+          var ctaLink = document.createElement('a');
+          ctaLink.href = menu.cta.href;
+          ctaLink.textContent = menu.cta.label + ' →';
+          sub.appendChild(ctaLink);
+        }
+        itemEl.appendChild(sub);
+      }
+      mobilePanel.appendChild(itemEl);
+    });
+
+    var talkLink = document.createElement('a');
+    talkLink.href = '#contact';
+    talkLink.className = 'sdl-mobile-cta';
+    talkLink.textContent = "Let's talk →";
+    mobilePanel.appendChild(talkLink);
+  }
+  renderMobilePanel();
+
+  mobileToggle.addEventListener('click', function () {
+    mobilePanel.classList.toggle('open');
+  });
+
+  // ---------- Growth transformation capabilities ----------
+  var GT_ARROW_PATHS = {
+    diagonal: 'M18 82 L82 18',
+    corner: 'M46 18 L82 18 L82 54'
+  };
+  var GT_CAPABILITIES = [
+    {
+      title: 'AI search & visibility',
+      desc: 'Help the business get discovered as search changes. Optimize content and digital presence for traditional search as well as AI-powered discovery, answer engines and emerging search experiences.'
+    },
+    {
+      title: 'SEO',
+      desc: 'Build sustainable organic visibility around the topics, products and services that matter to the business. Combine technical SEO, content strategy, on-page optimization and authority building to attract relevant search demand.'
+    },
+    {
+      title: 'Content & demand generation',
+      desc: 'Create content and campaigns that attract the right audience, build consideration and generate qualified demand. Develop thought leadership, lead-generation assets and campaigns around real customer needs and buying journeys.'
+    },
+    {
+      title: 'Performance marketing',
+      desc: 'Reach high-intent audiences through paid search, social and other digital channels. Build campaigns around clear objectives, continuously optimize performance and focus investment on qualified traffic and conversions.'
+    },
+    {
+      title: 'Conversion & journey optimization',
+      desc: 'Turn more of the right traffic into meaningful action. Identify friction across landing pages, forms, journeys and digital experiences, then test and improve what influences conversion.'
+    },
+    {
+      title: 'Marketing analytics & automation',
+      desc: 'Connect marketing data, automation and measurement to improve decision-making, personalize engagement and make marketing operations more efficient.'
+    }
+  ];
+  var GT_CAP_SHAPE_COLORS = [
+    ['#A9BBFF', '#3E5FE0'],
+    ['#8FD6FF', '#2B8FDB'],
+    ['#FFE38A', '#F4C430'],
+    ['#7C97FF', '#2B49DB'],
+    ['#6FDBA0', '#28C76F'],
+    ['#9BEFC4', '#22B368']
+  ];
+  var GT_BENTO_LAYOUT = [
+    { span: 2, variant: 'tint featured' },
+    { span: 2, variant: 'white' },
+    { span: 1, variant: 'tint' },
+    { span: 1, variant: 'white' },
+    { span: 2, variant: 'tint' },
+    { span: 4, variant: 'white' }
+  ];
+  var gtCapabilities = document.getElementById('gtCapabilities');
+  if (gtCapabilities) {
+    GT_CAPABILITIES.forEach(function (c, i) {
+      var layout = GT_BENTO_LAYOUT[i % GT_BENTO_LAYOUT.length];
+      var variantClasses = layout.variant.split(' ').map(function (v) { return 'gt-cap-tile--' + v; }).join(' ');
+
+      var tile = document.createElement('div');
+      tile.className = 'gt-cap-tile gt-cap-tile--span' + layout.span + ' ' + variantClasses;
+
+      var icon = document.createElement('div');
+      icon.className = 'gt-cap-tile-icon';
+      var colors = GT_CAP_SHAPE_COLORS[i % GT_CAP_SHAPE_COLORS.length];
+      var gradId = 'gtCapGrad' + i;
+      icon.innerHTML =
+        '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">' +
+        '<defs><linearGradient id="' + gradId + '" x1="10%" y1="90%" x2="90%" y2="10%">' +
+        '<stop offset="0%" stop-color="' + colors[0] + '"/><stop offset="100%" stop-color="' + colors[1] + '"/>' +
+        '</linearGradient></defs>' +
+        '<path d="' + GT_ARROW_PATHS.diagonal + '" stroke="url(#' + gradId + ')" stroke-width="14" stroke-linecap="round" fill="none"/>' +
+        '<path d="' + GT_ARROW_PATHS.corner + '" stroke="url(#' + gradId + ')" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>';
+      tile.appendChild(icon);
+
+      var num = document.createElement('div');
+      num.className = 'gt-cap-tile-num';
+      num.textContent = String(i + 1).padStart(2, '0');
+      tile.appendChild(num);
+
+      var title = document.createElement('div');
+      title.className = 'gt-cap-tile-title';
+      title.textContent = c.title;
+      tile.appendChild(title);
+
+      var desc = document.createElement('p');
+      desc.className = 'gt-cap-tile-desc';
+      desc.textContent = c.desc;
+      tile.appendChild(desc);
+
+      gtCapabilities.appendChild(tile);
+    });
+  }
+
+  // ---------- Where it creates value ----------
+  var GT_VALUE_ITEMS = [
+    {
+      title: 'Increase qualified demand',
+      desc: 'Reach audiences that are more likely to need, consider and buy what the business offers.',
+      icon: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="0.8" fill="currentColor"/>'
+    },
+    {
+      title: 'Improve visibility',
+      desc: 'Build stronger discoverability across search engines, AI-powered search and digital channels.',
+      icon: '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>'
+    },
+    {
+      title: 'Turn interest into action',
+      desc: 'Remove friction from digital journeys and make it easier for prospects to take the next step.',
+      icon: '<path d="M9 2l1 14 3-4 4 4 2-2-4-4 4-3z"/>'
+    },
+    {
+      title: 'Improve marketing efficiency',
+      desc: 'Understand what is working and focus investment on the channels and activities creating real value.',
+      icon: '<path d="M4 15a8 8 0 1 1 16 0"/><path d="M12 15l4-5"/><circle cx="12" cy="15" r="1"/>'
+    },
+    {
+      title: 'Build lasting visibility',
+      desc: 'Create content and digital assets that continue to attract relevant audiences over time.',
+      icon: '<path d="M8.5 8.5a5 5 0 0 1 7 0M5.5 5.5a9 9 0 0 1 13 0"/><circle cx="12" cy="15" r="1.6" fill="currentColor" stroke="none"/>'
+    },
+    {
+      title: 'Measure what matters',
+      desc: 'Move beyond clicks and impressions to understand the business impact of digital growth.',
+      icon: '<path d="M4 20V11M10 20V5M16 20v-6M21.5 20h-19"/>'
+    }
+  ];
+  var gtValueGrid = document.getElementById('gtValueGrid');
+  if (gtValueGrid) {
+    GT_VALUE_ITEMS.forEach(function (v, i) {
+      var row = document.createElement('div');
+      row.className = 'gt-value-row';
+      row.innerHTML =
+        '<div class="gt-value-row-num">' + String(i + 1).padStart(2, '0') + '</div>' +
+        '<span class="gt-value-row-icon">' +
+        '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" ' +
+        'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + v.icon + '</svg></span>' +
+        '<div class="gt-value-row-body">' +
+        '<span class="gt-value-row-title"></span>' +
+        '<span class="gt-value-row-desc"></span>' +
+        '</div>';
+      row.querySelector('.gt-value-row-title').textContent = v.title;
+      row.querySelector('.gt-value-row-desc').textContent = v.desc;
+      gtValueGrid.appendChild(row);
+    });
+  }
+
+  // ---------- Scroll-reveal motion ----------
+  (function initScrollReveal() {
+    var targets = document.querySelectorAll('.reveal, .reveal-group');
+    if (!targets.length) return;
+    if (!('IntersectionObserver' in window)) {
+      targets.forEach(function (el) { el.classList.add('is-visible'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries, observer) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+    targets.forEach(function (el) { io.observe(el); });
+  })();
+
+})();
+</script>
+
+</body>
+</html>

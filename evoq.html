@@ -1,0 +1,1621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EVOQ — Social DNA Labs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --accent: #2B49DB; --accent-hover: #1E35B8; --heading: #162833; --body-text: #46535F;
+    --success: #28C76F; --attention: #F4C430; --critical: #E64A3C;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #F6F8FC; overflow-x: hidden; font-family: 'Inter', sans-serif; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { color: var(--accent-hover); }
+
+  .sdl-header { position: sticky; top: 0; z-index: 50; background: #F6F8FC; border-bottom: 1px solid rgba(16,24,40,0.07); }
+  .sdl-header-inner { max-width: 1360px; margin: 0 auto; padding: 0 48px; height: 88px; display: flex; align-items: center; }
+  .sdl-logo { height: 38px; width: auto; display: block; flex-shrink: 0; }
+
+  .sdl-header-left { display: flex; align-items: center; flex: 0 0 auto; }
+  .sdl-header-nav-wrap { flex: 1 1 auto; display: flex; align-items: center; justify-content: center; min-width: 0; }
+  .sdl-header-right { display: flex; align-items: center; gap: 32px; flex: 0 0 auto; }
+
+  .sdl-desktop-nav { display: flex; align-items: center; gap: 6px; }
+  .sdl-nav-item { position: relative; }
+  .sdl-nav-btn {
+    position: relative; display: flex; align-items: center; gap: 6px; background: none; border: none;
+    font-family: inherit; font-size: 15px; font-weight: 600; color: #162833;
+    cursor: pointer; padding: 12px 13px; border-radius: 8px; white-space: nowrap; flex-shrink: 0;
+  }
+  .sdl-nav-btn:hover { background: rgba(43,73,219,0.06); }
+  .sdl-nav-btn .caret { font-size: 10px; color: #8891A0; margin-top: 2px; transition: transform 0.15s ease; }
+  .sdl-nav-btn.active { color: var(--accent); }
+  .sdl-nav-btn.active .caret { color: var(--accent); transform: rotate(180deg); }
+  .sdl-nav-btn.active::after {
+    content: ''; position: absolute; left: 13px; right: 13px; bottom: 3px; height: 2px; border-radius: 2px;
+    background: linear-gradient(90deg, var(--accent), #6AA8FA);
+  }
+
+  .sdl-cta {
+    display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid var(--accent);
+    color: var(--accent); font-weight: 700; font-size: 14px; padding: 10px 22px;
+    border-radius: 999px; white-space: nowrap; flex-shrink: 0;
+  }
+  .sdl-cta:hover { background: rgba(43,73,219,0.06); color: var(--accent); }
+
+  .sdl-mobile-toggle {
+    display: none; align-items: center; justify-content: center; width: 40px; height: 40px;
+    background: none; border: none; cursor: pointer; flex-shrink: 0;
+  }
+
+  .sdl-mega-panel {
+    position: absolute; top: 100%; left: 48px; padding-top: 14px;
+    z-index: 100; display: none;
+  }
+  .sdl-mega-panel.open { display: block; }
+  .sdl-mega-panel-inner {
+    width: max-content; max-width: min(760px, calc(100vw - 96px)); padding: 30px 32px 24px;
+    display: grid; grid-template-columns: repeat(2, minmax(240px, 1fr));
+    column-gap: 36px; row-gap: 26px;
+    background: #FFFFFF; border-radius: 20px; border: 1px solid rgba(16,24,40,0.06);
+    box-shadow: 0 30px 60px rgba(16,24,40,0.16), 0 4px 14px rgba(16,24,40,0.06);
+    overflow: hidden;
+  }
+  .sdl-mega-item { display: flex; align-items: flex-start; gap: 14px; }
+  .sdl-mega-item-icon {
+    width: 36px; height: 36px; border-radius: 9px; background: rgba(43,73,219,0.08); color: var(--accent);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .sdl-mega-item-title { font-weight: 700; color: #162833; margin-bottom: 5px; font-size: 15px; }
+  .sdl-mega-item-desc { color: #46535F; font-size: 13px; line-height: 1.55; }
+  .sdl-mega-cta { grid-column: 1 / -1; border-top: 1px solid #EEF1F6; padding-top: 18px; }
+  .sdl-mega-cta a { color: var(--accent); font-weight: 700; font-size: 14px; display: inline-flex; align-items: center; gap: 6px; }
+
+  .sdl-mobile-panel {
+    display: none; background: #FFFFFF; border-top: 1px solid rgba(16,24,40,0.07);
+    padding: 8px 24px 24px; max-height: calc(100vh - 88px); overflow-y: auto;
+  }
+  .sdl-mobile-panel.open { display: block; }
+  .sdl-mobile-item { border-bottom: 1px solid #EEF1F6; }
+  .sdl-mobile-item-btn {
+    width: 100%; display: flex; align-items: center; justify-content: space-between;
+    background: none; border: none; font-family: inherit; font-size: 16px; font-weight: 700;
+    color: #162833; padding: 16px 4px; cursor: pointer;
+  }
+  .sdl-mobile-item-btn .caret { font-size: 12px; color: #8891A0; }
+  .sdl-mobile-sub { padding: 0 4px 18px; display: none; flex-direction: column; gap: 14px; }
+  .sdl-mobile-sub.open { display: flex; }
+  .sdl-mobile-sub-title { font-weight: 700; color: #162833; font-size: 14px; }
+  .sdl-mobile-sub-desc { color: #46535F; font-size: 13px; line-height: 1.5; margin-top: 2px; }
+  .sdl-mobile-sub a { color: var(--accent); font-weight: 700; font-size: 14px; }
+  .sdl-mobile-cta {
+    display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--accent);
+    color: #FFFFFF; font-weight: 700; font-size: 15px; padding: 14px; border-radius: 999px; margin-top: 20px;
+  }
+  .sdl-mobile-cta:hover { color: #FFFFFF; }
+
+  .sdl-hero {
+    max-width: 1360px; margin: 0 auto; padding: 84px 48px 56px;
+    display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px; align-items: center;
+  }
+  .sdl-hero-copy-wrap { max-width: 640px; }
+  .sdl-hero-copy {
+    font-family: 'Manrope', sans-serif;
+    font-size: clamp(40px, 4.6vw, 58px); line-height: 1.18; font-weight: 500;
+    letter-spacing: -0.01em; color: #162833;
+  }
+  .sdl-hero-copy .accent { color: var(--accent); }
+  .sdl-hero-sub { margin-top: 28px; font-size: 19px; line-height: 1.65; color: #46535F; max-width: 460px; }
+  .sdl-hero-actions { display: flex; align-items: center; gap: 28px; margin-top: 44px; flex-wrap: wrap; }
+  .sdl-hero-primary {
+    display: inline-flex; align-items: center; gap: 10px; background: var(--accent);
+    color: #FFFFFF; font-weight: 700; font-size: 16px; padding: 16px 30px; border-radius: 999px;
+  }
+  .sdl-hero-primary:hover { background: var(--accent-hover); color: #FFFFFF; }
+  .sdl-hero-secondary { display: inline-flex; align-items: center; gap: 8px; color: var(--accent); font-weight: 700; font-size: 16px; }
+  .sdl-hero-visual { width: 100%; aspect-ratio: 520/480; display: flex; align-items: center; }
+  .sdl-hero-visual canvas { width: 100%; height: 100%; display: block; }
+
+  /* ---------- shared section primitives ---------- */
+  .sdl-section { padding: 96px 48px 108px; }
+  .sdl-section--tight { padding-top: 56px; padding-bottom: 64px; }
+  .sdl-section-inner { max-width: 1360px; margin: 0 auto; }
+  .sdl-section--alt { background: #F6F8FC; }
+  .sdl-section--white { background: #FFFFFF; }
+  .sdl-eyebrow { font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
+  .sdl-section-title {
+    font-family: 'Manrope', sans-serif;
+    font-size: clamp(30px, 3.2vw, 40px); line-height: 1.22; font-weight: 500;
+    letter-spacing: -0.01em; color: #162833;
+  }
+  .sdl-section-title--sm { font-size: clamp(24px, 2.4vw, 30px); }
+  .sdl-section-sub { margin-top: 16px; font-size: 18px; line-height: 1.6; color: #46535F; max-width: 640px; }
+  .sdl-cta-link { display: inline-flex; align-items: center; gap: 8px; color: var(--accent); font-weight: 700; font-size: 16px; }
+  .sdl-cta-link--sm { font-size: 13px; gap: 6px; transition: color 0.15s ease; }
+  .sdl-cta-link--sm:hover { color: var(--accent-hover); }
+
+  /* ---------- shared kicker ---------- */
+  .sdl-kicker {
+    display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase; color: #8891A0;
+  }
+  .sdl-kicker .kicker-num { color: var(--success); }
+
+  /* ---------- footer ---------- */
+  .sdl-footer { position: relative; background: #101826; color: #A9B2C0; padding: 56px 48px 28px; }
+  .sdl-footer-inner { max-width: 1360px; margin: 0 auto; }
+
+  .sdl-footer-top {
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 48px; flex-wrap: wrap;
+    padding-bottom: 32px; margin-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .sdl-footer-brand { max-width: 280px; flex-shrink: 0; }
+  .sdl-footer-logo { height: 34px; width: auto; display: block; filter: brightness(0) invert(1); }
+  .sdl-footer-tagline { margin-top: 14px; font-size: 14px; line-height: 1.6; color: #8891A0; }
+
+  .sdl-footer-cols { flex: 1 1 auto; display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; }
+  .sdl-footer-col-title { font-size: 12px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #FFFFFF; margin-bottom: 14px; }
+  .sdl-footer-links { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .sdl-footer-links a { color: #A9B2C0; font-size: 13.5px; transition: color 0.15s ease; }
+  .sdl-footer-links a:hover { color: #FFFFFF; }
+
+  .sdl-footer-social-icon {
+    width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.06); color: #A9B2C0 !important;
+    display: flex; align-items: center; justify-content: center; transition: background 0.15s ease, color 0.15s ease !important;
+  }
+  .sdl-footer-social-icon:hover { background: var(--accent); color: #FFFFFF !important; }
+
+  .sdl-footer-bottom {
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+    font-size: 13px; color: #7A8494;
+  }
+  .sdl-footer-bottom-right { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+
+  /* ---------- EVOQ page: shared accents ---------- */
+  .evoq-kicker {
+    display: inline-flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase; color: #1E8F53;
+  }
+  .evoq-kicker .kicker-line { display: inline-block; width: 22px; height: 1px; background: #1E8F53; }
+  .evoq-kicker--dark { color: rgba(255,255,255,0.7); }
+  .evoq-kicker--dark .kicker-line { background: #22B368; }
+
+  /* ---------- EVOQ page: hero ---------- */
+  .sdl-hero--evoq .sdl-hero-copy { font-size: clamp(36px, 3.7vw, 48px); line-height: 1.2; font-weight: 500; }
+  .sdl-hero--evoq .sdl-hero-copy .accent { color: #1E8F53; }
+  .sdl-hero--evoq .sdl-kicker-wrap { margin-bottom: 20px; }
+  .sdl-hero--evoq .sdl-hero-sub { max-width: 500px; }
+
+  /* Hero motif: a 2x2 grid of tiles — the same glyph already used for the
+     EVOQ mega-menu icon and the homepage "Products & platforms" pillar —
+     at hero scale, in that pillar's own teal-green tokens. */
+  .evoq-hero-visual {
+    position: relative; width: 100%; aspect-ratio: 520/480; display: flex; align-items: center; justify-content: center;
+    container-type: inline-size;
+  }
+  /* floating status callouts + bottom stat card, connected to the tile
+     grid by curved lines — the same "live activity" composition as the
+     reference, built from icons instead of a stock team photo */
+  .evoq-hero-connectors { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 2; }
+  .evoq-hero-connectors path { fill: none; stroke-linecap: round; stroke-width: 2; }
+  .evoq-hero-connectors circle { stroke: none; }
+  .evoq-hero-callout {
+    position: absolute; z-index: 3; background: #FFFFFF; border-radius: 14px; box-shadow: 0 14px 28px rgba(16,24,40,0.14);
+    padding: clamp(6px, 3cqw, 11px) clamp(8px, 3.6cqw, 13px); display: flex; align-items: center; gap: clamp(6px, 2.4cqw, 10px);
+    max-width: 62%;
+  }
+  .evoq-hero-callout-avatar {
+    position: relative; flex-shrink: 0; width: clamp(28px, 10cqw, 40px); height: clamp(28px, 10cqw, 40px); border-radius: 50%;
+  }
+  .evoq-hero-callout-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; }
+  .evoq-hero-callout-icon {
+    position: absolute; right: -10%; bottom: -10%; width: 56%; height: 56%; border-radius: 50%;
+    background: var(--callout-color, #2B8FDB); color: #FFFFFF; display: flex; align-items: center; justify-content: center;
+    border: 2px solid #FFFFFF;
+  }
+  .evoq-hero-callout-icon svg { width: 55%; height: 55%; }
+  .evoq-hero-callout-title { font-family: 'Manrope', sans-serif; font-weight: 700; color: #162833; font-size: clamp(9px, 2.6cqw, 12.5px); white-space: nowrap; }
+  .evoq-hero-callout-sub { margin-top: 1px; font-size: clamp(8px, 2.1cqw, 11px); color: #8891A0; white-space: nowrap; }
+  .evoq-hero-stat {
+    position: absolute; z-index: 3; left: 12%; bottom: -3%; width: 76%; background: #FFFFFF; border-radius: 14px;
+    box-shadow: 0 16px 32px rgba(16,24,40,0.16); padding: clamp(8px, 3cqw, 13px) clamp(10px, 3.6cqw, 15px);
+    display: flex; align-items: center; gap: clamp(6px, 2.4cqw, 10px);
+  }
+  .evoq-hero-stat-icon {
+    flex-shrink: 0; width: clamp(26px, 8cqw, 36px); height: clamp(26px, 8cqw, 36px); border-radius: 50%;
+    background: #3E5FE0; color: #FFFFFF; display: flex; align-items: center; justify-content: center;
+  }
+  .evoq-hero-stat-icon svg { width: 55%; height: 55%; }
+  .evoq-hero-stat-text { flex: 1; min-width: 0; }
+  .evoq-hero-stat-title { font-family: 'Manrope', sans-serif; font-weight: 700; color: #162833; font-size: clamp(9.5px, 2.8cqw, 12.5px); }
+  .evoq-hero-stat-sub { margin-top: 1px; font-size: clamp(8px, 2.1cqw, 10.5px); color: #8891A0; }
+  .evoq-hero-stat-pill {
+    flex-shrink: 0; display: flex; align-items: center; gap: 3px; background: rgba(34,179,104,0.14); color: #1E8F53;
+    font-weight: 800; border-radius: 999px; padding: clamp(3px, 1.2cqw, 6px) clamp(6px, 2.4cqw, 9px);
+    font-size: clamp(9px, 2.4cqw, 12px);
+  }
+  .evoq-hero-stat-pill svg { width: 11px; height: 11px; }
+  .evoq-hero-photo-wrap {
+    position: relative; width: 100%; height: 100%; border-radius: 28px; overflow: hidden;
+    box-shadow: 0 30px 60px rgba(16,24,40,0.20);
+  }
+  .evoq-hero-photo { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  /* ---------- EVOQ page: narrative ---------- */
+  .evoq-narrative { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 64px; align-items: center; }
+  .evoq-narrative-lead {
+    margin-top: 22px; font-family: 'Manrope', sans-serif; font-weight: 500;
+    font-size: clamp(23px, 2.3vw, 30px); line-height: 1.4; letter-spacing: -0.015em; color: #162833;
+  }
+  .evoq-narrative-body { margin-top: 24px; }
+  .evoq-narrative-body p {
+    margin: 0; padding: 20px 0; border-top: 1px solid #EEF1F6;
+    font-size: 16px; line-height: 1.72; color: #46535F;
+  }
+  .evoq-narrative-body p:first-child { border-top: none; padding-top: 0; }
+  .evoq-narrative-body p:last-child { padding-bottom: 0; }
+
+  /* architecture diagram: stacked cards (business teams -> EVOQ applications
+     -> shared platform -> integrations) connected by arrows, recreating the
+     reference graphic in HTML/CSS rather than a static image */
+  .evoq-arch { display: flex; flex-direction: column; align-items: center; gap: 4px; container-type: inline-size; }
+  .evoq-arch-card {
+    width: 100%; background: #FFFFFF; border: 1px solid #EEF1F6; border-radius: 14px;
+    padding: clamp(10px, 4cqw, 16px); box-shadow: 0 10px 22px rgba(16,24,40,0.05);
+  }
+  .evoq-arch-card-label { font-size: clamp(9px, 2.4cqw, 10.5px); font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: #9099A6; }
+  .evoq-arch-grid { margin-top: 8px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .evoq-arch-item { display: flex; align-items: center; gap: 8px; background: #F6F8FC; border-radius: 8px; padding: clamp(5px, 1.6cqw, 8px) clamp(6px, 2cqw, 10px); }
+  .evoq-arch-item-icon {
+    flex-shrink: 0; width: clamp(18px, 5cqw, 22px); height: clamp(18px, 5cqw, 22px); border-radius: 6px;
+    background: var(--item-tint, rgba(43,143,219,0.14)); color: var(--item-color, #2B8FDB);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .evoq-arch-item-icon svg { width: 60%; height: 60%; }
+  .evoq-arch-item-label { font-size: clamp(10px, 2.8cqw, 12.5px); font-weight: 700; color: #162833; line-height: 1.25; }
+  .evoq-arch-arrow { color: #C3CAD4; margin: 0; width: 14px; height: 16px; flex-shrink: 0; }
+  .evoq-arch-hub-card {
+    width: 100%; background: #FFFFFF; border: 1px solid #EEF1F6; border-radius: 14px;
+    padding: clamp(10px, 4cqw, 16px); text-align: center; box-shadow: 0 10px 22px rgba(16,24,40,0.05);
+  }
+  .evoq-arch-hub-icon {
+    width: clamp(30px, 9cqw, 38px); height: clamp(30px, 9cqw, 38px); border-radius: 11px; background: rgba(34,179,104,0.12); color: #1E8F53;
+    margin: 0 auto; display: flex; align-items: center; justify-content: center;
+  }
+  .evoq-arch-hub-icon svg { width: 55%; height: 55%; }
+  .evoq-arch-hub-title { margin-top: 8px; font-family: 'Manrope', sans-serif; font-size: clamp(13px, 3.6cqw, 16px); font-weight: 800; color: #162833; }
+  .evoq-arch-hub-sub { margin-top: 3px; font-size: clamp(10px, 2.6cqw, 12.5px); color: #8891A0; }
+  .evoq-arch-integrations-row { margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; }
+  .evoq-arch-badge {
+    flex-shrink: 0; width: clamp(24px, 7cqw, 32px); height: clamp(24px, 7cqw, 32px); border-radius: 50%; background: #FFFFFF; border: 1px solid #EEF1F6;
+    box-shadow: 0 6px 14px rgba(16,24,40,0.08); display: flex; align-items: center; justify-content: center;
+  }
+  .evoq-arch-badge img { width: 55%; height: 55%; object-fit: contain; }
+  .evoq-arch-badge-more { font-size: clamp(9px, 2.4cqw, 11px); font-weight: 700; color: #46535F; }
+  .evoq-arch-integrations-caption { margin-top: 8px; text-align: center; font-size: clamp(10px, 2.6cqw, 12.5px); color: #46535F; }
+  @media (max-width: 480px) {
+    .evoq-arch-item-label { font-size: 11px; }
+  }
+
+  /* ---------- EVOQ page: product explorer ---------- */
+  .evoq-products-head { max-width: 720px; }
+  .evoq-toolbar { margin-top: 40px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .evoq-search { position: relative; flex: 1 1 280px; max-width: 360px; }
+  .evoq-search svg { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #8891A0; pointer-events: none; }
+  .evoq-search input {
+    width: 100%; font-family: inherit; font-size: 14.5px; color: #162833; background: #FFFFFF;
+    border: 1px solid #E4E9F2; border-radius: 999px; padding: 12px 18px 12px 42px; outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .evoq-search input:focus { border-color: #22B368; box-shadow: 0 0 0 3px rgba(34,179,104,0.14); }
+  .evoq-filter-tabs { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .evoq-filter-tab {
+    font-family: inherit; font-size: 13.5px; font-weight: 700; color: #46535F; background: #FFFFFF;
+    border: 1px solid #E4E9F2; border-radius: 999px; padding: 9px 18px; cursor: pointer; transition: all 0.15s ease;
+  }
+  .evoq-filter-tab:hover { border-color: #22B368; color: #1E8F53; }
+  .evoq-filter-tab.is-active { background: #1E8F53; border-color: #1E8F53; color: #FFFFFF; }
+
+  .evoq-product-results { margin-top: 44px; }
+
+  /* box-style cards in a single horizontally scrolling row —
+     product "screenshot" area, pill, title and description; the whole
+     card is a link and highlights with the category color on hover */
+  .evoq-product-row {
+    margin-top: 22px; display: flex; gap: 20px; overflow-x: auto; padding: 2px 2px 16px;
+    scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch;
+  }
+  .evoq-product-row::-webkit-scrollbar { height: 6px; }
+  .evoq-product-row::-webkit-scrollbar-track { background: transparent; }
+  .evoq-product-row::-webkit-scrollbar-thumb { background: #E4E9F2; border-radius: 999px; }
+  .evoq-product-card {
+    flex: 0 0 auto; width: min(460px, 78vw); scroll-snap-align: start; display: block; text-decoration: none; color: inherit;
+    background: #FFFFFF; border: 1.5px solid #EEF1F6; border-radius: 20px; overflow: hidden;
+  }
+  .evoq-product-card-image {
+    display: block; position: relative; aspect-ratio: 5 / 4; overflow: hidden; container-type: inline-size;
+    background: linear-gradient(160deg, var(--cat-soft, rgba(30,143,83,0.16)) 0%, #F7F9FC 120%);
+  }
+  .evoq-mk-panel, .evoq-mk-title, .evoq-mk-label, .evoq-mk-strong, .evoq-mk-bar, .evoq-mk-chip, .evoq-mk-btn { display: block; }
+  .evoq-mk-row, .evoq-mk-col { display: flex; }
+  .evoq-mk-chip { display: inline-block; }
+
+  /* body panel fills solid with the category color on hover — matching the
+     reference site's hover treatment (color fill, not a lift/shadow) */
+  .evoq-product-card-body { padding: 22px 24px 26px; transition: background-color 0.2s ease; }
+  .evoq-product-card:hover .evoq-product-card-body { background: var(--cat-color, #1E8F53); }
+  .evoq-product-card-pill {
+    display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700;
+    color: var(--cat-color, #1E8F53); background: var(--cat-soft, rgba(30,143,83,0.14));
+    border-radius: 999px; padding: 5px 12px 5px 9px; transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  .evoq-product-card:hover .evoq-product-card-pill { background: rgba(255,255,255,0.92); color: var(--cat-color, #1E8F53); }
+  .evoq-product-card-pill svg { width: 12px; height: 12px; }
+  .evoq-product-card-title {
+    margin-top: 16px; font-family: 'Manrope', sans-serif; font-size: 21px; font-weight: 700;
+    line-height: 1.25; color: #162833; transition: color 0.2s ease;
+  }
+  .evoq-product-card:hover .evoq-product-card-title { color: #FFFFFF; }
+  .evoq-product-card-desc { margin-top: 9px; font-size: 14.5px; line-height: 1.6; color: #46535F; transition: color 0.2s ease; }
+  .evoq-product-card:hover .evoq-product-card-desc { color: rgba(255,255,255,0.88); }
+
+  /* prev/next arrow buttons flanking the row, like the reference carousel */
+  .evoq-product-row-wrap { position: relative; }
+  .evoq-product-row-arrow {
+    position: absolute; top: 42%; transform: translateY(-50%); z-index: 2; width: 44px; height: 44px;
+    border-radius: 50%; background: #FFFFFF; border: 1px solid #EEF1F6; box-shadow: 0 10px 24px rgba(16,24,40,0.14);
+    display: flex; align-items: center; justify-content: center; cursor: pointer; color: #162833;
+    transition: box-shadow 0.15s ease, transform 0.15s ease;
+  }
+  .evoq-product-row-arrow:hover { box-shadow: 0 14px 30px rgba(16,24,40,0.2); transform: translateY(-50%) scale(1.05); }
+  .evoq-product-row-arrow:active { transform: translateY(-50%) scale(0.96); }
+  .evoq-product-row-arrow--prev { left: -8px; }
+  .evoq-product-row-arrow--next { right: -8px; }
+  .evoq-product-row-arrow svg { width: 18px; height: 18px; }
+  .evoq-product-row-arrow[disabled] { opacity: 0; pointer-events: none; }
+  @media (max-width: 700px) {
+    .evoq-product-row-arrow { display: none; }
+  }
+  .evoq-no-results { font-size: 15px; color: #8891A0; }
+
+  /* ---- mini UI mockups inside each product card image ---- */
+  .evoq-mk { position: absolute; inset: 0; }
+  .evoq-mk-panel {
+    position: absolute; background: #FFFFFF; border-radius: 3cqw;
+    box-shadow: 0 2.4cqw 5cqw rgba(16,24,40,0.13); padding: 3.4cqw;
+  }
+  .evoq-mk-head { display: flex; align-items: center; gap: 2cqw; margin-bottom: 2.6cqw; }
+  .evoq-mk-title { font-size: 3.4cqw; font-weight: 700; color: #162833; font-family: 'Manrope', sans-serif; white-space: nowrap; }
+  .evoq-mk-label { font-size: 2.9cqw; color: #8891A0; white-space: nowrap; }
+  .evoq-mk-strong { font-size: 5.2cqw; font-weight: 800; color: #162833; font-family: 'Manrope', sans-serif; }
+  .evoq-mk-row { display: flex; align-items: center; gap: 2cqw; }
+  .evoq-mk-col { display: flex; flex-direction: column; gap: 2cqw; }
+  .evoq-mk-bar { height: 1.9cqw; border-radius: 999px; background: #E7ECF4; }
+  .evoq-mk-bar--dark { background: #D3DBE7; }
+  .evoq-mk-bar--tint { background: var(--cat-soft, rgba(30,143,83,0.2)); }
+  .evoq-mk-avatar { width: 6.4cqw; height: 6.4cqw; border-radius: 50%; background: var(--cat-soft, #E7ECF4); flex-shrink: 0; }
+  .evoq-mk-sq { width: 6.4cqw; height: 6.4cqw; border-radius: 1.8cqw; background: var(--cat-soft, #E7ECF4); flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+  .evoq-mk-sq svg { width: 60%; height: 60%; color: var(--cat-color, #1E8F53); }
+  .evoq-mk-chip {
+    font-size: 2.7cqw; font-weight: 700; border-radius: 999px; padding: 1cqw 2.4cqw; white-space: nowrap;
+    background: var(--cat-soft, rgba(30,143,83,0.16)); color: var(--cat-color, #1E8F53);
+  }
+  .evoq-mk-chip--green { background: rgba(34,179,104,0.16); color: #1E8F53; }
+  .evoq-mk-chip--grey { background: #EEF1F6; color: #8891A0; }
+  .evoq-mk-line { border-top: 1px solid #EEF1F6; margin: 2.4cqw 0; }
+  .evoq-mk-tile { border-radius: 2cqw; background: #F4F7FB; padding: 2cqw; display: flex; flex-direction: column; gap: 1.6cqw; }
+  .evoq-mk-btn {
+    font-size: 2.8cqw; font-weight: 700; color: #FFFFFF; background: var(--cat-color, #1E8F53);
+    border-radius: 999px; padding: 1.4cqw 3.4cqw; display: inline-block; white-space: nowrap;
+  }
+  .evoq-mk-check {
+    width: 5.4cqw; height: 5.4cqw; border-radius: 50%; background: #22B368; color: #FFFFFF; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .evoq-mk-check svg { width: 58%; height: 58%; }
+
+  /* ---------- EVOQ page: industries ---------- */
+  .evoq-industries-headrow { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .evoq-industries-head { max-width: 640px; }
+  .evoq-industries-nav { display: flex; gap: 10px; flex-shrink: 0; }
+  .evoq-industries-arrow {
+    width: 44px; height: 44px; border-radius: 50%; background: #FFFFFF; border: 1px solid #EEF1F6;
+    box-shadow: 0 8px 20px rgba(16,24,40,0.08); display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: #162833; transition: box-shadow 0.15s ease, background-color 0.15s ease;
+  }
+  .evoq-industries-arrow:hover { background: #F6F8FC; }
+  .evoq-industries-arrow[disabled] { opacity: 0.35; pointer-events: none; }
+  .evoq-industries-arrow svg { width: 18px; height: 18px; }
+
+  .evoq-industries-row {
+    margin-top: 28px; display: flex; gap: 22px; overflow-x: auto; padding: 2px 2px 14px;
+    scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch;
+  }
+  .evoq-industries-row::-webkit-scrollbar { height: 6px; }
+  .evoq-industries-row::-webkit-scrollbar-track { background: transparent; }
+  .evoq-industries-row::-webkit-scrollbar-thumb { background: #E4E9F2; border-radius: 999px; }
+  .evoq-industry-card { flex: 0 0 auto; width: min(340px, 78vw); scroll-snap-align: start; }
+  .evoq-industry-photo {
+    position: relative; aspect-ratio: 4 / 3; border-radius: 16px; overflow: hidden; background: #EEF1F6;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  .evoq-industry-card:hover .evoq-industry-photo { transform: translateY(-3px); box-shadow: 0 20px 40px rgba(16,24,40,0.16); }
+  .evoq-industry-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .evoq-industry-label { margin-top: 14px; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 17px; color: #162833; }
+  @media (max-width: 700px) {
+    .evoq-industries-arrow { display: none; }
+  }
+
+  /* ---------- EVOQ page: integrations ---------- */
+  .evoq-integrations-layout { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 48px; align-items: center; }
+  .evoq-integrations-head { max-width: 480px; }
+  .evoq-integrations-body { margin-top: 22px; max-width: 480px; }
+  .evoq-integrations-body p { margin: 10px 0 0; font-size: 16px; line-height: 1.7; color: #46535F; }
+  .evoq-integrations-body p:first-child { margin-top: 0; }
+
+  /* integrations visual: concentric radar rings with real partner-app
+     logos floating over them, plus a caption card — container-query sized
+     so it scales cleanly whether it's full width (stacked) or in the
+     narrower right-hand column (side-by-side). */
+  .evoq-integrations-visual {
+    position: relative; container-type: inline-size; overflow: hidden;
+    aspect-ratio: 4 / 3.2; border-radius: 24px; border: 1px solid #EEF1F6;
+    background: linear-gradient(180deg, #FBFCFE 0%, #F1F4FA 100%);
+  }
+  .evoq-integrations-rings {
+    position: absolute; left: 50%; top: 8%; width: 150%; aspect-ratio: 1/1; transform: translateX(-50%);
+    border-radius: 50%; pointer-events: none;
+    background: repeating-radial-gradient(circle at 50% 0%, rgba(120,140,170,0.14) 0, rgba(120,140,170,0.14) 1.5px, transparent 1.5px, transparent 58px);
+  }
+  .evoq-integration-badge {
+    position: absolute; transform: translate(-50%, -50%); z-index: 2;
+    width: clamp(30px, 11cqw, 54px); aspect-ratio: 1/1; border-radius: 50%;
+    background: #FFFFFF; box-shadow: 0 12px 24px rgba(16,24,40,0.12);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .evoq-integration-badge--lg { width: clamp(38px, 14cqw, 68px); }
+  .evoq-integration-badge img { width: 56%; height: 56%; object-fit: contain; }
+  .evoq-integrations-caption {
+    position: absolute; left: 5%; right: 5%; bottom: 6%; z-index: 3;
+  }
+  .evoq-integrations-caption-title {
+    font-family: 'Manrope', sans-serif; font-weight: 700; color: #162833;
+    font-size: clamp(11px, 3.6cqw, 16px);
+  }
+  .evoq-integrations-caption-desc {
+    margin-top: clamp(2px, 1.4cqw, 6px); color: #46535F; line-height: 1.55; max-width: 78%;
+    font-size: clamp(8.5px, 2.4cqw, 12.5px);
+  }
+  @media (max-width: 1100px) {
+    .evoq-integrations-layout { grid-template-columns: 1fr; gap: 32px; }
+    .evoq-integrations-head, .evoq-integrations-body { max-width: 720px; }
+    .evoq-integrations-visual { max-width: 640px; margin: 0 auto; }
+  }
+  .evoq-integrations-cta { margin-top: 36px; }
+
+  /* ---------- EVOQ page: closing CTA ---------- */
+  .evoq-cta-section { padding: 72px 48px 72px; }
+  .evoq-cta-card {
+    position: relative; overflow: hidden; max-width: 1360px; margin: 0 auto;
+    background: #101826; border: 1px solid rgba(255,255,255,0.08); border-radius: 28px;
+    padding: 78px 56px 82px; text-align: center;
+  }
+  .evoq-cta-card::before {
+    content: ''; position: absolute; top: -160px; left: 50%; transform: translateX(-50%);
+    width: 620px; height: 400px; pointer-events: none;
+    background: radial-gradient(ellipse at center, rgba(34,179,104,0.30), rgba(34,179,104,0) 68%);
+  }
+  .evoq-cta-inner { position: relative; }
+  .evoq-cta-title {
+    margin-top: 20px; font-family: 'Manrope', sans-serif; font-weight: 500;
+    font-size: clamp(28px, 3.3vw, 42px); line-height: 1.2; letter-spacing: -0.015em; color: #FFFFFF;
+  }
+  .evoq-cta-sub { margin: 18px auto 0; max-width: 520px; font-size: 17px; line-height: 1.65; color: rgba(255,255,255,0.62); }
+  .evoq-cta-btn {
+    display: inline-flex; align-items: center; gap: 10px; margin-top: 34px; background: #22B368;
+    color: #FFFFFF; font-weight: 700; font-size: 16px; padding: 16px 32px; border-radius: 999px;
+    transition: background 0.15s ease, transform 0.15s ease;
+  }
+  .evoq-cta-btn:hover { background: #1E8F53; color: #FFFFFF; transform: translateY(-1px); }
+  .evoq-cta-btn .arrow { display: inline-block; transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .evoq-cta-btn:hover .arrow { transform: translateX(4px); }
+
+  @media (max-width: 1060px) {
+    .sdl-desktop-nav, .sdl-desktop-cta { display: none !important; }
+    .sdl-mobile-toggle { display: flex !important; }
+    .sdl-header-inner { padding-left: 24px !important; padding-right: 24px !important; }
+    .sdl-hero { grid-template-columns: 1fr !important; padding: 56px 24px 64px !important; }
+    .sdl-hero-visual, .evoq-hero-visual { max-width: 420px; margin: 0 auto; order: -1; }
+    .sdl-section { padding: 72px 24px 80px; }
+    .sdl-section--tight { padding-top: 48px; padding-bottom: 56px; }
+    .evoq-cta-section { padding: 56px 24px 56px; }
+    .evoq-cta-card { padding: 56px 28px 60px; }
+    .sdl-footer { padding: 64px 24px 28px; }
+    .sdl-footer-cols { max-width: none; grid-template-columns: repeat(2, 1fr); row-gap: 32px; }
+    .evoq-narrative { grid-template-columns: 1fr; gap: 32px; }
+  }
+
+  @media (max-width: 560px) {
+    .sdl-footer-top { flex-direction: column; align-items: flex-start; }
+    .sdl-footer-cols { grid-template-columns: 1fr; }
+    .evoq-toolbar { flex-direction: column; align-items: stretch; }
+    .evoq-search { flex: none; max-width: none; width: 100%; }
+  }
+
+  /* ---------- scroll-reveal motion ---------- */
+  .reveal, .reveal-group > * { opacity: 0; transform: translateY(24px); }
+  .reveal.is-visible, .reveal-group.is-visible > * {
+    animation: sdlRevealIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  @keyframes sdlRevealIn { to { opacity: 1; transform: translateY(0); } }
+  .reveal-group > *:nth-child(1) { animation-delay: 0s; }
+  .reveal-group > *:nth-child(2) { animation-delay: 0.07s; }
+  .reveal-group > *:nth-child(3) { animation-delay: 0.14s; }
+  .reveal-group > *:nth-child(4) { animation-delay: 0.21s; }
+  .reveal-group > *:nth-child(5) { animation-delay: 0.28s; }
+  .reveal-group > *:nth-child(6) { animation-delay: 0.35s; }
+
+  .sdl-hero-copy-wrap, .evoq-hero-visual {
+    opacity: 0; transform: translateY(18px);
+    animation: sdlRevealIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  .evoq-hero-visual { animation-delay: 0.15s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal, .reveal-group > *, .sdl-hero-copy-wrap, .evoq-hero-visual {
+      animation: none !important; opacity: 1 !important; transform: none !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div style="font-family:'Inter',sans-serif;background:#F6F8FC;min-height:100vh">
+
+  <header class="sdl-header" id="sdlHeader">
+    <div class="sdl-header-inner">
+      <div class="sdl-header-left">
+        <a href="index.html" style="display: flex; align-items: center; flex-shrink: 0; color: inherit; text-decoration: none;">
+          <img src="assets/sdl-logo.svg" alt="Social DNA Labs" class="sdl-logo" />
+        </a>
+      </div>
+
+      <div class="sdl-header-nav-wrap">
+        <nav class="sdl-desktop-nav" id="desktopNav"></nav>
+      </div>
+
+      <div class="sdl-header-right">
+        <a href="index.html#contact" class="sdl-cta sdl-desktop-cta">Let's talk →</a>
+
+        <button class="sdl-mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+          <svg width="22" height="16" viewBox="0 0 22 16"><rect width="22" height="2" fill="#162833"></rect><rect y="7" width="22" height="2" fill="#162833"></rect><rect y="14" width="22" height="2" fill="#162833"></rect></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="sdl-mega-panel" id="megaPanel"></div>
+    <div class="sdl-mobile-panel" id="mobilePanel"></div>
+  </header>
+
+  <section class="sdl-hero sdl-hero--evoq">
+    <div class="sdl-hero-copy-wrap">
+      <div class="sdl-kicker-wrap">
+        <span class="evoq-kicker"><span class="kicker-line"></span> Products &amp; Platforms — EVOQ</span>
+      </div>
+      <div class="sdl-hero-copy">
+        <div>One suite.</div>
+        <div>Built around <span class="accent">your business.</span></div>
+      </div>
+      <p class="sdl-hero-sub">
+        EVOQ brings essential business applications together in one flexible suite. Start with the applications you need today and expand as your business grows.
+      </p>
+      <div class="sdl-hero-actions">
+        <a href="#products" class="sdl-hero-primary">Explore products →</a>
+        <a href="index.html#contact" class="sdl-hero-secondary">Talk to an expert →</a>
+      </div>
+    </div>
+
+    <div class="evoq-hero-visual" aria-hidden="true">
+      <div class="evoq-hero-photo-wrap">
+        <img class="evoq-hero-photo" src="https://images.pexels.com/photos/39204861/pexels-photo-39204861.jpeg?cs=tinysrgb&w=900&h=830&fit=crop" alt="" />
+      </div>
+
+      <svg class="evoq-hero-connectors" viewBox="0 0 520 480" aria-hidden="true">
+        <path d="M75,60 C95,68 108,74 114,82" style="stroke:#2B8FDB;opacity:0.7"/>
+        <circle cx="114" cy="82" r="3.5" fill="#2B8FDB"/>
+        <path d="M382,60 C372,70 364,78 359,86" style="stroke:#6C4FD1;opacity:0.7"/>
+        <circle cx="359" cy="86" r="3.5" fill="#6C4FD1"/>
+        <path d="M400,262 C368,248 340,240 322,230" style="stroke:#C9941F;opacity:0.7"/>
+        <circle cx="322" cy="230" r="3.5" fill="#C9941F"/>
+        <path d="M260,392 C260,404 260,412 260,420" style="stroke:#3E5FE0;opacity:0.4"/>
+      </svg>
+
+      <div class="evoq-hero-callout" style="left:-6%;top:2%;--callout-color:#2B8FDB">
+        <span class="evoq-hero-callout-avatar">
+          <img src="https://images.pexels.com/photos/37148308/pexels-photo-37148308.jpeg?cs=tinysrgb&w=100&h=100&fit=crop" alt="" />
+          <span class="evoq-hero-callout-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V11M10 20V5M16 20v-6M21.5 20h-19"/></svg></span>
+        </span>
+        <div>
+          <div class="evoq-hero-callout-title">Sales</div>
+          <div class="evoq-hero-callout-sub">3 deals closed today</div>
+        </div>
+      </div>
+
+      <div class="evoq-hero-callout" style="right:-8%;top:-2%;--callout-color:#6C4FD1">
+        <span class="evoq-hero-callout-avatar">
+          <img src="https://images.pexels.com/photos/38197025/pexels-photo-38197025.jpeg?cs=tinysrgb&w=100&h=100&fit=crop" alt="" />
+          <span class="evoq-hero-callout-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H8l-4 4z"/><path d="M8 9h8M8 12.5h5"/></svg></span>
+        </span>
+        <div>
+          <div class="evoq-hero-callout-title">Support</div>
+          <div class="evoq-hero-callout-sub">Ticket resolved in 6 min</div>
+        </div>
+      </div>
+
+      <div class="evoq-hero-callout" style="right:-10%;top:58%;--callout-color:#C9941F">
+        <span class="evoq-hero-callout-avatar">
+          <img src="https://images.pexels.com/photos/37605831/pexels-photo-37605831.jpeg?cs=tinysrgb&w=100&h=100&fit=crop" alt="" />
+          <span class="evoq-hero-callout-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4.5"/><circle cx="12" cy="12" r="9"/></svg></span>
+        </span>
+        <div>
+          <div class="evoq-hero-callout-title">Operations</div>
+          <div class="evoq-hero-callout-sub">Job #482 completed</div>
+        </div>
+      </div>
+
+      <div class="evoq-hero-stat">
+        <span class="evoq-hero-stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M17 7l2-2"/></svg></span>
+        <div class="evoq-hero-stat-text">
+          <div class="evoq-hero-stat-title">Q3 growth target</div>
+          <div class="evoq-hero-stat-sub">$500K pipeline · on track</div>
+        </div>
+        <span class="evoq-hero-stat-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V11M10 20V5M16 20v-9M21.5 20h-19"/></svg>72%</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="sdl-section sdl-section--white">
+    <div class="sdl-section-inner">
+      <div class="evoq-narrative">
+        <div class="reveal">
+          <span class="evoq-kicker"><span class="kicker-line"></span> Platform overview</span>
+          <p class="evoq-narrative-lead">
+            EVOQ brings business applications, shared platform capabilities and integrations together in one environment.
+          </p>
+          <div class="evoq-narrative-body">
+            <p>Designed to support teams across sales, marketing, service, operations and finance, it provides the tools businesses need to manage everyday work while creating a foundation for greater visibility, control and growth.</p>
+            <p>A shared platform supports the applications with capabilities for administration, APIs, data, mobility, security and analytics. Integrations extend EVOQ into the systems businesses already use, making it easier to build a technology environment around existing workflows.</p>
+          </div>
+        </div>
+
+        <div class="evoq-arch reveal" aria-hidden="true">
+          <div class="evoq-arch-card">
+            <div class="evoq-arch-card-label">Business teams</div>
+            <div class="evoq-arch-grid">
+              <div class="evoq-arch-item" style="--item-color:#2B8FDB;--item-tint:rgba(43,143,219,0.14)">
+                <span class="evoq-arch-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1-4 4-6 7-6s6 2 7 6"/></svg></span>
+                <span class="evoq-arch-item-label">Sales</span>
+              </div>
+              <div class="evoq-arch-item" style="--item-color:#22B368;--item-tint:rgba(34,179,104,0.14)">
+                <span class="evoq-arch-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10v4h3l10 5V5L6 10H3z"/><path d="M16 9a4 4 0 0 1 0 6"/></svg></span>
+                <span class="evoq-arch-item-label">Marketing</span>
+              </div>
+              <div class="evoq-arch-item" style="--item-color:#C9941F;--item-tint:rgba(201,148,31,0.14)">
+                <span class="evoq-arch-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="3.5"/><path d="M10.5 12.5 20 3M17 6l2 2M14 9l2 2"/></svg></span>
+                <span class="evoq-arch-item-label">Service</span>
+              </div>
+              <div class="evoq-arch-item" style="--item-color:#2B8FDB;--item-tint:rgba(43,143,219,0.14)">
+                <span class="evoq-arch-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.5 4.5l2 2M17.5 17.5l2 2M19.5 4.5l-2 2M6.5 17.5l-2 2"/></svg></span>
+                <span class="evoq-arch-item-label">Operations</span>
+              </div>
+              <div class="evoq-arch-item" style="--item-color:#22B368;--item-tint:rgba(34,179,104,0.14)">
+                <span class="evoq-arch-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 6.5c0-1.9-2.2-3.5-5-3.5s-5 1.6-5 3.5 2.2 3 5 3.5 5 1.6 5 3.5-2.2 3.5-5 3.5-5-1.6-5-3.5"/></svg></span>
+                <span class="evoq-arch-item-label">Finance</span>
+              </div>
+              <div class="evoq-arch-item" style="--item-color:#C9941F;--item-tint:rgba(201,148,31,0.14)">
+                <span class="evoq-arch-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l2.9 6 6.6.7-4.9 4.5 1.3 6.5L12 16.9 6.1 20.2l1.3-6.5L2.5 9.2l6.6-.7z"/></svg></span>
+                <span class="evoq-arch-item-label">Leadership</span>
+              </div>
+            </div>
+          </div>
+
+          <svg class="evoq-arch-arrow" width="18" height="22" viewBox="0 0 18 22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v16M3 12l6 6 6-6"/></svg>
+
+          <div class="evoq-arch-hub-card">
+            <span class="evoq-arch-hub-icon"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg></span>
+            <div class="evoq-arch-hub-title">EVOQ Applications</div>
+            <div class="evoq-arch-hub-sub">Purpose-built apps for your business</div>
+          </div>
+
+          <svg class="evoq-arch-arrow" width="18" height="22" viewBox="0 0 18 22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v16M3 12l6 6 6-6"/></svg>
+
+          <div class="evoq-arch-card">
+            <div class="evoq-arch-card-label">Shared platform</div>
+            <div class="evoq-arch-grid">
+              <div class="evoq-arch-item" style="--item-color:#2B8FDB;--item-tint:rgba(43,143,219,0.14)">
+                <span class="evoq-arch-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 8l-5 4 5 4M15 8l5 4-5 4"/></svg></span>
+                <span class="evoq-arch-item-label">Console &amp; APIs</span>
+              </div>
+              <div class="evoq-arch-item" style="--item-color:#2B8FDB;--item-tint:rgba(43,143,219,0.14)">
+                <span class="evoq-arch-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1-4 4-6 7-6s6 2 7 6"/></svg></span>
+                <span class="evoq-arch-item-label">Administration</span>
+              </div>
+              <div class="evoq-arch-item" style="--item-color:#2B8FDB;--item-tint:rgba(43,143,219,0.14)">
+                <span class="evoq-arch-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="6" rx="1.5"/><rect x="4" y="14" width="16" height="6" rx="1.5"/><circle cx="7.5" cy="7" r="0.7" fill="currentColor" stroke="none"/><circle cx="7.5" cy="17" r="0.7" fill="currentColor" stroke="none"/></svg></span>
+                <span class="evoq-arch-item-label">Storage</span>
+              </div>
+              <div class="evoq-arch-item" style="--item-color:#2B8FDB;--item-tint:rgba(43,143,219,0.14)">
+                <span class="evoq-arch-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
+                <span class="evoq-arch-item-label">Data Protection</span>
+              </div>
+              <div class="evoq-arch-item" style="--item-color:#2B8FDB;--item-tint:rgba(43,143,219,0.14)">
+                <span class="evoq-arch-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></span>
+                <span class="evoq-arch-item-label">Mobility</span>
+              </div>
+              <div class="evoq-arch-item" style="--item-color:#2B8FDB;--item-tint:rgba(43,143,219,0.14)">
+                <span class="evoq-arch-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V11M10 20V5M16 20v-6M21.5 20h-19"/></svg></span>
+                <span class="evoq-arch-item-label">Analytics</span>
+              </div>
+            </div>
+          </div>
+
+          <svg class="evoq-arch-arrow" width="18" height="22" viewBox="0 0 18 22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v16M3 12l6 6 6-6"/></svg>
+
+          <div class="evoq-arch-card">
+            <div class="evoq-arch-card-label">Integrations</div>
+            <div class="evoq-arch-integrations-row">
+              <span class="evoq-arch-badge"><img src="https://cdn.simpleicons.org/quickbooks" alt="QuickBooks" loading="lazy"></span>
+              <span class="evoq-arch-badge"><img src="https://cdn.simpleicons.org/sap" alt="SAP" loading="lazy"></span>
+              <span class="evoq-arch-badge"><img src="https://cdn.simpleicons.org/mailchimp" alt="Mailchimp" loading="lazy"></span>
+              <span class="evoq-arch-badge"><img src="https://cdn.simpleicons.org/stripe" alt="Stripe" loading="lazy"></span>
+              <span class="evoq-arch-badge"><img src="https://cdn.simpleicons.org/whatsapp" alt="WhatsApp" loading="lazy"></span>
+              <span class="evoq-arch-badge"><img src="https://cdn.simpleicons.org/shopify" alt="Shopify" loading="lazy"></span>
+              <span class="evoq-arch-badge evoq-arch-badge-more">+12</span>
+            </div>
+            <p class="evoq-arch-integrations-caption">Connect EVOQ with the systems you already use</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sdl-section sdl-section--alt" id="products">
+    <div class="sdl-section-inner">
+      <div class="evoq-products-head reveal">
+        <span class="evoq-kicker"><span class="kicker-line"></span> Product suite</span>
+        <div class="sdl-section-title" style="margin-top:18px">Explore EVOQ products.</div>
+        <p class="sdl-section-sub">Find the applications that fit your business. Start with what you need today and expand your suite as your requirements grow.</p>
+      </div>
+
+      <div class="evoq-toolbar reveal">
+        <div class="evoq-search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input type="text" id="evoqSearchInput" placeholder="Search products..." aria-label="Search EVOQ products">
+        </div>
+        <div class="evoq-filter-tabs" id="evoqFilterTabs" role="tablist" aria-label="Filter products by category"></div>
+      </div>
+
+      <div class="evoq-product-results" id="evoqProductResults"></div>
+    </div>
+  </section>
+
+  <section class="sdl-section sdl-section--white">
+    <div class="sdl-section-inner">
+      <div class="evoq-industries-headrow reveal">
+        <div class="evoq-industries-head">
+          <span class="evoq-kicker"><span class="kicker-line"></span> Flexible by design</span>
+          <div class="sdl-section-title" style="margin-top:18px">Built for different ways of working.</div>
+          <p class="sdl-section-sub">EVOQ's modular applications can support different business models, workflows and operational needs.</p>
+        </div>
+        <div class="evoq-industries-nav">
+          <button type="button" class="evoq-industries-arrow" id="evoqIndustriesPrev" aria-label="Scroll industries left">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <button type="button" class="evoq-industries-arrow" id="evoqIndustriesNext" aria-label="Scroll industries right">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="evoq-industries-row" id="evoqIndustries"></div>
+    </div>
+  </section>
+
+  <section class="sdl-section sdl-section--alt">
+    <div class="sdl-section-inner">
+      <div class="evoq-integrations-layout">
+        <div>
+          <div class="evoq-integrations-head reveal">
+            <span class="evoq-kicker"><span class="kicker-line"></span> Integrations</span>
+            <div class="sdl-section-title" style="margin-top:18px">Connect with the systems you already use.</div>
+          </div>
+
+          <div class="evoq-integrations-body reveal">
+            <p>EVOQ integrates with the systems and services that businesses rely on, helping data move between applications and existing business environments.</p>
+            <p>Connect EVOQ with your CRM, ERP, accounting, productivity and other business systems to reduce manual data entry, maintain consistent information and support connected workflows.</p>
+          </div>
+        </div>
+
+        <div>
+          <div class="evoq-integrations-visual reveal">
+            <div class="evoq-integrations-rings" aria-hidden="true"></div>
+            <div id="evoqIntegrationBadges"></div>
+            <div class="evoq-integrations-caption">
+              <div class="evoq-integrations-caption-title">Seamless integrations</div>
+              <p class="evoq-integrations-caption-desc">Connect the tools your teams already use, without extra manual work.</p>
+            </div>
+          </div>
+
+          <div class="evoq-integrations-cta reveal">
+            <a class="sdl-cta-link" href="#">Explore integrations →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="evoq-cta-section">
+    <div class="evoq-cta-card reveal">
+      <div class="evoq-cta-inner">
+        <span class="evoq-kicker evoq-kicker--dark"><span class="kicker-line"></span> Find your fit</span>
+        <div class="evoq-cta-title">Looking to find the right EVOQ solution?</div>
+        <p class="evoq-cta-sub">Explore EVOQ applications built to simplify business processes, support your teams, and help your business grow.</p>
+        <a href="index.html#contact" class="evoq-cta-btn">Talk to an expert <span class="arrow" aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer class="sdl-footer">
+  <div class="sdl-footer-inner">
+    <div class="sdl-footer-top">
+      <div class="sdl-footer-brand">
+        <img src="assets/sdl-logo.svg" alt="Social DNA Labs" class="sdl-footer-logo" />
+        <p class="sdl-footer-tagline">Technology, experience and AI for businesses building what comes next.</p>
+      </div>
+
+      <div class="sdl-footer-cols" id="footerCols"></div>
+    </div>
+
+    <div class="sdl-footer-bottom">
+      <div id="footerYear">© Social DNA Labs</div>
+      <div class="sdl-footer-bottom-right">
+        <div>Business impact, by design.</div>
+        <a href="#" class="sdl-footer-social-icon" aria-label="LinkedIn"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zm7 0h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.6c0-1.34-.02-3.06-1.87-3.06-1.87 0-2.16 1.46-2.16 2.96V21h-4z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+<script>
+(function () {
+  "use strict";
+
+  var ACCENT = '#2B49DB';
+  var MEGA_MENU_ENABLED = true;
+
+  var MENUS = [
+    { key: 'services', label: 'Services', href: 'services.html', cta: { label: 'View all services', href: 'services.html' }, items: [
+      { title: 'AI transformation', desc: 'Turn AI potential into practical business value.', href: 'ai-transformation.html' },
+      { title: 'Digital engineering', desc: 'Build, modernize and scale digital products.', href: 'digital-engineering.html' },
+      { title: 'Business transformation', desc: 'Rethink systems, processes and ways of working.', href: 'business-transformation.html' },
+      { title: 'Digital experience', desc: 'Create better experiences across every touchpoint.', href: 'digital-experience.html' },
+      { title: 'Growth transformation', desc: 'Turn digital attention into qualified demand.', href: 'growth-transformation.html' }
+    ]},
+    { key: 'products', label: 'Products & Platforms', cta: { label: 'Explore EVOQ', href: 'evoq.html' }, items: [
+      { title: 'EVOQ', desc: 'The unified business suite for modern operations.', href: 'evoq.html' }
+    ]},
+    { key: 'insights', label: 'Insights', cta: { label: 'Explore insights', href: '#' }, items: [
+      { title: 'Blogs', desc: 'Ideas, perspectives and practical thinking.' },
+      { title: 'Case studies', desc: 'Real projects. Real business outcomes.' },
+      { title: 'Whitepapers', desc: 'In-depth research and perspectives.' },
+      { title: 'Featured projects', desc: 'Selected work and digital experiences.' }
+    ]},
+    { key: 'company', label: 'Company', cta: null, items: [
+      { title: 'About', desc: 'The people and experience behind SDL.' },
+      { title: 'Our approach', desc: 'How SDL thinks, builds and works.' },
+      { title: 'Clients', desc: 'The businesses SDL works with.' },
+      { title: 'Careers', desc: "Build what's next with SDL." }
+    ]}
+  ];
+
+  var ICONS = {
+    'AI transformation': '<path d="M24 6l4.2 9.4L38 20l-9.8 4.6L24 34l-4.2-9.4L10 20l9.8-4.6L24 6z"/><circle cx="24" cy="20" r="3.4"/>',
+    'Digital engineering': '<path d="M17 15l-8 8 8 8M31 15l8 8-8 8M27 12l-6 24"/>',
+    'Business transformation': '<circle cx="24" cy="24" r="7"/><path d="M24 8v5M24 39v5M8 24h5M39 24h5M12.9 12.9l3.5 3.5M31.6 31.6l3.5 3.5M35.1 12.9l-3.5 3.5M16.4 31.6l-3.5 3.5"/>',
+    'Digital experience': '<rect x="10" y="12" width="28" height="20" rx="2.5"/><path d="M18 40h12M24 32v8"/>',
+    'Growth transformation': '<path d="M9 33l9-11 7 7 14-17"/><path d="M31 12h8v8"/>',
+    'Products & platforms': '<rect x="9" y="9" width="13" height="13" rx="2"/><rect x="26" y="9" width="13" height="13" rx="2"/><rect x="9" y="26" width="13" height="13" rx="2"/><rect x="26" y="26" width="13" height="13" rx="2"/>',
+    'EVOQ': '<rect x="9" y="9" width="13" height="13" rx="2"/><rect x="26" y="9" width="13" height="13" rx="2"/><rect x="9" y="26" width="13" height="13" rx="2"/><rect x="26" y="26" width="13" height="13" rx="2"/>',
+    'Blogs': '<path d="M14 8h14l6 6v22a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2z"/><path d="M28 8v6h6M17 24h14M17 30h14"/>',
+    'Case studies': '<path d="M14 8h14l6 6v22a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2z"/><path d="M28 8v6h6M18 26l4 4 8-9"/>',
+    'Whitepapers': '<path d="M14 8h14l6 6v22a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2z"/><path d="M28 8v6h6M17 22h14M17 28h9"/>',
+    'Featured projects': '<path d="M24 6l4.6 12.6L42 21l-9 9 2.3 13-11.3-6.5L12.7 43 15 30l-9-9 13.4-2.4L24 6z"/>',
+    'About': '<rect x="12" y="10" width="24" height="28" rx="2"/><path d="M18 18h4M26 18h4M18 26h4M26 26h4M20 38v-6h8v6"/>',
+    'Our approach': '<circle cx="24" cy="24" r="13"/><circle cx="24" cy="24" r="7"/><circle cx="24" cy="24" r="1.6" fill="currentColor" stroke="none"/>',
+    'Clients': '<circle cx="18" cy="18" r="5"/><circle cx="32" cy="20" r="4"/><path d="M9 38c1-6 5-10 9-10s8 4 9 10M27 38c1-5 4-9 8-9 3 0 6 2 7 6"/>',
+    'Careers': '<rect x="8" y="16" width="32" height="20" rx="3"/><path d="M17 16v-4a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v4"/><path d="M8 25h32"/>'
+  };
+  var ICON_DEFAULT = '<circle cx="24" cy="24" r="4" fill="currentColor" stroke="none"/>';
+  // ---------- Footer ----------
+  var FOOTER_COLS = [
+    { title: 'Services', links: [
+      { label: 'AI transformation', href: 'ai-transformation.html' },
+      { label: 'Digital engineering', href: 'digital-engineering.html' },
+      { label: 'Business transformation', href: 'business-transformation.html' },
+      { label: 'Digital experience', href: 'digital-experience.html' },
+      { label: 'Growth transformation', href: 'growth-transformation.html' }
+    ]},
+    { title: 'Products & Platforms', links: [
+      { label: 'EVOQ', href: 'evoq.html' }
+    ]},
+    { title: 'Insights', links: [
+      { label: 'Blogs', href: '#' },
+      { label: 'Case studies', href: '#' },
+      { label: 'Whitepapers', href: '#' },
+      { label: 'Featured projects', href: '#' }
+    ]},
+    { title: 'Company', links: [
+      { label: 'About', href: '#' },
+      { label: 'Our approach', href: '#' },
+      { label: 'Clients', href: '#' },
+      { label: 'Careers', href: '#' }
+    ]},
+    { title: 'Connect', links: [
+      { label: "Let's talk", href: 'index.html#contact' },
+      { label: 'Contact us', href: 'index.html#contact' }
+    ]}
+  ];
+  var footerCols = document.getElementById('footerCols');
+  FOOTER_COLS.forEach(function (col) {
+    var wrap = document.createElement('div');
+    var title = document.createElement('div');
+    title.className = 'sdl-footer-col-title';
+    title.textContent = col.title;
+    var list = document.createElement('ul');
+    list.className = 'sdl-footer-links';
+    col.links.forEach(function (l) {
+      var li = document.createElement('li');
+      var a = document.createElement('a');
+      a.href = l.href;
+      a.textContent = l.label;
+      li.appendChild(a);
+      list.appendChild(li);
+    });
+    wrap.appendChild(title);
+    wrap.appendChild(list);
+    footerCols.appendChild(wrap);
+  });
+
+  document.getElementById('footerYear').textContent = '© ' + new Date().getFullYear() + ' Social DNA Labs';
+
+  // ---------- Desktop nav + mega menu ----------
+  var desktopNav = document.getElementById('desktopNav');
+  var megaPanel = document.getElementById('megaPanel');
+  var header = document.getElementById('sdlHeader');
+
+  var navButtons = [];
+
+  function closeMegaMenu() {
+    megaPanel.classList.remove('open');
+    megaPanel.innerHTML = '';
+    navButtons.forEach(function (b) { b.classList.remove('active'); });
+  }
+
+  function renderMegaMenu(menu, triggerBtn, triggerItem) {
+    if (!MEGA_MENU_ENABLED) return;
+    var inner = document.createElement('div');
+    inner.className = 'sdl-mega-panel-inner';
+    if (menu.items.length < 2) inner.style.gridTemplateColumns = '1fr';
+    menu.items.forEach(function (item) {
+      var wrap = document.createElement('div');
+      wrap.className = 'sdl-mega-item';
+      var icon = document.createElement('div');
+      icon.className = 'sdl-mega-item-icon';
+      icon.innerHTML = '<svg width="18" height="18" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">' + (ICONS[item.title] || ICON_DEFAULT) + '</svg>';
+      var textWrap = document.createElement('div');
+      var title = document.createElement('div');
+      title.className = 'sdl-mega-item-title';
+      title.textContent = item.title;
+      var desc = document.createElement('div');
+      desc.className = 'sdl-mega-item-desc';
+      desc.textContent = item.desc;
+      textWrap.appendChild(title);
+      textWrap.appendChild(desc);
+      wrap.appendChild(icon);
+      wrap.appendChild(textWrap);
+
+      if (item.href) {
+        var link = document.createElement('a');
+        link.href = item.href;
+        link.style.display = 'contents';
+        link.style.cursor = 'pointer';
+        link.style.color = 'inherit';
+        link.style.textDecoration = 'none';
+        link.appendChild(wrap);
+        inner.appendChild(link);
+      } else {
+        inner.appendChild(wrap);
+      }
+    });
+    if (menu.cta) {
+      var ctaWrap = document.createElement('div');
+      ctaWrap.className = 'sdl-mega-cta';
+      var ctaLink = document.createElement('a');
+      ctaLink.href = menu.cta.href;
+      ctaLink.textContent = menu.cta.label + ' →';
+      ctaLink.style.color = ACCENT;
+      ctaWrap.appendChild(ctaLink);
+      inner.appendChild(ctaWrap);
+    }
+    megaPanel.innerHTML = '';
+    megaPanel.appendChild(inner);
+    megaPanel.classList.add('open');
+
+    navButtons.forEach(function (b) { b.classList.toggle('active', b === triggerBtn); });
+
+    var headerRect = header.getBoundingClientRect();
+    var itemRect = triggerItem.getBoundingClientRect();
+    var panelWidth = megaPanel.offsetWidth;
+    var itemCenter = (itemRect.left - headerRect.left) + itemRect.width / 2;
+    var left = itemCenter - panelWidth / 2;
+    var maxLeft = header.offsetWidth - panelWidth - 24;
+    if (maxLeft < 24) maxLeft = 24;
+    left = Math.max(24, Math.min(left, maxLeft));
+    megaPanel.style.left = left + 'px';
+  }
+
+  MENUS.forEach(function (menu) {
+    var item = document.createElement('div');
+    item.className = 'sdl-nav-item';
+
+    if (menu.href && !menu.items.length) {
+      var link = document.createElement('a');
+      link.className = 'sdl-nav-btn';
+      link.href = menu.href;
+      link.textContent = menu.label;
+      item.appendChild(link);
+    } else {
+      var btn = document.createElement('button');
+      btn.className = 'sdl-nav-btn';
+      btn.innerHTML = menu.label + ' <span class="caret">▾</span>';
+      item.appendChild(btn);
+      item.addEventListener('mouseenter', function () { renderMegaMenu(menu, btn, item); });
+      navButtons.push(btn);
+    }
+
+    desktopNav.appendChild(item);
+  });
+
+  header.addEventListener('mouseleave', closeMegaMenu);
+
+  // ---------- Mobile nav ----------
+  var mobileToggle = document.getElementById('mobileToggle');
+  var mobilePanel = document.getElementById('mobilePanel');
+  var mobileOpenKey = null;
+
+  function renderMobilePanel() {
+    mobilePanel.innerHTML = '';
+    MENUS.forEach(function (menu) {
+      var itemEl = document.createElement('div');
+      itemEl.className = 'sdl-mobile-item';
+
+      if (menu.href && !menu.items.length) {
+        var link = document.createElement('a');
+        link.className = 'sdl-mobile-item-btn';
+        link.href = menu.href;
+        link.textContent = menu.label;
+        link.style.display = 'block';
+        link.style.cursor = 'pointer';
+        itemEl.appendChild(link);
+      } else {
+        var btn = document.createElement('button');
+        btn.className = 'sdl-mobile-item-btn';
+        btn.innerHTML = menu.label + ' <span class="caret">▾</span>';
+        btn.addEventListener('click', function () {
+          mobileOpenKey = mobileOpenKey === menu.key ? null : menu.key;
+          renderMobilePanel();
+        });
+        itemEl.appendChild(btn);
+
+        var sub = document.createElement('div');
+        sub.className = 'sdl-mobile-sub' + (mobileOpenKey === menu.key ? ' open' : '');
+        menu.items.forEach(function (subItem) {
+          var subWrap = document.createElement('div');
+          var t = document.createElement('div');
+          t.className = 'sdl-mobile-sub-title';
+          t.textContent = subItem.title;
+          var d = document.createElement('div');
+          d.className = 'sdl-mobile-sub-desc';
+          d.textContent = subItem.desc;
+          subWrap.appendChild(t);
+          subWrap.appendChild(d);
+          sub.appendChild(subWrap);
+        });
+        if (menu.cta) {
+          var ctaLink = document.createElement('a');
+          ctaLink.href = menu.cta.href;
+          ctaLink.textContent = menu.cta.label + ' →';
+          sub.appendChild(ctaLink);
+        }
+        itemEl.appendChild(sub);
+      }
+      mobilePanel.appendChild(itemEl);
+    });
+
+    var talkLink = document.createElement('a');
+    talkLink.href = 'index.html#contact';
+    talkLink.className = 'sdl-mobile-cta';
+    talkLink.textContent = "Let's talk →";
+    mobilePanel.appendChild(talkLink);
+  }
+  renderMobilePanel();
+
+  mobileToggle.addEventListener('click', function () {
+    mobilePanel.classList.toggle('open');
+  });
+
+  // ---------- EVOQ product explorer ----------
+  var EVOQ_CATEGORY_COLORS = { Growth: '#3E5FE0', Operations: '#2B8FDB', People: '#C9941F' };
+  var EVOQ_CATEGORY_SOFT = { Growth: 'rgba(62,95,224,0.14)', Operations: 'rgba(43,143,219,0.14)', People: 'rgba(201,148,31,0.14)' };
+  // per-product accent — each product gets its own brand color for the
+  // image gradient, pill and hover fill, rather than sharing one color
+  // per category
+  var EVOQ_PRODUCT_COLORS = {
+    CRM: '#2554EB', Campaigns: '#6D4FEB', ServiceOps: '#F5A123', Desk: '#0E8C82',
+    Projects: '#6D4FEB', Sync: '#0E9F6E', HRMS: '#1B7A4D', Skillberry: '#E94E77',
+    Inventory: '#0E8C9E', Billing: '#7C6EF0', Booking: '#EA580C', Loyalty: '#DB2777',
+    Surveys: '#0D9488'
+  };
+  var EVOQ_CATEGORY_ICONS = {
+    Growth: '<path d="M3 17l5-6 4 4 8-9"/><path d="M16 6h4v4"/>',
+    Operations: '<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.5 4.5l2 2M17.5 17.5l2 2M19.5 4.5l-2 2M6.5 17.5l-2 2"/>',
+    People: '<circle cx="9" cy="8" r="3"/><path d="M3 20c.6-3.6 3-6 6-6s5.4 2.4 6 6"/><circle cx="17" cy="9" r="2.2"/><path d="M15.2 20c.4-2.4 1.6-4.2 3.2-4.2"/>'
+  };
+  var MK_CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg>';
+  function mkRows(n, widths) {
+    var out = '';
+    for (var i = 0; i < n; i++) {
+      out += '<div class="evoq-mk-row" style="margin-top:2.6cqw">' +
+        '<span class="evoq-mk-avatar"></span>' +
+        '<div class="evoq-mk-col" style="flex:1">' +
+        '<span class="evoq-mk-bar evoq-mk-bar--dark" style="width:' + widths[i][0] + '%"></span>' +
+        '<span class="evoq-mk-bar" style="width:' + widths[i][1] + '%"></span>' +
+        '</div></div>';
+    }
+    return out;
+  }
+
+  var EVOQ_PRODUCTS = [
+    { title: 'CRM', category: 'Growth', desc: 'Manage customer relationships, sales activities and opportunities in one place.',
+      icon: '<circle cx="9" cy="8" r="3"/><path d="M3 20c.6-3.6 3-6 6-6s5.4 2.4 6 6"/><circle cx="17" cy="9" r="2.2"/><path d="M15.2 20c.4-2.4 1.6-4.2 3.2-4.2"/>',
+      mock:
+        '<div class="evoq-mk-panel" style="left:6%;top:8%;width:62%">' +
+          '<div class="evoq-mk-head"><span class="evoq-mk-title">Contacts</span></div>' +
+          mkRows(3, [[62, 40], [48, 55], [70, 34]]) +
+        '</div>' +
+        '<div class="evoq-mk-panel" style="right:5%;bottom:9%;width:56%">' +
+          '<span class="evoq-mk-label">Deal value</span>' +
+          '<div class="evoq-mk-strong" style="margin-top:1cqw">$24,500</div>' +
+          '<div class="evoq-mk-row" style="margin-top:2.6cqw"><span class="evoq-mk-chip">Negotiation</span><span class="evoq-mk-chip evoq-mk-chip--grey">Q3</span></div>' +
+        '</div>' },
+
+    { title: 'Campaigns', category: 'Growth', desc: 'Plan and manage campaigns to engage customers and support growth.',
+      icon: '<path d="M3 10v4h3l10 5V5L6 10H3z"/><path d="M16.5 8.5a4 4 0 0 1 0 7"/>',
+      mock:
+        '<div class="evoq-mk-panel" style="left:6%;top:8%;width:64%">' +
+          '<div class="evoq-mk-head"><span class="evoq-mk-sq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10v4h3l10 5V5L6 10H3z"/></svg></span><span class="evoq-mk-title">Spring launch</span></div>' +
+          '<span class="evoq-mk-bar evoq-mk-bar--tint" style="width:100%;height:8cqw;border-radius:2cqw;display:block"></span>' +
+          '<div class="evoq-mk-col" style="margin-top:2.6cqw">' +
+            '<span class="evoq-mk-bar" style="width:92%"></span>' +
+            '<span class="evoq-mk-bar" style="width:74%"></span>' +
+            '<span class="evoq-mk-bar" style="width:58%"></span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="evoq-mk-panel" style="right:5%;bottom:10%;width:50%">' +
+          '<span class="evoq-mk-label">Open rate</span>' +
+          '<div class="evoq-mk-strong" style="margin-top:1cqw">62%</div>' +
+          '<div class="evoq-mk-row" style="margin-top:2.6cqw;align-items:flex-end;height:11cqw;gap:2.2cqw">' +
+            '<span style="width:14%;height:42%;border-radius:0.8cqw;background:var(--cat-soft)"></span>' +
+            '<span style="width:14%;height:64%;border-radius:0.8cqw;background:var(--cat-soft)"></span>' +
+            '<span style="width:14%;height:82%;border-radius:0.8cqw;background:var(--cat-soft)"></span>' +
+            '<span style="width:14%;height:100%;border-radius:0.8cqw;background:var(--cat-color)"></span>' +
+          '</div>' +
+        '</div>' },
+
+    { title: 'ServiceOps', category: 'Operations', desc: 'Manage service requests, jobs, scheduling and field operations.',
+      icon: '<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.5 4.5l2 2M17.5 17.5l2 2M19.5 4.5l-2 2M6.5 17.5l-2 2"/>',
+      mock:
+        '<div class="evoq-mk-panel" style="left:6%;top:8%;width:63%">' +
+          '<div class="evoq-mk-head"><span class="evoq-mk-title">Today\'s jobs</span></div>' +
+          '<div class="evoq-mk-col">' +
+            '<div class="evoq-mk-tile"><div class="evoq-mk-row"><span class="evoq-mk-chip">09:00</span><span class="evoq-mk-bar evoq-mk-bar--dark" style="flex:1"></span></div></div>' +
+            '<div class="evoq-mk-tile"><div class="evoq-mk-row"><span class="evoq-mk-chip evoq-mk-chip--grey">11:30</span><span class="evoq-mk-bar" style="flex:1"></span></div></div>' +
+            '<div class="evoq-mk-tile"><div class="evoq-mk-row"><span class="evoq-mk-chip evoq-mk-chip--grey">14:00</span><span class="evoq-mk-bar" style="flex:1"></span></div></div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="evoq-mk-panel" style="right:5%;bottom:11%;width:54%">' +
+          '<div class="evoq-mk-row"><span class="evoq-mk-check">' + MK_CHECK + '</span>' +
+            '<div class="evoq-mk-col" style="flex:1"><span class="evoq-mk-title">Job #482</span><span class="evoq-mk-label">Completed on site</span></div>' +
+          '</div>' +
+        '</div>' },
+
+    { title: 'Desk', category: 'Operations', desc: 'Manage customer support requests and help teams resolve issues.',
+      icon: '<path d="M4 13a8 8 0 0 1 16 0"/><rect x="2.5" y="13" width="4" height="6" rx="1.5"/><rect x="17.5" y="13" width="4" height="6" rx="1.5"/><path d="M20 19a4 4 0 0 1-4 4h-2"/>',
+      mock:
+        '<div class="evoq-mk-panel" style="left:6%;top:8%;width:62%">' +
+          '<div class="evoq-mk-head"><span class="evoq-mk-title">Open tickets</span><span class="evoq-mk-chip" style="margin-left:auto">12</span></div>' +
+          mkRows(3, [[55, 44], [68, 38], [46, 60]]) +
+        '</div>' +
+        '<div class="evoq-mk-panel" style="right:5%;bottom:10%;width:56%">' +
+          '<div class="evoq-mk-row"><span class="evoq-mk-check">' + MK_CHECK + '</span><span class="evoq-mk-title">Resolved</span></div>' +
+          '<div class="evoq-mk-line"></div>' +
+          '<div class="evoq-mk-row"><span class="evoq-mk-label">First response</span><span class="evoq-mk-chip evoq-mk-chip--green" style="margin-left:auto">6 min</span></div>' +
+        '</div>' },
+
+    { title: 'Projects', category: 'Operations', desc: 'Plan, manage and track projects, tasks and delivery.',
+      icon: '<rect x="3" y="4" width="5.5" height="16" rx="1.5"/><rect x="10.2" y="4" width="5.5" height="10" rx="1.5"/><rect x="17.5" y="4" width="3.5" height="7" rx="1.5"/>',
+      mock:
+        '<div class="evoq-mk-panel" style="left:5%;top:9%;right:5%">' +
+          '<div class="evoq-mk-head"><span class="evoq-mk-title">Delivery board</span></div>' +
+          '<div class="evoq-mk-row" style="align-items:stretch">' +
+            '<div class="evoq-mk-col" style="flex:1"><span class="evoq-mk-label">To do</span>' +
+              '<div class="evoq-mk-tile"><span class="evoq-mk-bar evoq-mk-bar--dark" style="width:80%"></span><span class="evoq-mk-bar" style="width:55%"></span></div>' +
+              '<div class="evoq-mk-tile"><span class="evoq-mk-bar" style="width:65%"></span></div>' +
+            '</div>' +
+            '<div class="evoq-mk-col" style="flex:1"><span class="evoq-mk-label">Doing</span>' +
+              '<div class="evoq-mk-tile"><span class="evoq-mk-bar evoq-mk-bar--tint" style="width:88%"></span><span class="evoq-mk-bar" style="width:50%"></span></div>' +
+            '</div>' +
+            '<div class="evoq-mk-col" style="flex:1"><span class="evoq-mk-label">Done</span>' +
+              '<div class="evoq-mk-tile"><span class="evoq-mk-bar" style="width:70%"></span></div>' +
+              '<div class="evoq-mk-tile"><span class="evoq-mk-bar" style="width:84%"></span></div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="evoq-mk-panel" style="right:7%;bottom:8%;width:46%">' +
+          '<div class="evoq-mk-row"><span class="evoq-mk-label">Sprint progress</span><span class="evoq-mk-chip evoq-mk-chip--green" style="margin-left:auto">78%</span></div>' +
+          '<div class="evoq-mk-bar" style="width:100%;margin-top:2cqw;position:relative;overflow:hidden">' +
+            '<span style="position:absolute;left:0;top:0;bottom:0;width:78%;border-radius:999px;background:var(--cat-color)"></span>' +
+          '</div>' +
+        '</div>' },
+
+    { title: 'Sync', category: 'Operations', desc: 'Keep business data synchronized across the systems you use.',
+      icon: '<path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3"/><path d="M16 3.7v4h-4M8 20.3v-4h4"/>',
+      mock:
+        '<div class="evoq-mk-panel" style="left:5%;top:16%;width:41%">' +
+          '<span class="evoq-mk-label">Source</span>' +
+          '<div class="evoq-mk-row" style="margin-top:2cqw"><span class="evoq-mk-sq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="6" rx="1.5"/><rect x="4" y="14" width="16" height="6" rx="1.5"/></svg></span><span class="evoq-mk-title">ERP</span></div>' +
+          '<div class="evoq-mk-col" style="margin-top:2.6cqw"><span class="evoq-mk-bar" style="width:88%"></span><span class="evoq-mk-bar" style="width:64%"></span><span class="evoq-mk-bar" style="width:76%"></span></div>' +
+        '</div>' +
+        '<div class="evoq-mk-panel" style="right:5%;top:16%;width:41%">' +
+          '<span class="evoq-mk-label">Target</span>' +
+          '<div class="evoq-mk-row" style="margin-top:2cqw"><span class="evoq-mk-sq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg></span><span class="evoq-mk-title">EVOQ</span></div>' +
+          '<div class="evoq-mk-col" style="margin-top:2.6cqw"><span class="evoq-mk-bar evoq-mk-bar--tint" style="width:88%"></span><span class="evoq-mk-bar evoq-mk-bar--tint" style="width:64%"></span><span class="evoq-mk-bar evoq-mk-bar--tint" style="width:76%"></span></div>' +
+        '</div>' +
+        '<div class="evoq-mk-panel" style="left:50%;top:50%;transform:translate(-50%,-50%);padding:2.6cqw 3cqw">' +
+          '<div class="evoq-mk-row"><span class="evoq-mk-sq" style="background:var(--cat-color)"><svg viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3"/><path d="M16 3.7v4h-4M8 20.3v-4h4"/></svg></span><span class="evoq-mk-label">In sync</span></div>' +
+        '</div>' },
+
+    { title: 'Inventory', category: 'Operations', desc: 'Manage inventory, stock movements and product operations.',
+      icon: '<path d="M12 3 4 7l8 4 8-4z"/><path d="M4 7v10l8 4 8-4V7"/><path d="M12 11v10"/>',
+      mock:
+        '<div class="evoq-mk-panel" style="left:6%;top:8%;width:64%">' +
+          '<div class="evoq-mk-head"><span class="evoq-mk-title">Stock levels</span></div>' +
+          '<div class="evoq-mk-col">' +
+            '<div class="evoq-mk-row"><span class="evoq-mk-sq"></span><span class="evoq-mk-bar evoq-mk-bar--dark" style="flex:1"></span><span class="evoq-mk-chip evoq-mk-chip--green">248</span></div>' +
+            '<div class="evoq-mk-row"><span class="evoq-mk-sq"></span><span class="evoq-mk-bar" style="flex:1"></span><span class="evoq-mk-chip evoq-mk-chip--grey">96</span></div>' +
+            '<div class="evoq-mk-row"><span class="evoq-mk-sq"></span><span class="evoq-mk-bar" style="flex:1"></span><span class="evoq-mk-chip evoq-mk-chip--grey">64</span></div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="evoq-mk-panel" style="right:5%;bottom:10%;width:54%">' +
+          '<div class="evoq-mk-row"><span class="evoq-mk-sq" style="background:rgba(244,196,48,0.18)"><svg viewBox="0 0 24 24" fill="none" stroke="#C9941F" stroke-width="2.4" stroke-linecap="round"><path d="M12 8v5M12 16.5v.5"/><path d="M12 3 2 20h20z"/></svg></span>' +
+            '<div class="evoq-mk-col" style="flex:1"><span class="evoq-mk-title">Low stock</span><span class="evoq-mk-label">Reorder 3 items</span></div>' +
+          '</div>' +
+        '</div>' },
+
+    { title: 'Billing', category: 'Operations', desc: 'Manage billing, invoices and financial workflows.',
+      icon: '<path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6M9 16h3"/>',
+      mock:
+        '<div class="evoq-mk-panel" style="left:6%;top:8%;width:62%">' +
+          '<div class="evoq-mk-head"><span class="evoq-mk-title">Invoice #2041</span></div>' +
+          '<div class="evoq-mk-col">' +
+            '<div class="evoq-mk-row"><span class="evoq-mk-bar" style="flex:1"></span><span class="evoq-mk-bar evoq-mk-bar--dark" style="width:18%"></span></div>' +
+            '<div class="evoq-mk-row"><span class="evoq-mk-bar" style="flex:1"></span><span class="evoq-mk-bar evoq-mk-bar--dark" style="width:18%"></span></div>' +
+            '<div class="evoq-mk-row"><span class="evoq-mk-bar" style="flex:1"></span><span class="evoq-mk-bar evoq-mk-bar--dark" style="width:18%"></span></div>' +
+          '</div>' +
+          '<div class="evoq-mk-line"></div>' +
+          '<div class="evoq-mk-row"><span class="evoq-mk-label">Total</span><span class="evoq-mk-strong" style="margin-left:auto;font-size:4cqw">$8,400</span></div>' +
+        '</div>' +
+        '<div class="evoq-mk-panel" style="right:5%;bottom:11%;width:50%">' +
+          '<div class="evoq-mk-row"><span class="evoq-mk-check">' + MK_CHECK + '</span>' +
+            '<div class="evoq-mk-col" style="flex:1"><span class="evoq-mk-title">Paid</span><span class="evoq-mk-label">Auto-reconciled</span></div>' +
+          '</div>' +
+        '</div>' },
+
+    { title: 'HRMS', category: 'People', desc: 'Manage employee information and core HR processes.',
+      icon: '<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2.2"/><path d="M5.5 16c.5-1.8 2-3 3.5-3s3 1.2 3.5 3"/><path d="M14 9h5M14 13h5"/>',
+      mock:
+        '<div class="evoq-mk-panel" style="left:6%;top:8%;width:62%">' +
+          '<div class="evoq-mk-row"><span class="evoq-mk-avatar" style="width:9cqw;height:9cqw"></span>' +
+            '<div class="evoq-mk-col" style="flex:1"><span class="evoq-mk-bar evoq-mk-bar--dark" style="width:70%"></span><span class="evoq-mk-bar" style="width:48%"></span></div>' +
+          '</div>' +
+          '<div class="evoq-mk-line"></div>' +
+          '<div class="evoq-mk-row" style="align-items:stretch">' +
+            '<div class="evoq-mk-tile" style="flex:1"><span class="evoq-mk-label">Leave</span><span class="evoq-mk-title">12d</span></div>' +
+            '<div class="evoq-mk-tile" style="flex:1"><span class="evoq-mk-label">Tenure</span><span class="evoq-mk-title">3y</span></div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="evoq-mk-panel" style="right:5%;bottom:10%;width:54%">' +
+          '<div class="evoq-mk-row"><span class="evoq-mk-check">' + MK_CHECK + '</span>' +
+            '<div class="evoq-mk-col" style="flex:1"><span class="evoq-mk-title">Leave approved</span><span class="evoq-mk-label">2 days · May</span></div>' +
+          '</div>' +
+        '</div>' },
+
+    { title: 'Skillberry', category: 'People', desc: 'Manage learning, training and employee development.',
+      icon: '<path d="M12 4 2 9l10 5 10-5-10-5z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/>',
+      mock:
+        '<div class="evoq-mk-panel" style="left:6%;top:8%;width:63%">' +
+          '<span class="evoq-mk-bar evoq-mk-bar--tint" style="width:100%;height:9cqw;border-radius:2cqw;display:block"></span>' +
+          '<div class="evoq-mk-title" style="margin-top:2.6cqw">Onboarding path</div>' +
+          '<div class="evoq-mk-row" style="margin-top:2cqw"><span class="evoq-mk-label">6 of 8 modules</span></div>' +
+          '<div class="evoq-mk-bar" style="width:100%;margin-top:2cqw;position:relative;overflow:hidden">' +
+            '<span style="position:absolute;left:0;top:0;bottom:0;width:75%;border-radius:999px;background:var(--cat-color)"></span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="evoq-mk-panel" style="right:5%;bottom:10%;width:52%">' +
+          '<div class="evoq-mk-row"><span class="evoq-mk-sq" style="background:var(--cat-color)"><svg viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5"/><path d="M8.5 13.5 7 21l5-2.5L17 21l-1.5-7.5"/></svg></span>' +
+            '<div class="evoq-mk-col" style="flex:1"><span class="evoq-mk-title">Certified</span><span class="evoq-mk-label">Skill verified</span></div>' +
+          '</div>' +
+        '</div>' },
+
+    { title: 'Booking', category: 'Operations', desc: 'Manage appointments, reservations and scheduling for your business.',
+      icon: '<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/><path d="M9 14l2 2 4-4.5"/>',
+      mock:
+        '<div class="evoq-mk-panel" style="left:6%;top:8%;width:60%">' +
+          '<div class="evoq-mk-head"><span class="evoq-mk-title">July 12</span></div>' +
+          '<div class="evoq-mk-row"><span class="evoq-mk-chip">9:00am</span><span class="evoq-mk-chip evoq-mk-chip--grey">9:30am</span></div>' +
+          '<div class="evoq-mk-row" style="margin-top:2cqw"><span class="evoq-mk-chip evoq-mk-chip--grey">10:00am</span><span class="evoq-mk-chip">10:30am</span></div>' +
+        '</div>' +
+        '<div class="evoq-mk-panel" style="right:5%;bottom:10%;width:54%">' +
+          '<div class="evoq-mk-row"><span class="evoq-mk-check">' + MK_CHECK + '</span>' +
+            '<div class="evoq-mk-col" style="flex:1"><span class="evoq-mk-title">Booked</span><span class="evoq-mk-label">Confirmation sent</span></div>' +
+          '</div>' +
+        '</div>' },
+
+    { title: 'Loyalty', category: 'Growth', desc: 'Reward repeat customers and grow retention with loyalty programs.',
+      icon: '<path d="M12 2.5l2.9 6 6.6.7-4.9 4.5 1.3 6.5L12 16.9 6.1 20.2l1.3-6.5L2.5 9.2l6.6-.7z"/>',
+      mock:
+        '<div class="evoq-mk-panel" style="left:6%;top:10%;width:62%">' +
+          '<span class="evoq-mk-label">Reward points</span>' +
+          '<div class="evoq-mk-strong" style="margin-top:1cqw">2,480</div>' +
+          '<div class="evoq-mk-row" style="margin-top:2.4cqw"><span class="evoq-mk-chip">Gold tier</span></div>' +
+        '</div>' +
+        '<div class="evoq-mk-panel" style="right:5%;bottom:10%;width:54%">' +
+          '<div class="evoq-mk-row"><span class="evoq-mk-sq" style="background:var(--cat-color)"><svg viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l2.9 6 6.6.7-4.9 4.5 1.3 6.5L12 16.9 6.1 20.2l1.3-6.5L2.5 9.2l6.6-.7z"/></svg></span>' +
+            '<div class="evoq-mk-col" style="flex:1"><span class="evoq-mk-title">Reward earned</span><span class="evoq-mk-label">Free item unlocked</span></div>' +
+          '</div>' +
+        '</div>' },
+
+    { title: 'Surveys', category: 'Growth', desc: 'Collect feedback and measure customer satisfaction with surveys.',
+      icon: '<path d="M4 5h16v11H8l-4 4z"/><path d="M8 9h5M8 12.5h8"/>',
+      mock:
+        '<div class="evoq-mk-panel" style="left:6%;top:10%;width:60%">' +
+          '<span class="evoq-mk-label">Average rating</span>' +
+          '<div class="evoq-mk-strong" style="margin-top:1cqw">4.8 / 5</div>' +
+          '<div class="evoq-mk-row" style="margin-top:2.4cqw"><span class="evoq-mk-chip evoq-mk-chip--green">128 responses</span></div>' +
+        '</div>' +
+        '<div class="evoq-mk-panel" style="right:5%;bottom:10%;width:52%">' +
+          '<div class="evoq-mk-head"><span class="evoq-mk-title">NPS</span></div>' +
+          mkRows(2, [[70, 40], [55, 60]]) +
+        '</div>' }
+  ];
+  var EVOQ_TAB_LIST = ['All', 'Growth', 'Operations', 'People'];
+  var evoqActiveCategory = 'All';
+  var evoqSearchTerm = '';
+
+  var evoqFilterTabsEl = document.getElementById('evoqFilterTabs');
+  var evoqResultsEl = document.getElementById('evoqProductResults');
+  var evoqSearchInput = document.getElementById('evoqSearchInput');
+
+  function renderEvoqProducts() {
+    var term = evoqSearchTerm.trim().toLowerCase();
+    evoqResultsEl.innerHTML = '';
+
+    var items = EVOQ_PRODUCTS.filter(function (p) {
+      if (evoqActiveCategory !== 'All' && p.category !== evoqActiveCategory) return false;
+      if (!term) return true;
+      return p.title.toLowerCase().indexOf(term) !== -1 || p.desc.toLowerCase().indexOf(term) !== -1;
+    });
+    var totalMatches = items.length;
+
+    if (totalMatches) {
+      var wrap = document.createElement('div');
+      wrap.className = 'evoq-product-row-wrap';
+
+      var row = document.createElement('div');
+      row.className = 'evoq-product-row';
+      items.forEach(function (p) {
+        var cat = p.category;
+        var color = EVOQ_PRODUCT_COLORS[p.title] || EVOQ_CATEGORY_COLORS[cat];
+        var card = document.createElement('a');
+        card.className = 'evoq-product-card';
+        card.href = '#';
+        card.style.setProperty('--cat-color', color);
+        card.style.setProperty('--cat-soft', color + '26');
+        card.innerHTML =
+          '<span class="evoq-product-card-image"><span class="evoq-mk" aria-hidden="true">' + p.mock + '</span></span>' +
+          '<div class="evoq-product-card-body">' +
+          '<span class="evoq-product-card-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+          'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + EVOQ_CATEGORY_ICONS[cat] + '</svg><span></span></span>' +
+          '<div class="evoq-product-card-title"></div><p class="evoq-product-card-desc"></p>' +
+          '</div>';
+        card.querySelector('.evoq-product-card-pill span').textContent = cat;
+        card.querySelector('.evoq-product-card-title').textContent = p.title;
+        card.querySelector('.evoq-product-card-desc').textContent = p.desc;
+        row.appendChild(card);
+      });
+      wrap.appendChild(row);
+
+      var prevBtn = document.createElement('button');
+      prevBtn.type = 'button';
+      prevBtn.className = 'evoq-product-row-arrow evoq-product-row-arrow--prev';
+      prevBtn.setAttribute('aria-label', 'Scroll products left');
+      prevBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" ' +
+        'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>';
+
+      var nextBtn = document.createElement('button');
+      nextBtn.type = 'button';
+      nextBtn.className = 'evoq-product-row-arrow evoq-product-row-arrow--next';
+      nextBtn.setAttribute('aria-label', 'Scroll products right');
+      nextBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" ' +
+        'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
+
+      function updateArrows() {
+        var maxScroll = row.scrollWidth - row.clientWidth;
+        prevBtn.disabled = row.scrollLeft <= 4;
+        nextBtn.disabled = row.scrollLeft >= maxScroll - 4;
+      }
+      prevBtn.addEventListener('click', function () {
+        row.scrollBy({ left: -(row.clientWidth * 0.85), behavior: 'smooth' });
+      });
+      nextBtn.addEventListener('click', function () {
+        row.scrollBy({ left: row.clientWidth * 0.85, behavior: 'smooth' });
+      });
+      row.addEventListener('scroll', updateArrows);
+
+      wrap.appendChild(prevBtn);
+      wrap.appendChild(nextBtn);
+      evoqResultsEl.appendChild(wrap);
+      updateArrows();
+    }
+
+    if (!totalMatches) {
+      var empty = document.createElement('p');
+      empty.className = 'evoq-no-results';
+      empty.textContent = 'No products match your search.';
+      evoqResultsEl.appendChild(empty);
+    }
+  }
+
+  EVOQ_TAB_LIST.forEach(function (cat) {
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'evoq-filter-tab' + (cat === 'All' ? ' is-active' : '');
+    btn.setAttribute('role', 'tab');
+    btn.setAttribute('aria-selected', cat === 'All' ? 'true' : 'false');
+    btn.textContent = cat;
+    btn.addEventListener('click', function () {
+      evoqActiveCategory = cat;
+      Array.prototype.forEach.call(evoqFilterTabsEl.children, function (b) {
+        b.classList.toggle('is-active', b === btn);
+        b.setAttribute('aria-selected', b === btn ? 'true' : 'false');
+      });
+      renderEvoqProducts();
+    });
+    evoqFilterTabsEl.appendChild(btn);
+  });
+
+  evoqSearchInput.addEventListener('input', function () {
+    evoqSearchTerm = evoqSearchInput.value;
+    renderEvoqProducts();
+  });
+
+  renderEvoqProducts();
+
+  // ---------- Industries ----------
+  var EVOQ_INDUSTRIES = [
+    { name: 'Manufacturing', photo: 'https://images.pexels.com/photos/37668543/pexels-photo-37668543.jpeg?cs=tinysrgb&w=500&h=375&fit=crop' },
+    { name: 'Distribution', photo: 'https://images.pexels.com/photos/4487383/pexels-photo-4487383.jpeg?cs=tinysrgb&w=500&h=375&fit=crop' },
+    { name: 'Field Service', photo: 'https://images.pexels.com/photos/17842832/pexels-photo-17842832.jpeg?cs=tinysrgb&w=500&h=375&fit=crop' },
+    { name: 'Professional Services', photo: 'https://images.pexels.com/photos/36765718/pexels-photo-36765718.jpeg?cs=tinysrgb&w=500&h=375&fit=crop' },
+    { name: 'Retail', photo: 'https://images.pexels.com/photos/3423860/pexels-photo-3423860.jpeg?cs=tinysrgb&w=500&h=375&fit=crop' },
+    { name: 'Healthcare', photo: 'https://images.pexels.com/photos/31499386/pexels-photo-31499386.jpeg?cs=tinysrgb&w=500&h=375&fit=crop' },
+    { name: 'Construction', photo: 'https://images.pexels.com/photos/6082416/pexels-photo-6082416.jpeg?cs=tinysrgb&w=500&h=375&fit=crop' },
+    { name: 'Logistics', photo: 'https://images.pexels.com/photos/35627339/pexels-photo-35627339.jpeg?cs=tinysrgb&w=500&h=375&fit=crop' },
+    { name: 'Energy & Engineering', photo: 'https://images.pexels.com/photos/2760241/pexels-photo-2760241.jpeg?cs=tinysrgb&w=500&h=375&fit=crop' },
+    { name: 'Technology', photo: 'https://images.pexels.com/photos/37730212/pexels-photo-37730212.jpeg?cs=tinysrgb&w=500&h=375&fit=crop' }
+  ];
+  var evoqIndustriesEl = document.getElementById('evoqIndustries');
+  if (evoqIndustriesEl) {
+    EVOQ_INDUSTRIES.forEach(function (ind) {
+      var card = document.createElement('div');
+      card.className = 'evoq-industry-card';
+      card.innerHTML =
+        '<div class="evoq-industry-photo">' +
+        '<img src="' + ind.photo + '" alt="" loading="lazy">' +
+        '</div>' +
+        '<div class="evoq-industry-label"></div>';
+      card.querySelector('.evoq-industry-label').textContent = ind.name;
+      evoqIndustriesEl.appendChild(card);
+    });
+
+    var indPrevBtn = document.getElementById('evoqIndustriesPrev');
+    var indNextBtn = document.getElementById('evoqIndustriesNext');
+    function updateIndustryArrows() {
+      var maxScroll = evoqIndustriesEl.scrollWidth - evoqIndustriesEl.clientWidth;
+      indPrevBtn.disabled = evoqIndustriesEl.scrollLeft <= 4;
+      indNextBtn.disabled = evoqIndustriesEl.scrollLeft >= maxScroll - 4;
+    }
+    indPrevBtn.addEventListener('click', function () {
+      evoqIndustriesEl.scrollBy({ left: -(evoqIndustriesEl.clientWidth * 0.85), behavior: 'smooth' });
+    });
+    indNextBtn.addEventListener('click', function () {
+      evoqIndustriesEl.scrollBy({ left: evoqIndustriesEl.clientWidth * 0.85, behavior: 'smooth' });
+    });
+    evoqIndustriesEl.addEventListener('scroll', updateIndustryArrows);
+    updateIndustryArrows();
+  }
+
+  // ---------- Integrations visual (real partner-app logos) ----------
+  var EVOQ_INTEGRATION_BADGES = [
+    { name: 'QuickBooks', slug: 'quickbooks', left: 30, top: 15 },
+    { name: 'SAP', slug: 'sap', left: 70, top: 15 },
+    { name: 'Mailchimp', slug: 'mailchimp', left: 12, top: 38 },
+    { name: 'Stripe', slug: 'stripe', left: 88, top: 40 },
+    { name: 'Shopify', slug: 'shopify', left: 30, top: 58 },
+    { name: 'WhatsApp Business', slug: 'whatsapp', left: 70, top: 60, large: true }
+  ];
+  var evoqBadgesEl = document.getElementById('evoqIntegrationBadges');
+  if (evoqBadgesEl) {
+    EVOQ_INTEGRATION_BADGES.forEach(function (b) {
+      var badge = document.createElement('div');
+      badge.className = 'evoq-integration-badge' + (b.large ? ' evoq-integration-badge--lg' : '');
+      badge.style.left = b.left + '%';
+      badge.style.top = b.top + '%';
+      badge.title = b.name;
+      var img = document.createElement('img');
+      img.src = 'https://cdn.simpleicons.org/' + b.slug;
+      img.alt = b.name;
+      img.loading = 'lazy';
+      badge.appendChild(img);
+      evoqBadgesEl.appendChild(badge);
+    });
+  }
+
+  // ---------- Scroll-reveal motion ----------
+  (function initScrollReveal() {
+    var targets = document.querySelectorAll('.reveal, .reveal-group');
+    if (!targets.length) return;
+    if (!('IntersectionObserver' in window)) {
+      targets.forEach(function (el) { el.classList.add('is-visible'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries, observer) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+    targets.forEach(function (el) { io.observe(el); });
+  })();
+
+})();
+</script>
+
+</body>
+</html>

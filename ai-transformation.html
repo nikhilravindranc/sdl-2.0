@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI transformation — Social DNA Labs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --accent: #2B49DB; --accent-hover: #1E35B8; --heading: #162833; --body-text: #46535F;
+    --success: #28C76F; --attention: #F4C430; --critical: #E64A3C;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #F6F8FC; overflow-x: hidden; font-family: 'Inter', sans-serif; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { color: var(--accent-hover); }
+
+  .sdl-header { position: sticky; top: 0; z-index: 50; background: #F6F8FC; border-bottom: 1px solid rgba(16,24,40,0.07); }
+  .sdl-header-inner { max-width: 1360px; margin: 0 auto; padding: 0 48px; height: 88px; display: flex; align-items: center; }
+  .sdl-logo { height: 38px; width: auto; display: block; flex-shrink: 0; }
+
+  .sdl-header-left { display: flex; align-items: center; flex: 0 0 auto; }
+  .sdl-header-nav-wrap { flex: 1 1 auto; display: flex; align-items: center; justify-content: center; min-width: 0; }
+  .sdl-header-right { display: flex; align-items: center; gap: 32px; flex: 0 0 auto; }
+
+  .sdl-desktop-nav { display: flex; align-items: center; gap: 6px; }
+  .sdl-nav-item { position: relative; }
+  .sdl-nav-btn {
+    position: relative; display: flex; align-items: center; gap: 6px; background: none; border: none;
+    font-family: inherit; font-size: 15px; font-weight: 600; color: #162833;
+    cursor: pointer; padding: 12px 13px; border-radius: 8px; white-space: nowrap; flex-shrink: 0;
+  }
+  .sdl-nav-btn:hover { background: rgba(43,73,219,0.06); }
+  .sdl-nav-btn .caret { font-size: 10px; color: #8891A0; margin-top: 2px; transition: transform 0.15s ease; }
+  .sdl-nav-btn.active { color: var(--accent); }
+  .sdl-nav-btn.active .caret { color: var(--accent); transform: rotate(180deg); }
+  .sdl-nav-btn.active::after {
+    content: ''; position: absolute; left: 13px; right: 13px; bottom: 3px; height: 2px; border-radius: 2px;
+    background: linear-gradient(90deg, var(--accent), #6AA8FA);
+  }
+
+  .sdl-cta {
+    display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid var(--accent);
+    color: var(--accent); font-weight: 700; font-size: 14px; padding: 10px 22px;
+    border-radius: 999px; white-space: nowrap; flex-shrink: 0;
+  }
+  .sdl-cta:hover { background: rgba(43,73,219,0.06); color: var(--accent); }
+
+  .sdl-mobile-toggle {
+    display: none; align-items: center; justify-content: center; width: 40px; height: 40px;
+    background: none; border: none; cursor: pointer; flex-shrink: 0;
+  }
+
+  .sdl-mega-panel {
+    position: absolute; top: 100%; left: 48px; padding-top: 14px;
+    z-index: 100; display: none;
+  }
+  .sdl-mega-panel.open { display: block; }
+  .sdl-mega-panel-inner {
+    width: max-content; max-width: min(760px, calc(100vw - 96px)); padding: 30px 32px 24px;
+    display: grid; grid-template-columns: repeat(2, minmax(240px, 1fr));
+    column-gap: 36px; row-gap: 26px;
+    background: #FFFFFF; border-radius: 20px; border: 1px solid rgba(16,24,40,0.06);
+    box-shadow: 0 30px 60px rgba(16,24,40,0.16), 0 4px 14px rgba(16,24,40,0.06);
+    overflow: hidden;
+  }
+  .sdl-mega-item { display: flex; align-items: flex-start; gap: 14px; }
+  .sdl-mega-item-icon {
+    width: 36px; height: 36px; border-radius: 9px; background: rgba(43,73,219,0.08); color: var(--accent);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .sdl-mega-item-title { font-weight: 700; color: #162833; margin-bottom: 5px; font-size: 15px; }
+  .sdl-mega-item-desc { color: #46535F; font-size: 13px; line-height: 1.55; }
+  .sdl-mega-cta { grid-column: 1 / -1; border-top: 1px solid #EEF1F6; padding-top: 18px; }
+  .sdl-mega-cta a { color: var(--accent); font-weight: 700; font-size: 14px; display: inline-flex; align-items: center; gap: 6px; }
+
+  .sdl-mobile-panel {
+    display: none; background: #FFFFFF; border-top: 1px solid rgba(16,24,40,0.07);
+    padding: 8px 24px 24px; max-height: calc(100vh - 88px); overflow-y: auto;
+  }
+  .sdl-mobile-panel.open { display: block; }
+  .sdl-mobile-item { border-bottom: 1px solid #EEF1F6; }
+  .sdl-mobile-item-btn {
+    width: 100%; display: flex; align-items: center; justify-content: space-between;
+    background: none; border: none; font-family: inherit; font-size: 16px; font-weight: 700;
+    color: #162833; padding: 16px 4px; cursor: pointer;
+  }
+  .sdl-mobile-item-btn .caret { font-size: 12px; color: #8891A0; }
+  .sdl-mobile-sub { padding: 0 4px 18px; display: none; flex-direction: column; gap: 14px; }
+  .sdl-mobile-sub.open { display: flex; }
+  .sdl-mobile-sub-title { font-weight: 700; color: #162833; font-size: 14px; }
+  .sdl-mobile-sub-desc { color: #46535F; font-size: 13px; line-height: 1.5; margin-top: 2px; }
+  .sdl-mobile-sub a { color: var(--accent); font-weight: 700; font-size: 14px; }
+  .sdl-mobile-cta {
+    display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--accent);
+    color: #FFFFFF; font-weight: 700; font-size: 15px; padding: 14px; border-radius: 999px; margin-top: 20px;
+  }
+  .sdl-mobile-cta:hover { color: #FFFFFF; }
+
+  .sdl-hero {
+    max-width: 1360px; margin: 0 auto; padding: 84px 48px 56px;
+    display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px; align-items: center;
+  }
+  .sdl-hero-copy-wrap { max-width: 640px; }
+  .sdl-hero-copy {
+    font-family: 'Manrope', sans-serif;
+    font-size: clamp(40px, 4.6vw, 58px); line-height: 1.18; font-weight: 500;
+    letter-spacing: -0.01em; color: #162833;
+  }
+  .sdl-hero-copy .accent { color: var(--accent); }
+  .sdl-hero-sub { margin-top: 28px; font-size: 19px; line-height: 1.65; color: #46535F; max-width: 460px; }
+  .sdl-hero-actions { display: flex; align-items: center; gap: 28px; margin-top: 44px; flex-wrap: wrap; }
+  .sdl-hero-primary {
+    display: inline-flex; align-items: center; gap: 10px; background: var(--accent);
+    color: #FFFFFF; font-weight: 700; font-size: 16px; padding: 16px 30px; border-radius: 999px;
+  }
+  .sdl-hero-primary:hover { background: var(--accent-hover); color: #FFFFFF; }
+  .sdl-hero-secondary { display: inline-flex; align-items: center; gap: 8px; color: var(--accent); font-weight: 700; font-size: 16px; }
+  .sdl-hero-visual { width: 100%; aspect-ratio: 520/480; display: flex; align-items: center; }
+  .sdl-hero-visual canvas { width: 100%; height: 100%; display: block; }
+
+  /* ---------- shared section primitives ---------- */
+  .sdl-section { padding: 96px 48px 108px; }
+  .sdl-section--tight { padding-top: 56px; padding-bottom: 64px; }
+  .sdl-section-inner { max-width: 1360px; margin: 0 auto; }
+  .sdl-section--alt { background: #F6F8FC; }
+  .sdl-section--white { background: #FFFFFF; }
+  .sdl-eyebrow { font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
+  .sdl-section-title {
+    font-family: 'Manrope', sans-serif;
+    font-size: clamp(30px, 3.2vw, 40px); line-height: 1.22; font-weight: 500;
+    letter-spacing: -0.01em; color: #162833;
+  }
+  .sdl-section-title--sm { font-size: clamp(24px, 2.4vw, 30px); }
+  .sdl-section-sub { margin-top: 16px; font-size: 18px; line-height: 1.6; color: #46535F; max-width: 640px; }
+  .sdl-cta-link { display: inline-flex; align-items: center; gap: 8px; color: var(--accent); font-weight: 700; font-size: 16px; }
+  .sdl-cta-link--sm { font-size: 13px; gap: 6px; transition: color 0.15s ease; }
+  .sdl-cta-link--sm:hover { color: var(--accent-hover); }
+
+  /* ---------- shared kicker ---------- */
+  .sdl-kicker {
+    display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase; color: #8891A0;
+  }
+  .sdl-kicker .kicker-num { color: var(--success); }
+
+  /* ---------- footer ---------- */
+  .sdl-footer { position: relative; background: #101826; color: #A9B2C0; padding: 56px 48px 28px; }
+  .sdl-footer-inner { max-width: 1360px; margin: 0 auto; }
+
+  .sdl-footer-top {
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 48px; flex-wrap: wrap;
+    padding-bottom: 32px; margin-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .sdl-footer-brand { max-width: 280px; flex-shrink: 0; }
+  .sdl-footer-logo { height: 34px; width: auto; display: block; filter: brightness(0) invert(1); }
+  .sdl-footer-tagline { margin-top: 14px; font-size: 14px; line-height: 1.6; color: #8891A0; }
+
+  .sdl-footer-cols { flex: 1 1 auto; display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; }
+  .sdl-footer-col-title { font-size: 12px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #FFFFFF; margin-bottom: 14px; }
+  .sdl-footer-links { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .sdl-footer-links a { color: #A9B2C0; font-size: 13.5px; transition: color 0.15s ease; }
+  .sdl-footer-links a:hover { color: #FFFFFF; }
+
+  .sdl-footer-social-icon {
+    width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.06); color: #A9B2C0 !important;
+    display: flex; align-items: center; justify-content: center; transition: background 0.15s ease, color 0.15s ease !important;
+  }
+  .sdl-footer-social-icon:hover { background: var(--accent); color: #FFFFFF !important; }
+
+  .sdl-footer-bottom {
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+    font-size: 13px; color: #7A8494;
+  }
+  .sdl-footer-bottom-right { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+
+  /* ---------- AI page: shared accents ---------- */
+  .ai-kicker {
+    display: inline-flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent);
+  }
+  .ai-kicker .kicker-line { display: inline-block; width: 22px; height: 1px; background: var(--accent); }
+  .ai-kicker--dark { color: rgba(255,255,255,0.7); }
+  .ai-kicker--dark .kicker-line { background: var(--success); }
+
+  /* ---------- AI page: hero ---------- */
+  .sdl-hero--ai .sdl-hero-copy { font-size: clamp(36px, 3.7vw, 48px); line-height: 1.2; font-weight: 500; }
+  .sdl-hero--ai .sdl-hero-copy .accent { color: var(--accent); }
+  .sdl-hero--ai .sdl-kicker-wrap { margin-bottom: 20px; }
+  .sdl-hero--ai .sdl-hero-sub { max-width: 500px; }
+
+  .ai-hero-visual { position: relative; width: 100%; aspect-ratio: 520/480; display: flex; align-items: center; justify-content: center; }
+  .ai-orb {
+    position: relative; width: 60%; aspect-ratio: 1 / 1; border-radius: 50%;
+    background: radial-gradient(circle at 36% 30%, #7C97FF 0%, #2B49DB 40%, rgba(43,73,219,0.5) 64%, rgba(43,73,219,0) 80%);
+    animation: aiOrbBreathe 7s ease-in-out infinite;
+  }
+  .ai-orb::before {
+    content: ''; position: absolute; inset: -34%; border-radius: 50%; z-index: -1; pointer-events: none;
+    background: radial-gradient(circle, rgba(43,73,219,0.22) 0%, rgba(43,73,219,0) 68%);
+    filter: blur(30px);
+  }
+  @keyframes aiOrbBreathe {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.035); }
+  }
+  .ai-orb-grain {
+    position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 50%; overflow: hidden;
+    clip-path: circle(50%); mix-blend-mode: overlay; opacity: 0.6; pointer-events: none; display: block;
+  }
+
+  /* Fine particles gathering into the orb — signal resolving into form */
+  .ai-particles { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+  .ai-particle {
+    opacity: 0; transform-origin: center;
+    animation-name: aiParticleDrift; animation-duration: var(--dur, 8s);
+    animation-delay: var(--delay, 0s); animation-timing-function: ease-in-out; animation-iteration-count: infinite;
+  }
+  @keyframes aiParticleDrift {
+    0% { opacity: 0; transform: translate(0, 0) scale(0.5); }
+    18% { opacity: 0.85; }
+    72% { opacity: 0.7; transform: translate(var(--dx, 10px), var(--dy, -8px)) scale(1); }
+    100% { opacity: 0; transform: translate(calc(var(--dx, 10px) * 1.7), calc(var(--dy, -8px) * 1.7)) scale(0.6); }
+  }
+
+  /* ---------- AI page: narrative ---------- */
+  .ai-narrative { display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 72px; align-items: start; }
+  .ai-narrative-lead {
+    margin-top: 22px; font-family: 'Manrope', sans-serif; font-weight: 500;
+    font-size: clamp(23px, 2.3vw, 30px); line-height: 1.4; letter-spacing: -0.015em; color: #162833;
+  }
+  .ai-narrative-body { padding-top: 6px; }
+  .ai-narrative-body p {
+    margin: 0; padding: 22px 0; border-top: 1px solid #EEF1F6;
+    font-size: 16.5px; line-height: 1.75; color: #46535F;
+  }
+  .ai-narrative-body p:first-child { border-top: none; padding-top: 0; }
+  .ai-narrative-body p:last-child { padding-bottom: 0; }
+
+  /* ---------- AI page: capabilities ---------- */
+  .ai-cap-section { position: relative; overflow: hidden; }
+  .ai-cap-section .sdl-section-inner { position: relative; z-index: 1; }
+  .ai-cap-mesh { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+  .ai-cap-mesh span { position: absolute; border-radius: 50%; filter: blur(70px); }
+  .ai-cap-mesh span:nth-child(1) {
+    width: 440px; height: 440px; top: -160px; left: -100px;
+    background: radial-gradient(circle, rgba(43,73,219,0.30) 0%, rgba(43,73,219,0) 72%);
+  }
+  .ai-cap-mesh span:nth-child(2) {
+    width: 400px; height: 400px; top: -60px; right: -140px;
+    background: radial-gradient(circle, rgba(124,151,255,0.26) 0%, rgba(124,151,255,0) 72%);
+  }
+  .ai-cap-mesh span:nth-child(3) {
+    width: 360px; height: 360px; bottom: -180px; left: 28%;
+    background: radial-gradient(circle, rgba(40,199,111,0.18) 0%, rgba(40,199,111,0) 72%);
+  }
+  .ai-cap-mesh span:nth-child(4) {
+    width: 260px; height: 260px; bottom: -80px; right: 8%;
+    background: radial-gradient(circle, rgba(244,196,48,0.16) 0%, rgba(244,196,48,0) 72%);
+  }
+  @media (max-width: 900px) {
+    .ai-cap-mesh span { filter: blur(50px); }
+    .ai-cap-mesh span:nth-child(1) { width: 300px; height: 300px; }
+    .ai-cap-mesh span:nth-child(2) { width: 260px; height: 260px; }
+    .ai-cap-mesh span:nth-child(3), .ai-cap-mesh span:nth-child(4) { display: none; }
+  }
+  .ai-cap-head { max-width: 720px; }
+  .ai-cap-intro { margin-top: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .ai-cap-intro p { margin: 0; font-size: 16px; line-height: 1.75; color: #46535F; }
+  .ai-cap-grid { margin-top: 52px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .ai-cap-card {
+    position: relative; overflow: hidden; background: #FFFFFF; border: 1px solid #EEF1F6;
+    border-radius: 20px; padding: 36px 36px 38px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+  .ai-cap-card:hover {
+    transform: translateY(-3px); box-shadow: 0 22px 46px rgba(16,24,40,0.09); border-color: rgba(43,73,219,0.26);
+  }
+  .ai-cap-card::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--accent);
+    transform: scaleX(0); transform-origin: left; transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .ai-cap-card:hover::after { transform: scaleX(1); }
+  .ai-cap-shape {
+    position: absolute; right: -34px; bottom: -34px; width: 136px; height: 136px; border-radius: 50%;
+    z-index: 0; pointer-events: none; opacity: 0.9; transition: transform 0.35s ease;
+  }
+  .ai-cap-card:hover .ai-cap-shape { transform: scale(1.08); }
+  .ai-cap-content { position: relative; z-index: 1; }
+  .ai-cap-num {
+    font-family: 'Manrope', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
+    color: var(--accent); font-variant-numeric: tabular-nums;
+  }
+  .ai-cap-title {
+    margin-top: 14px; font-family: 'Manrope', sans-serif; font-size: 21px; font-weight: 700;
+    letter-spacing: -0.01em; color: #162833;
+  }
+  .ai-cap-desc { margin-top: 12px; font-size: 15px; line-height: 1.72; color: #46535F; max-width: calc(100% - 60px); }
+
+  /* ---------- AI page: value (dark) ---------- */
+  .ai-value-section { position: relative; overflow: hidden; background: #101826; padding: 96px 48px 108px; }
+  .ai-value-inner { position: relative; max-width: 1360px; margin: 0 auto; }
+  .ai-value-head { max-width: 720px; }
+  .ai-value-title {
+    margin-top: 18px; font-family: 'Manrope', sans-serif; font-weight: 500;
+    font-size: clamp(30px, 3.2vw, 40px); line-height: 1.2; letter-spacing: -0.01em; color: #FFFFFF;
+  }
+  .ai-value-grid {
+    margin-top: 56px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+    background: rgba(255,255,255,0.09); border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 18px; overflow: hidden;
+  }
+  .ai-value-item { background: #101826; padding: 34px 30px 36px; transition: background 0.25s ease; }
+  .ai-value-item:hover { background: #16202E; }
+  .ai-value-icon {
+    width: 40px; height: 40px; border-radius: 11px; background: rgba(43,73,219,0.18);
+    display: flex; align-items: center; justify-content: center; color: #8DA6FF;
+    transition: background 0.25s ease, color 0.25s ease;
+  }
+  .ai-value-item:hover .ai-value-icon { background: var(--accent); color: #FFFFFF; }
+  .ai-value-item-title { margin-top: 20px; font-family: 'Manrope', sans-serif; font-size: 17px; font-weight: 700; color: #FFFFFF; }
+  .ai-value-item-desc { margin-top: 9px; font-size: 14px; line-height: 1.65; color: rgba(255,255,255,0.6); }
+
+  /* ---------- AI page: selected work ---------- */
+  .ai-case { margin-top: 52px; display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+  .ai-case-media {
+    position: relative; border-radius: 20px; overflow: hidden; border: 1px solid #EEF1F6;
+    aspect-ratio: 4 / 3; background: #F1F4FA;
+  }
+  .ai-case-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  /* Purpose-built abstract product visual: an AI assist inside a support workflow */
+  .ai-case-mock {
+    position: absolute; inset: 0; background: #FAFBFE;
+    display: flex; flex-direction: column; gap: 14px; padding: 20px;
+  }
+  .ai-mock-bar { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  .ai-mock-bar span { width: 7px; height: 7px; border-radius: 50%; background: #DDE3EE; }
+  .ai-mock-pill { margin-left: 10px; height: 8px; width: 128px; border-radius: 999px; background: #E7ECF6; }
+  .ai-mock-body { flex: 1; min-height: 0; display: grid; grid-template-columns: 34% 1fr; gap: 14px; }
+  .ai-mock-side, .ai-mock-main {
+    background: #FFFFFF; border: 1px solid #EBEFF7; border-radius: 12px; padding: 14px;
+    display: flex; flex-direction: column;
+  }
+  .ai-mock-side { gap: 12px; }
+  .ai-mock-row { display: flex; align-items: center; gap: 8px; }
+  .ai-mock-row i { width: 18px; height: 18px; border-radius: 50%; background: #E7ECF6; flex-shrink: 0; }
+  .ai-mock-row b { height: 7px; border-radius: 999px; background: #E7ECF6; flex: 1; }
+  .ai-mock-row.is-active i { background: rgba(43,73,219,0.20); }
+  .ai-mock-row.is-active b { background: rgba(43,73,219,0.26); }
+  .ai-mock-main { gap: 10px; }
+  .ai-mock-msg { height: 34px; width: 78%; border-radius: 10px; background: #F1F4FA; flex-shrink: 0; }
+  .ai-mock-msg--out { align-self: flex-end; width: 62%; background: #EDF1FB; }
+  .ai-mock-suggest {
+    margin-top: auto; border: 1px solid rgba(43,73,219,0.26); background: rgba(43,73,219,0.05);
+    border-radius: 12px; padding: 13px;
+  }
+  .ai-mock-suggest-head {
+    display: flex; align-items: center; gap: 7px; font-size: 10px; font-weight: 700;
+    letter-spacing: 0.07em; text-transform: uppercase; color: var(--accent);
+  }
+  .ai-mock-spark { animation: aiPulse 3.2s ease-in-out infinite; }
+  .ai-mock-lines { margin-top: 11px; display: flex; flex-direction: column; gap: 6px; }
+  .ai-mock-lines span { height: 6px; border-radius: 999px; background: rgba(43,73,219,0.18); }
+  .ai-mock-actions { margin-top: 13px; display: flex; gap: 8px; }
+  .ai-mock-btn { height: 20px; width: 66px; border-radius: 999px; background: var(--accent); }
+  .ai-mock-btn--ghost { width: 52px; background: transparent; border: 1px solid #DDE3EE; }
+  .ai-case-tag {
+    position: absolute; left: 18px; top: 18px; background: rgba(16,24,38,0.72); backdrop-filter: blur(6px);
+    color: #FFFFFF; font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 6px 12px; border-radius: 999px;
+  }
+  .ai-case-title {
+    font-family: 'Manrope', sans-serif; font-size: clamp(22px, 2.2vw, 27px); font-weight: 700;
+    line-height: 1.3; letter-spacing: -0.01em; color: #162833;
+  }
+  .ai-case-blocks { margin-top: 24px; }
+  .ai-case-block { padding: 20px 0; border-top: 1px solid #EEF1F6; }
+  .ai-case-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent);
+  }
+  .ai-case-text { margin-top: 8px; font-size: 15px; line-height: 1.72; color: #46535F; }
+  .ai-case-cta { margin-top: 26px; }
+
+  /* ---------- AI page: closing CTA ---------- */
+  .ai-cta-section { padding: 72px 48px 72px; }
+  .ai-cta-card {
+    position: relative; overflow: hidden; max-width: 1360px; margin: 0 auto;
+    background: #101826; border: 1px solid rgba(255,255,255,0.08); border-radius: 28px;
+    padding: 78px 56px 82px; text-align: center;
+  }
+  .ai-cta-card::before {
+    content: ''; position: absolute; top: -160px; left: 50%; transform: translateX(-50%);
+    width: 620px; height: 400px; pointer-events: none;
+    background: radial-gradient(ellipse at center, rgba(43,73,219,0.34), rgba(43,73,219,0) 68%);
+  }
+  .ai-cta-inner { position: relative; }
+  .ai-cta-title {
+    margin-top: 20px; font-family: 'Manrope', sans-serif; font-weight: 500;
+    font-size: clamp(28px, 3.3vw, 42px); line-height: 1.2; letter-spacing: -0.015em; color: #FFFFFF;
+  }
+  .ai-cta-sub { margin: 18px auto 0; max-width: 520px; font-size: 17px; line-height: 1.65; color: rgba(255,255,255,0.62); }
+  .ai-cta-btn {
+    display: inline-flex; align-items: center; gap: 10px; margin-top: 34px; background: var(--accent);
+    color: #FFFFFF; font-weight: 700; font-size: 16px; padding: 16px 32px; border-radius: 999px;
+    transition: background 0.15s ease, transform 0.15s ease;
+  }
+  .ai-cta-btn:hover { background: var(--accent-hover); color: #FFFFFF; transform: translateY(-1px); }
+  .ai-cta-btn .arrow { display: inline-block; transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .ai-cta-btn:hover .arrow { transform: translateX(4px); }
+
+  @media (max-width: 1060px) {
+    .sdl-desktop-nav, .sdl-desktop-cta { display: none !important; }
+    .sdl-mobile-toggle { display: flex !important; }
+    .sdl-header-inner { padding-left: 24px !important; padding-right: 24px !important; }
+    .sdl-hero { grid-template-columns: 1fr !important; padding: 56px 24px 64px !important; }
+    .sdl-hero-visual, .ai-hero-visual { max-width: 420px; margin: 0 auto; order: -1; }
+    .sdl-section { padding: 72px 24px 80px; }
+    .sdl-section--tight { padding-top: 48px; padding-bottom: 56px; }
+    .ai-value-section { padding: 72px 24px 80px; }
+    .ai-cta-section { padding: 56px 24px 56px; }
+    .ai-cta-card { padding: 56px 28px 60px; }
+    .sdl-footer { padding: 64px 24px 28px; }
+    .sdl-footer-cols { max-width: none; grid-template-columns: repeat(2, 1fr); row-gap: 32px; }
+    .ai-narrative { grid-template-columns: 1fr; gap: 32px; }
+    .ai-cap-intro { grid-template-columns: 1fr; gap: 18px; }
+    .ai-cap-grid { grid-template-columns: 1fr; }
+    .ai-value-grid { grid-template-columns: repeat(2, 1fr); }
+    .ai-case { grid-template-columns: 1fr; gap: 32px; }
+  }
+
+  @media (max-width: 560px) {
+    .sdl-footer-top { flex-direction: column; align-items: flex-start; }
+    .sdl-footer-cols { grid-template-columns: 1fr; }
+    .ai-value-grid { grid-template-columns: 1fr; }
+    .ai-cap-card { padding: 28px 24px 30px; }
+  }
+
+  /* ---------- scroll-reveal motion ---------- */
+  /* Uses `animation` (not `transition`) so it never clobbers components' own
+     hover/interaction transitions, which share the same properties. */
+  .reveal, .reveal-group > * { opacity: 0; transform: translateY(24px); }
+  .reveal.is-visible, .reveal-group.is-visible > * {
+    animation: sdlRevealIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  @keyframes sdlRevealIn { to { opacity: 1; transform: translateY(0); } }
+  .reveal-group > *:nth-child(1) { animation-delay: 0s; }
+  .reveal-group > *:nth-child(2) { animation-delay: 0.07s; }
+  .reveal-group > *:nth-child(3) { animation-delay: 0.14s; }
+  .reveal-group > *:nth-child(4) { animation-delay: 0.21s; }
+  .reveal-group > *:nth-child(5) { animation-delay: 0.28s; }
+  .reveal-group > *:nth-child(6) { animation-delay: 0.35s; }
+
+  .sdl-hero-copy-wrap, .ai-hero-visual {
+    opacity: 0; transform: translateY(18px);
+    animation: sdlRevealIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  .ai-hero-visual { animation-delay: 0.15s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal, .reveal-group > *, .sdl-hero-copy-wrap, .ai-hero-visual, .ai-orb {
+      animation: none !important; opacity: 1 !important; transform: none !important;
+    }
+    .ai-particle { animation: none !important; opacity: 0 !important; }
+  }
+</style>
+</head>
+<body>
+
+<div style="font-family:'Inter',sans-serif;background:#F6F8FC;min-height:100vh">
+
+  <header class="sdl-header" id="sdlHeader">
+    <div class="sdl-header-inner">
+      <div class="sdl-header-left">
+        <a href="index.html" style="display: flex; align-items: center; flex-shrink: 0; color: inherit; text-decoration: none;">
+          <img src="assets/sdl-logo.svg" alt="Social DNA Labs" class="sdl-logo" />
+        </a>
+      </div>
+
+      <div class="sdl-header-nav-wrap">
+        <nav class="sdl-desktop-nav" id="desktopNav"></nav>
+      </div>
+
+      <div class="sdl-header-right">
+        <a href="#contact" class="sdl-cta sdl-desktop-cta">Let's talk →</a>
+
+        <button class="sdl-mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+          <svg width="22" height="16" viewBox="0 0 22 16"><rect width="22" height="2" fill="#162833"></rect><rect y="7" width="22" height="2" fill="#162833"></rect><rect y="14" width="22" height="2" fill="#162833"></rect></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="sdl-mega-panel" id="megaPanel"></div>
+    <div class="sdl-mobile-panel" id="mobilePanel"></div>
+  </header>
+
+  <section class="sdl-hero sdl-hero--ai">
+    <div class="sdl-hero-copy-wrap">
+      <div class="sdl-kicker-wrap">
+        <span class="ai-kicker"><span class="kicker-line"></span> AI transformation</span>
+      </div>
+      <div class="sdl-hero-copy">
+        <div>AI that moves the</div>
+        <div><span class="accent">business forward.</span></div>
+      </div>
+      <p class="sdl-hero-sub">
+        Turn AI from experimentation into practical business value. Identify meaningful opportunities, build intelligent capabilities and integrate them into the way your business works.
+      </p>
+      <div class="sdl-hero-actions">
+        <a href="index.html#contact" class="sdl-hero-primary">Talk to an AI expert →</a>
+        <a href="#capabilities" class="sdl-hero-secondary">Explore AI capabilities →</a>
+      </div>
+    </div>
+
+    <div class="ai-hero-visual">
+      <div class="ai-orb">
+        <svg class="ai-orb-grain" viewBox="0 0 200 200" aria-hidden="true">
+          <defs>
+            <filter id="aiGrain" x="0%" y="0%" width="100%" height="100%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch" result="noise" />
+              <feColorMatrix in="noise" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.85 0" />
+            </filter>
+          </defs>
+          <circle cx="100" cy="100" r="100" fill="#000000" filter="url(#aiGrain)" />
+        </svg>
+      </div>
+
+      <svg class="ai-particles" viewBox="0 0 520 480" aria-hidden="true">
+        <circle class="ai-particle" cx="140" cy="310" r="3"   fill="#2B49DB" style="--dx:12px;--dy:-7px;--dur:8.2s;--delay:0s" />
+        <circle class="ai-particle" cx="110" cy="260" r="2.5" fill="#5B7BF0" style="--dx:14px;--dy:-2px;--dur:9.1s;--delay:0.6s" />
+        <circle class="ai-particle" cx="95"  cy="330" r="3.5" fill="#2B49DB" style="--dx:12px;--dy:-7px;--dur:7.6s;--delay:1.2s" />
+        <circle class="ai-particle" cx="160" cy="370" r="2"   fill="#28C76F" style="--dx:9px;--dy:-11px;--dur:8.7s;--delay:1.8s" />
+        <circle class="ai-particle" cx="70"  cy="290" r="2.8" fill="#5B7BF0" style="--dx:14px;--dy:-4px;--dur:9.4s;--delay:2.4s" />
+        <circle class="ai-particle" cx="190" cy="400" r="3"   fill="#2B49DB" style="--dx:6px;--dy:-13px;--dur:8.1s;--delay:3s" />
+        <circle class="ai-particle" cx="50"  cy="230" r="2"   fill="#2B49DB" style="--dx:14px;--dy:1px;--dur:7.3s;--delay:3.6s" />
+        <circle class="ai-particle" cx="120" cy="190" r="2.5" fill="#5B7BF0" style="--dx:13px;--dy:5px;--dur:8.9s;--delay:4.2s" />
+        <circle class="ai-particle" cx="220" cy="420" r="2.2" fill="#28C76F" style="--dx:3px;--dy:-14px;--dur:9.2s;--delay:4.8s" />
+        <circle class="ai-particle" cx="80"  cy="160" r="3"   fill="#2B49DB" style="--dx:13px;--dy:6px;--dur:7.8s;--delay:5.4s" />
+        <circle class="ai-particle" cx="150" cy="140" r="2"   fill="#5B7BF0" style="--dx:10px;--dy:9px;--dur:9.7s;--delay:0.3s" />
+        <circle class="ai-particle" cx="250" cy="430" r="2.6" fill="#2B49DB" style="--dx:1px;--dy:-14px;--dur:8.4s;--delay:1.5s" />
+        <circle class="ai-particle" cx="40"  cy="340" r="2"   fill="#2B49DB" style="--dx:13px;--dy:-6px;--dur:9s;--delay:2.1s" />
+        <circle class="ai-particle" cx="180" cy="115" r="2.4" fill="#5B7BF0" style="--dx:8px;--dy:12px;--dur:8.5s;--delay:2.7s" />
+        <circle class="ai-particle" cx="280" cy="420" r="2"   fill="#2B49DB" style="--dx:-2px;--dy:-14px;--dur:7.7s;--delay:3.9s" />
+        <circle class="ai-particle" cx="60"  cy="380" r="1.8" fill="#2B49DB" style="--dx:11px;--dy:-8px;--dur:9.3s;--delay:5.1s" />
+      </svg>
+    </div>
+  </section>
+
+  <section class="sdl-section sdl-section--white">
+    <div class="sdl-section-inner">
+      <div class="ai-narrative">
+        <div class="reveal">
+          <span class="ai-kicker"><span class="kicker-line"></span> AI is changing what's possible</span>
+          <p class="ai-narrative-lead">
+            AI is moving quickly from experimentation into everyday business. The opportunity goes well beyond chatbots and content generation.
+          </p>
+        </div>
+
+        <div class="ai-narrative-body reveal">
+          <p>It can change how teams work, how decisions are made, how customers are served, how operations run and how software is built.</p>
+          <p>The challenge is knowing where AI can create meaningful value and how to make it work in the real world.</p>
+          <p>Strategy, experience and engineering come together to turn those opportunities into working business capabilities.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sdl-section sdl-section--alt ai-cap-section" id="capabilities">
+    <div class="ai-cap-mesh" aria-hidden="true">
+      <span></span><span></span><span></span><span></span>
+    </div>
+    <div class="sdl-section-inner">
+      <div class="ai-cap-head reveal">
+        <span class="ai-kicker"><span class="kicker-line"></span> AI capabilities</span>
+        <div class="sdl-section-title" style="margin-top:18px">From AI strategy to intelligent applications.</div>
+      </div>
+
+      <div class="ai-cap-intro reveal">
+        <p>AI transformation takes more than selecting a model or building a proof of concept. It requires the right opportunity, the right technology and a clear path to putting it into use.</p>
+        <p>From identifying opportunities and designing solutions to engineering, integration and adoption, the focus stays on creating AI that delivers a measurable difference.</p>
+      </div>
+
+      <div class="ai-cap-grid reveal-group" id="aiCapabilities"></div>
+    </div>
+  </section>
+
+  <section class="ai-value-section">
+    <div class="ai-value-inner">
+      <div class="ai-value-head reveal">
+        <span class="ai-kicker ai-kicker--dark"><span class="kicker-line"></span> Where AI can make a difference</span>
+        <div class="ai-value-title">The value is in what changes.</div>
+      </div>
+
+      <div class="ai-value-grid reveal-group" id="aiValueGrid"></div>
+    </div>
+  </section>
+
+  <section class="sdl-section sdl-section--white">
+    <div class="sdl-section-inner">
+      <div class="reveal">
+        <span class="ai-kicker"><span class="kicker-line"></span> Selected work</span>
+        <div class="sdl-section-title" style="margin-top:18px">AI, applied.</div>
+        <p class="sdl-section-sub">See how AI moves from an idea to something people actually use.</p>
+      </div>
+
+      <div class="ai-case">
+        <div class="ai-case-media reveal">
+          <div class="ai-case-mock" role="img" aria-label="Illustration of an AI assistant suggesting a reply inside a support workflow">
+            <div class="ai-mock-bar">
+              <span></span><span></span><span></span>
+              <div class="ai-mock-pill"></div>
+            </div>
+            <div class="ai-mock-body">
+              <div class="ai-mock-side">
+                <div class="ai-mock-row is-active"><i></i><b></b></div>
+                <div class="ai-mock-row"><i></i><b style="width:70%"></b></div>
+                <div class="ai-mock-row"><i></i><b style="width:84%"></b></div>
+                <div class="ai-mock-row"><i></i><b style="width:60%"></b></div>
+                <div class="ai-mock-row"><i></i><b style="width:76%"></b></div>
+              </div>
+              <div class="ai-mock-main">
+                <div class="ai-mock-msg"></div>
+                <div class="ai-mock-msg ai-mock-msg--out"></div>
+                <div class="ai-mock-suggest">
+                  <div class="ai-mock-suggest-head">
+                    <svg class="ai-mock-spark" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8L12 2z"/></svg>
+                    Suggested reply
+                  </div>
+                  <div class="ai-mock-lines"><span></span><span></span><span style="width:64%"></span></div>
+                  <div class="ai-mock-actions">
+                    <span class="ai-mock-btn"></span>
+                    <span class="ai-mock-btn ai-mock-btn--ghost"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <span class="ai-case-tag">Sample case study</span>
+        </div>
+
+        <div class="reveal">
+          <div class="ai-case-title">Intelligent support operations for a growing SaaS platform</div>
+
+          <div class="ai-case-blocks">
+            <div class="ai-case-block">
+              <div class="ai-case-label">Challenge</div>
+              <p class="ai-case-text">Support volume was growing faster than the team could scale. Answers lived across product documentation, past tickets and team knowledge, so agents spent more time searching than solving.</p>
+            </div>
+            <div class="ai-case-block">
+              <div class="ai-case-label">What we built</div>
+              <p class="ai-case-text">A retrieval-grounded AI assistant connected to product documentation, ticket history and CRM data — surfacing suggested responses inside the support workflow the team already used, with human review kept in the loop and clear boundaries on what the assistant can act on.</p>
+            </div>
+            <div class="ai-case-block">
+              <div class="ai-case-label">Impact</div>
+              <p class="ai-case-text">Faster first responses, more issues resolved on first contact, and a support team spending its time on the complex cases that genuinely need people.</p>
+            </div>
+          </div>
+
+          <div class="ai-case-cta">
+            <a class="sdl-cta-link" href="#">View case study →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ai-cta-section">
+    <div class="ai-cta-card reveal">
+      <div class="ai-cta-inner">
+        <span class="ai-kicker ai-kicker--dark"><span class="kicker-line"></span> Start a conversation</span>
+        <div class="ai-cta-title">Have an AI opportunity worth exploring?</div>
+        <p class="ai-cta-sub">Let's find where AI can create meaningful value for your business.</p>
+        <a href="index.html#contact" class="ai-cta-btn">Talk to an AI expert <span class="arrow" aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer class="sdl-footer">
+  <div class="sdl-footer-inner">
+    <div class="sdl-footer-top">
+      <div class="sdl-footer-brand">
+        <img src="assets/sdl-logo.svg" alt="Social DNA Labs" class="sdl-footer-logo" />
+        <p class="sdl-footer-tagline">Technology, experience and AI for businesses building what comes next.</p>
+      </div>
+
+      <div class="sdl-footer-cols" id="footerCols"></div>
+    </div>
+
+    <div class="sdl-footer-bottom">
+      <div id="footerYear">© Social DNA Labs</div>
+      <div class="sdl-footer-bottom-right">
+        <div>Business impact, by design.</div>
+        <a href="#" class="sdl-footer-social-icon" aria-label="LinkedIn"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zm7 0h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.6c0-1.34-.02-3.06-1.87-3.06-1.87 0-2.16 1.46-2.16 2.96V21h-4z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+<script>
+(function () {
+  "use strict";
+
+  var ACCENT = '#2B49DB';
+  var MEGA_MENU_ENABLED = true;
+
+  var MENUS = [
+    { key: 'services', label: 'Services', href: 'services.html', cta: { label: 'View all services', href: 'services.html' }, items: [
+      { title: 'AI transformation', desc: 'Turn AI potential into practical business value.', href: 'ai-transformation.html' },
+      { title: 'Digital engineering', desc: 'Build, modernize and scale digital products.', href: 'digital-engineering.html' },
+      { title: 'Business transformation', desc: 'Rethink systems, processes and ways of working.', href: 'business-transformation.html' },
+      { title: 'Digital experience', desc: 'Create better experiences across every touchpoint.', href: 'digital-experience.html' },
+      { title: 'Growth transformation', desc: 'Turn digital attention into qualified demand.', href: 'growth-transformation.html' }
+    ]},
+    { key: 'products', label: 'Products & Platforms', cta: { label: 'Explore EVOQ', href: 'evoq.html' }, items: [
+      { title: 'EVOQ', desc: 'The unified business suite for modern operations.', href: 'evoq.html' }
+    ]},
+    { key: 'insights', label: 'Insights', cta: { label: 'Explore insights', href: '#' }, items: [
+      { title: 'Blogs', desc: 'Ideas, perspectives and practical thinking.' },
+      { title: 'Case studies', desc: 'Real projects. Real business outcomes.' },
+      { title: 'Whitepapers', desc: 'In-depth research and perspectives.' },
+      { title: 'Featured projects', desc: 'Selected work and digital experiences.' }
+    ]},
+    { key: 'company', label: 'Company', cta: null, items: [
+      { title: 'About', desc: 'The people and experience behind SDL.' },
+      { title: 'Our approach', desc: 'How SDL thinks, builds and works.' },
+      { title: 'Clients', desc: 'The businesses SDL works with.' },
+      { title: 'Careers', desc: "Build what's next with SDL." }
+    ]}
+  ];
+
+  var ICONS = {
+    'AI transformation': '<path d="M24 6l4.2 9.4L38 20l-9.8 4.6L24 34l-4.2-9.4L10 20l9.8-4.6L24 6z"/><circle cx="24" cy="20" r="3.4"/>',
+    'Digital engineering': '<path d="M17 15l-8 8 8 8M31 15l8 8-8 8M27 12l-6 24"/>',
+    'Business transformation': '<circle cx="24" cy="24" r="7"/><path d="M24 8v5M24 39v5M8 24h5M39 24h5M12.9 12.9l3.5 3.5M31.6 31.6l3.5 3.5M35.1 12.9l-3.5 3.5M16.4 31.6l-3.5 3.5"/>',
+    'Digital experience': '<rect x="10" y="12" width="28" height="20" rx="2.5"/><path d="M18 40h12M24 32v8"/>',
+    'Growth transformation': '<path d="M9 33l9-11 7 7 14-17"/><path d="M31 12h8v8"/>',
+    'Products & platforms': '<rect x="9" y="9" width="13" height="13" rx="2"/><rect x="26" y="9" width="13" height="13" rx="2"/><rect x="9" y="26" width="13" height="13" rx="2"/><rect x="26" y="26" width="13" height="13" rx="2"/>',
+    'EVOQ': '<rect x="9" y="9" width="13" height="13" rx="2"/><rect x="26" y="9" width="13" height="13" rx="2"/><rect x="9" y="26" width="13" height="13" rx="2"/><rect x="26" y="26" width="13" height="13" rx="2"/>',
+    'Blogs': '<path d="M14 8h14l6 6v22a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2z"/><path d="M28 8v6h6M17 24h14M17 30h14"/>',
+    'Case studies': '<path d="M14 8h14l6 6v22a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2z"/><path d="M28 8v6h6M18 26l4 4 8-9"/>',
+    'Whitepapers': '<path d="M14 8h14l6 6v22a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2z"/><path d="M28 8v6h6M17 22h14M17 28h9"/>',
+    'Featured projects': '<path d="M24 6l4.6 12.6L42 21l-9 9 2.3 13-11.3-6.5L12.7 43 15 30l-9-9 13.4-2.4L24 6z"/>',
+    'About': '<rect x="12" y="10" width="24" height="28" rx="2"/><path d="M18 18h4M26 18h4M18 26h4M26 26h4M20 38v-6h8v6"/>',
+    'Our approach': '<circle cx="24" cy="24" r="13"/><circle cx="24" cy="24" r="7"/><circle cx="24" cy="24" r="1.6" fill="currentColor" stroke="none"/>',
+    'Clients': '<circle cx="18" cy="18" r="5"/><circle cx="32" cy="20" r="4"/><path d="M9 38c1-6 5-10 9-10s8 4 9 10M27 38c1-5 4-9 8-9 3 0 6 2 7 6"/>',
+    'Careers': '<rect x="8" y="16" width="32" height="20" rx="3"/><path d="M17 16v-4a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v4"/><path d="M8 25h32"/>'
+  };
+  var ICON_DEFAULT = '<circle cx="24" cy="24" r="4" fill="currentColor" stroke="none"/>';
+  // ---------- Footer ----------
+  var FOOTER_COLS = [
+    { title: 'Services', links: [
+      { label: 'AI transformation', href: 'ai-transformation.html' },
+      { label: 'Digital engineering', href: 'digital-engineering.html' },
+      { label: 'Business transformation', href: 'business-transformation.html' },
+      { label: 'Digital experience', href: 'digital-experience.html' },
+      { label: 'Growth transformation', href: 'growth-transformation.html' }
+    ]},
+    { title: 'Products & Platforms', links: [
+      { label: 'EVOQ', href: 'evoq.html' }
+    ]},
+    { title: 'Insights', links: [
+      { label: 'Blogs', href: '#' },
+      { label: 'Case studies', href: '#' },
+      { label: 'Whitepapers', href: '#' },
+      { label: 'Featured projects', href: '#' }
+    ]},
+    { title: 'Company', links: [
+      { label: 'About', href: '#' },
+      { label: 'Our approach', href: '#' },
+      { label: 'Clients', href: '#' },
+      { label: 'Careers', href: '#' }
+    ]},
+    { title: 'Connect', links: [
+      { label: "Let's talk", href: '#contact' },
+      { label: 'Contact us', href: '#contact' }
+    ]}
+  ];
+  var footerCols = document.getElementById('footerCols');
+  FOOTER_COLS.forEach(function (col) {
+    var wrap = document.createElement('div');
+    var title = document.createElement('div');
+    title.className = 'sdl-footer-col-title';
+    title.textContent = col.title;
+    var list = document.createElement('ul');
+    list.className = 'sdl-footer-links';
+    col.links.forEach(function (l) {
+      var li = document.createElement('li');
+      var a = document.createElement('a');
+      a.href = l.href;
+      a.textContent = l.label;
+      li.appendChild(a);
+      list.appendChild(li);
+    });
+    wrap.appendChild(title);
+    wrap.appendChild(list);
+    footerCols.appendChild(wrap);
+  });
+
+  document.getElementById('footerYear').textContent = '© ' + new Date().getFullYear() + ' Social DNA Labs';
+
+  // ---------- Desktop nav + mega menu ----------
+  var desktopNav = document.getElementById('desktopNav');
+  var megaPanel = document.getElementById('megaPanel');
+  var header = document.getElementById('sdlHeader');
+
+  var navButtons = [];
+
+  function closeMegaMenu() {
+    megaPanel.classList.remove('open');
+    megaPanel.innerHTML = '';
+    navButtons.forEach(function (b) { b.classList.remove('active'); });
+  }
+
+  function renderMegaMenu(menu, triggerBtn, triggerItem) {
+    if (!MEGA_MENU_ENABLED) return;
+    var inner = document.createElement('div');
+    inner.className = 'sdl-mega-panel-inner';
+    if (menu.items.length < 2) inner.style.gridTemplateColumns = '1fr';
+    menu.items.forEach(function (item) {
+      var wrap = document.createElement('div');
+      wrap.className = 'sdl-mega-item';
+      var icon = document.createElement('div');
+      icon.className = 'sdl-mega-item-icon';
+      icon.innerHTML = '<svg width="18" height="18" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">' + (ICONS[item.title] || ICON_DEFAULT) + '</svg>';
+      var textWrap = document.createElement('div');
+      var title = document.createElement('div');
+      title.className = 'sdl-mega-item-title';
+      title.textContent = item.title;
+      var desc = document.createElement('div');
+      desc.className = 'sdl-mega-item-desc';
+      desc.textContent = item.desc;
+      textWrap.appendChild(title);
+      textWrap.appendChild(desc);
+      wrap.appendChild(icon);
+      wrap.appendChild(textWrap);
+
+      if (item.href) {
+        var link = document.createElement('a');
+        link.href = item.href;
+        link.style.display = 'contents';
+        link.style.cursor = 'pointer';
+        link.style.color = 'inherit';
+        link.style.textDecoration = 'none';
+        link.appendChild(wrap);
+        inner.appendChild(link);
+      } else {
+        inner.appendChild(wrap);
+      }
+    });
+    if (menu.cta) {
+      var ctaWrap = document.createElement('div');
+      ctaWrap.className = 'sdl-mega-cta';
+      var ctaLink = document.createElement('a');
+      ctaLink.href = menu.cta.href;
+      ctaLink.textContent = menu.cta.label + ' →';
+      ctaLink.style.color = ACCENT;
+      ctaWrap.appendChild(ctaLink);
+      inner.appendChild(ctaWrap);
+    }
+    megaPanel.innerHTML = '';
+    megaPanel.appendChild(inner);
+    megaPanel.classList.add('open');
+
+    navButtons.forEach(function (b) { b.classList.toggle('active', b === triggerBtn); });
+
+    var headerRect = header.getBoundingClientRect();
+    var itemRect = triggerItem.getBoundingClientRect();
+    var panelWidth = megaPanel.offsetWidth;
+    var itemCenter = (itemRect.left - headerRect.left) + itemRect.width / 2;
+    var left = itemCenter - panelWidth / 2;
+    var maxLeft = header.offsetWidth - panelWidth - 24;
+    if (maxLeft < 24) maxLeft = 24;
+    left = Math.max(24, Math.min(left, maxLeft));
+    megaPanel.style.left = left + 'px';
+  }
+
+  MENUS.forEach(function (menu) {
+    var item = document.createElement('div');
+    item.className = 'sdl-nav-item';
+
+    if (menu.href && !menu.items.length) {
+      var link = document.createElement('a');
+      link.className = 'sdl-nav-btn';
+      link.href = menu.href;
+      link.textContent = menu.label;
+      item.appendChild(link);
+    } else {
+      var btn = document.createElement('button');
+      btn.className = 'sdl-nav-btn';
+      btn.innerHTML = menu.label + ' <span class="caret">▾</span>';
+      item.appendChild(btn);
+      item.addEventListener('mouseenter', function () { renderMegaMenu(menu, btn, item); });
+      navButtons.push(btn);
+    }
+
+    desktopNav.appendChild(item);
+  });
+
+  header.addEventListener('mouseleave', closeMegaMenu);
+
+  // ---------- Mobile nav ----------
+  var mobileToggle = document.getElementById('mobileToggle');
+  var mobilePanel = document.getElementById('mobilePanel');
+  var mobileOpenKey = null;
+
+  function renderMobilePanel() {
+    mobilePanel.innerHTML = '';
+    MENUS.forEach(function (menu) {
+      var itemEl = document.createElement('div');
+      itemEl.className = 'sdl-mobile-item';
+
+      if (menu.href && !menu.items.length) {
+        var link = document.createElement('a');
+        link.className = 'sdl-mobile-item-btn';
+        link.href = menu.href;
+        link.textContent = menu.label;
+        link.style.display = 'block';
+        link.style.cursor = 'pointer';
+        itemEl.appendChild(link);
+      } else {
+        var btn = document.createElement('button');
+        btn.className = 'sdl-mobile-item-btn';
+        btn.innerHTML = menu.label + ' <span class="caret">▾</span>';
+        btn.addEventListener('click', function () {
+          mobileOpenKey = mobileOpenKey === menu.key ? null : menu.key;
+          renderMobilePanel();
+        });
+        itemEl.appendChild(btn);
+
+        var sub = document.createElement('div');
+        sub.className = 'sdl-mobile-sub' + (mobileOpenKey === menu.key ? ' open' : '');
+        menu.items.forEach(function (subItem) {
+          var subWrap = document.createElement('div');
+          var t = document.createElement('div');
+          t.className = 'sdl-mobile-sub-title';
+          t.textContent = subItem.title;
+          var d = document.createElement('div');
+          d.className = 'sdl-mobile-sub-desc';
+          d.textContent = subItem.desc;
+          subWrap.appendChild(t);
+          subWrap.appendChild(d);
+          sub.appendChild(subWrap);
+        });
+        if (menu.cta) {
+          var ctaLink = document.createElement('a');
+          ctaLink.href = menu.cta.href;
+          ctaLink.textContent = menu.cta.label + ' →';
+          sub.appendChild(ctaLink);
+        }
+        itemEl.appendChild(sub);
+      }
+      mobilePanel.appendChild(itemEl);
+    });
+
+    var talkLink = document.createElement('a');
+    talkLink.href = '#contact';
+    talkLink.className = 'sdl-mobile-cta';
+    talkLink.textContent = "Let's talk →";
+    mobilePanel.appendChild(talkLink);
+  }
+  renderMobilePanel();
+
+  mobileToggle.addEventListener('click', function () {
+    mobilePanel.classList.toggle('open');
+  });
+
+  // ---------- AI capabilities ----------
+  var AI_CAPABILITIES = [
+    {
+      title: 'AI strategy & consulting',
+      desc: 'Identify where AI can create meaningful business value and what it will take to get there. Assess AI readiness, prioritize high-value use cases and define a practical roadmap aligned with business priorities, technology capabilities and investment goals.'
+    },
+    {
+      title: 'Generative AI',
+      desc: 'Build practical applications around generative AI, from intelligent assistants and knowledge systems to content, search and customer experiences. Connect language models with business information and workflows to create AI experiences that are relevant, useful and grounded in context.'
+    },
+    {
+      title: 'AI applications',
+      desc: 'Turn intelligence into useful products and applications that solve specific business problems. Build capabilities such as intelligent search, recommendations, prediction and personalization around the people, processes and experiences they are designed to improve.'
+    },
+    {
+      title: 'AI agents & automation',
+      desc: 'Move beyond assistance with AI agents and intelligent workflows that can reason across information, coordinate tasks and take action within defined boundaries. Identify processes where intelligent automation can reduce manual effort, accelerate execution and improve how work moves across people and systems.'
+    },
+    {
+      title: 'AI-enabled engineering',
+      desc: 'Use AI throughout the engineering lifecycle to accelerate development, modernize applications, improve quality and increase developer productivity. Combine AI-assisted development, automated testing, code modernization and disciplined engineering practices to deliver faster without compromising production quality.'
+    },
+    {
+      title: 'AI integration & modernization',
+      desc: 'Bring AI into the technology landscape already running the business. Connect AI capabilities with applications, data, APIs, CRM, ERP, e-commerce and cloud platforms, while modernizing existing technology where AI can improve how systems and capabilities work.'
+    }
+  ];
+  var CAP_SHAPE_COLORS = [
+    ['#7C97FF', '#2B49DB'],
+    ['#6FDBA0', '#28C76F'],
+    ['#FFE38A', '#F4C430'],
+    ['#8FD6FF', '#2B8FDB'],
+    ['#A9BBFF', '#3E5FE0'],
+    ['#9BEFC4', '#22B368']
+  ];
+  var aiCapabilities = document.getElementById('aiCapabilities');
+  if (aiCapabilities) {
+    AI_CAPABILITIES.forEach(function (c, i) {
+      var card = document.createElement('div');
+      card.className = 'ai-cap-card';
+
+      var shape = document.createElement('div');
+      shape.className = 'ai-cap-shape';
+      var colors = CAP_SHAPE_COLORS[i % CAP_SHAPE_COLORS.length];
+      shape.style.background = 'radial-gradient(circle at 35% 30%, ' + colors[0] + ' 0%, ' + colors[1] + ' 55%, rgba(43,73,219,0) 78%)';
+      card.appendChild(shape);
+
+      var content = document.createElement('div');
+      content.className = 'ai-cap-content';
+
+      var num = document.createElement('div');
+      num.className = 'ai-cap-num';
+      num.textContent = String(i + 1).padStart(2, '0');
+
+      var title = document.createElement('div');
+      title.className = 'ai-cap-title';
+      title.textContent = c.title;
+
+      var desc = document.createElement('p');
+      desc.className = 'ai-cap-desc';
+      desc.textContent = c.desc;
+
+      content.appendChild(num);
+      content.appendChild(title);
+      content.appendChild(desc);
+      card.appendChild(content);
+      aiCapabilities.appendChild(card);
+    });
+  }
+
+  // ---------- Where AI can make a difference ----------
+  var AI_VALUE_ITEMS = [
+    {
+      title: 'Customer experience',
+      desc: 'Make interactions more relevant, responsive and useful across digital channels.',
+      icon: '<path d="M20 14.5a3 3 0 0 1-3 3H9l-4.5 3.2V6.5a3 3 0 0 1 3-3h9.5a3 3 0 0 1 3 3z"/><path d="M9 10.5h6M9 14h4"/>'
+    },
+    {
+      title: 'Employee productivity',
+      desc: 'Reduce repetitive work and give teams faster access to the information they need.',
+      icon: '<path d="M13 3 4.5 13.8H10l-1 7.2 8.6-10.9H12z"/>'
+    },
+    {
+      title: 'Business operations',
+      desc: 'Automate processes, reduce friction and help work move faster across the organization.',
+      icon: '<path d="M20.5 12a8.5 8.5 0 0 1-14.2 6.3"/><path d="M3.5 12a8.5 8.5 0 0 1 14.2-6.3"/><path d="M17.7 2.3v3.6h-3.6M6.3 21.7v-3.6h3.6"/>'
+    },
+    {
+      title: 'Decision making',
+      desc: 'Turn business information into timely insights that help people make better decisions.',
+      icon: '<path d="M4 20V11M10 20V5M16 20v-6M21.5 20h-19"/>'
+    },
+    {
+      title: 'Digital products',
+      desc: 'Introduce intelligent features and new capabilities that create more useful products and services.',
+      icon: '<rect x="3" y="4.5" width="18" height="15" rx="2.5"/><path d="M3 9.5h18M7 7h.01M10 7h.01"/>'
+    },
+    {
+      title: 'Software engineering',
+      desc: 'Accelerate development, testing and modernization while helping engineering teams work more effectively.',
+      icon: '<path d="m8.5 8-4.5 4 4.5 4M15.5 8l4.5 4-4.5 4M13.5 5l-3 14"/>'
+    }
+  ];
+  var aiValueGrid = document.getElementById('aiValueGrid');
+  if (aiValueGrid) {
+    AI_VALUE_ITEMS.forEach(function (v) {
+      var item = document.createElement('div');
+      item.className = 'ai-value-item';
+      item.innerHTML =
+        '<span class="ai-value-icon">' +
+        '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" ' +
+        'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + v.icon + '</svg></span>' +
+        '<div class="ai-value-item-title"></div>' +
+        '<p class="ai-value-item-desc"></p>';
+      item.querySelector('.ai-value-item-title').textContent = v.title;
+      item.querySelector('.ai-value-item-desc').textContent = v.desc;
+      aiValueGrid.appendChild(item);
+    });
+  }
+  // ---------- Scroll-reveal motion ----------
+  (function initScrollReveal() {
+    var targets = document.querySelectorAll('.reveal, .reveal-group');
+    if (!targets.length) return;
+    if (!('IntersectionObserver' in window)) {
+      targets.forEach(function (el) { el.classList.add('is-visible'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries, observer) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+    targets.forEach(function (el) { io.observe(el); });
+  })();
+
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,2087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Social DNA Labs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --accent: #2B49DB; --accent-hover: #1E35B8; --heading: #162833; --body-text: #46535F;
+    --success: #28C76F; --attention: #F4C430; --critical: #E64A3C;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #F6F8FC; overflow-x: hidden; font-family: 'Inter', sans-serif; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { color: var(--accent-hover); }
+
+  .sdl-header { position: sticky; top: 0; z-index: 50; background: #F6F8FC; border-bottom: 1px solid rgba(16,24,40,0.07); }
+  .sdl-header-inner { max-width: 1360px; margin: 0 auto; padding: 0 48px; height: 88px; display: flex; align-items: center; }
+  .sdl-logo { height: 38px; width: auto; display: block; flex-shrink: 0; }
+
+  .sdl-header-left { display: flex; align-items: center; flex: 0 0 auto; }
+  .sdl-header-nav-wrap { flex: 1 1 auto; display: flex; align-items: center; justify-content: center; min-width: 0; }
+  .sdl-header-right { display: flex; align-items: center; gap: 32px; flex: 0 0 auto; }
+
+  .sdl-desktop-nav { display: flex; align-items: center; gap: 6px; }
+  .sdl-nav-item { position: relative; }
+  .sdl-nav-btn {
+    position: relative; display: flex; align-items: center; gap: 6px; background: none; border: none;
+    font-family: inherit; font-size: 15px; font-weight: 600; color: #162833;
+    cursor: pointer; padding: 12px 13px; border-radius: 8px; white-space: nowrap; flex-shrink: 0;
+  }
+  .sdl-nav-btn:hover { background: rgba(43,73,219,0.06); }
+  .sdl-nav-btn .caret { font-size: 10px; color: #8891A0; margin-top: 2px; transition: transform 0.15s ease; }
+  .sdl-nav-btn.active { color: var(--accent); }
+  .sdl-nav-btn.active .caret { color: var(--accent); transform: rotate(180deg); }
+  .sdl-nav-btn.active::after {
+    content: ''; position: absolute; left: 13px; right: 13px; bottom: 3px; height: 2px; border-radius: 2px;
+    background: linear-gradient(90deg, var(--accent), #6AA8FA);
+  }
+
+  .sdl-cta {
+    display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid var(--accent);
+    color: var(--accent); font-weight: 700; font-size: 14px; padding: 10px 22px;
+    border-radius: 999px; white-space: nowrap; flex-shrink: 0;
+  }
+  .sdl-cta:hover { background: rgba(43,73,219,0.06); color: var(--accent); }
+
+  .sdl-mobile-toggle {
+    display: none; align-items: center; justify-content: center; width: 40px; height: 40px;
+    background: none; border: none; cursor: pointer; flex-shrink: 0;
+  }
+
+  .sdl-mega-panel {
+    position: absolute; top: 100%; left: 48px; padding-top: 14px;
+    z-index: 100; display: none;
+  }
+  .sdl-mega-panel.open { display: block; }
+  .sdl-mega-panel-inner {
+    width: max-content; max-width: min(760px, calc(100vw - 96px)); padding: 30px 32px 24px;
+    display: grid; grid-template-columns: repeat(2, minmax(240px, 1fr));
+    column-gap: 36px; row-gap: 26px;
+    background: #FFFFFF; border-radius: 20px; border: 1px solid rgba(16,24,40,0.06);
+    box-shadow: 0 30px 60px rgba(16,24,40,0.16), 0 4px 14px rgba(16,24,40,0.06);
+    overflow: hidden;
+  }
+  .sdl-mega-item { display: flex; align-items: flex-start; gap: 14px; }
+  .sdl-mega-item-icon {
+    width: 36px; height: 36px; border-radius: 9px; background: rgba(43,73,219,0.08); color: var(--accent);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .sdl-mega-item-title { font-weight: 700; color: #162833; margin-bottom: 5px; font-size: 15px; }
+  .sdl-mega-item-desc { color: #46535F; font-size: 13px; line-height: 1.55; }
+  .sdl-mega-cta { grid-column: 1 / -1; border-top: 1px solid #EEF1F6; padding-top: 18px; }
+  .sdl-mega-cta a { color: var(--accent); font-weight: 700; font-size: 14px; display: inline-flex; align-items: center; gap: 6px; }
+
+  .sdl-mobile-panel {
+    display: none; background: #FFFFFF; border-top: 1px solid rgba(16,24,40,0.07);
+    padding: 8px 24px 24px; max-height: calc(100vh - 88px); overflow-y: auto;
+  }
+  .sdl-mobile-panel.open { display: block; }
+  .sdl-mobile-item { border-bottom: 1px solid #EEF1F6; }
+  .sdl-mobile-item-btn {
+    width: 100%; display: flex; align-items: center; justify-content: space-between;
+    background: none; border: none; font-family: inherit; font-size: 16px; font-weight: 700;
+    color: #162833; padding: 16px 4px; cursor: pointer;
+  }
+  .sdl-mobile-item-btn .caret { font-size: 12px; color: #8891A0; }
+  .sdl-mobile-sub { padding: 0 4px 18px; display: none; flex-direction: column; gap: 14px; }
+  .sdl-mobile-sub.open { display: flex; }
+  .sdl-mobile-sub-title { font-weight: 700; color: #162833; font-size: 14px; }
+  .sdl-mobile-sub-desc { color: #46535F; font-size: 13px; line-height: 1.5; margin-top: 2px; }
+  .sdl-mobile-sub a { color: var(--accent); font-weight: 700; font-size: 14px; }
+  .sdl-mobile-cta {
+    display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--accent);
+    color: #FFFFFF; font-weight: 700; font-size: 15px; padding: 14px; border-radius: 999px; margin-top: 20px;
+  }
+  .sdl-mobile-cta:hover { color: #FFFFFF; }
+
+  .sdl-hero {
+    max-width: 1360px; margin: 0 auto; padding: 84px 48px 56px;
+    display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px; align-items: center;
+  }
+  .sdl-hero-copy-wrap { max-width: 640px; }
+  .sdl-hero-copy {
+    font-family: 'Manrope', sans-serif;
+    font-size: 48px; line-height: 1.22; font-weight: 500;
+    letter-spacing: -0.01em; color: #162833;
+  }
+  .sdl-hero-copy .accent { color: var(--accent); }
+  .sdl-hero-sub { margin-top: 28px; font-size: 19px; line-height: 1.65; color: #46535F; max-width: 460px; }
+  .sdl-hero-actions { display: flex; align-items: center; gap: 28px; margin-top: 44px; flex-wrap: wrap; }
+  .sdl-hero-primary {
+    display: inline-flex; align-items: center; gap: 10px; background: var(--accent);
+    color: #FFFFFF; font-weight: 700; font-size: 16px; padding: 16px 30px; border-radius: 999px;
+  }
+  .sdl-hero-primary:hover { background: var(--accent-hover); color: #FFFFFF; }
+  .sdl-hero-secondary { display: inline-flex; align-items: center; gap: 8px; color: var(--accent); font-weight: 700; font-size: 16px; }
+  .sdl-hero-visual { width: 100%; aspect-ratio: 520/480; display: flex; align-items: center; }
+  .sdl-hero-visual canvas { width: 100%; height: 100%; display: block; }
+
+  .sdl-pillars { position: relative; overflow: hidden; background: #FFFFFF; padding: 96px 48px 108px; }
+  .sdl-pillars-inner { position: relative; z-index: 1; max-width: 1360px; margin: 0 auto; }
+  .sdl-pillars-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+  .sdl-pillars-bg::before {
+    content: ''; position: absolute; top: -160px; right: -140px; width: 560px; height: 560px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(43,73,219,0.10), rgba(43,73,219,0) 70%);
+  }
+  .sdl-pillars-bg::after {
+    content: ''; position: absolute; bottom: -200px; left: -140px; width: 480px; height: 480px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(40,199,111,0.09), rgba(40,199,111,0) 70%);
+  }
+  .sdl-pillars-bg-dots {
+    position: absolute; top: 0; right: 0; width: 60%; height: 70%;
+    background-image: radial-gradient(rgba(43,73,219,0.16) 1.4px, transparent 1.4px);
+    background-size: 26px 26px;
+    -webkit-mask-image: radial-gradient(ellipse 70% 65% at 85% 10%, #000 0%, transparent 72%);
+    mask-image: radial-gradient(ellipse 70% 65% at 85% 10%, #000 0%, transparent 72%);
+  }
+  .sdl-pillars-bg-glyph {
+    position: absolute; bottom: -70px; right: 4%; width: 340px; height: 340px;
+    opacity: 0.05; transform: rotate(14deg);
+  }
+  .sdl-pillars-blueprint {
+    position: absolute; left: -44px; top: -58px; width: 440px; height: 290px;
+    z-index: 0; pointer-events: none; opacity: 0.55;
+  }
+  @media (max-width: 1300px) {
+    .sdl-pillars-blueprint { display: none; }
+  }
+  @media (max-width: 900px) {
+    .sdl-pillars-bg-dots { width: 90%; height: 40%; }
+    .sdl-pillars-bg-glyph { width: 220px; height: 220px; }
+  }
+  .sdl-pillars-head { max-width: 860px; }
+  .sdl-pillars-title {
+    font-family: 'Manrope', sans-serif;
+    font-size: clamp(30px, 3.2vw, 40px); line-height: 1.22; font-weight: 500;
+    letter-spacing: -0.01em; color: #162833;
+  }
+  .sdl-pillars-sub { margin-top: 16px; font-size: 18px; line-height: 1.6; color: #46535F; }
+
+  /* ---------- generic section head: eyebrow left, title right ---------- */
+  .sdl-split-head { display: grid; grid-template-columns: 0.7fr 1.3fr; gap: 40px; align-items: end; }
+  .sdl-split-head.sdl-pillars-head, .sdl-split-head.sdl-proof-head { max-width: none; }
+  .sdl-split-head-body { max-width: 640px; }
+  @media (max-width: 900px) {
+    .sdl-split-head { grid-template-columns: 1fr; align-items: start; gap: 16px; }
+  }
+  .sdl-pillars-footer-row { margin-top: 40px; display: flex; justify-content: center; }
+
+  .sdl-pillars-grid {
+    margin-top: 56px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; align-items: stretch;
+  }
+  .sdl-pillar-card {
+    background: #FFFFFF; padding: 32px 32px 28px;
+    position: relative; overflow: hidden; border: 1px solid #EEF1F6; border-radius: 20px;
+    box-shadow: 0 24px 48px rgba(16,24,40,0.1);
+    display: flex; flex-direction: column;
+    transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  }
+
+  .sdl-pillar-visual { position: relative; height: 76px; display: flex; align-items: center; justify-content: flex-end; }
+  .sdl-pillar-glow {
+    position: absolute; right: -16px; top: 50%; transform: translateY(-50%) scale(1.08);
+    width: 120px; height: 120px; border-radius: 50%; filter: blur(20px); opacity: 0.85;
+    background: radial-gradient(circle, var(--motif-light, #A9BEFF) 0%, var(--motif-mid, #2B49DB) 45%, rgba(43,73,219,0) 75%);
+    transition: opacity 0.4s ease, transform 0.4s ease, background 0.4s ease;
+  }
+  .sdl-pillar-glyph, .sdl-pillar-orb { position: relative; width: 64px; height: 64px; }
+  .sdl-pillar-glyph svg { display: block; width: 100%; height: 100%; }
+  .sdl-pillar-glyph { color: var(--motif-mid, #2B49DB); transition: color 0.4s ease; }
+  .sdl-pillar-orb {
+    border-radius: 50%; transition: background 0.4s ease;
+    background: radial-gradient(circle at 36% 30%, #A9BEFF 0%, #2B49DB 45%, rgba(43,73,219,0.55) 68%, rgba(43,73,219,0) 82%);
+  }
+
+  .sdl-pillar-title {
+    margin-top: 20px; font-size: 21px; font-weight: 700; line-height: 1.3; color: #162833; letter-spacing: -0.01em;
+    min-height: calc(1.3em * 2); transition: color 0.35s ease;
+  }
+
+  .sdl-pillar-reveal { margin-top: 14px; }
+  .sdl-pillar-tagline {
+    font-size: 15px; font-weight: 600; line-height: 1.3; color: var(--accent);
+    min-height: calc(1.3em * 2); transition: color 0.35s ease;
+  }
+  .sdl-pillar-desc {
+    margin-top: 10px; font-size: 15px; line-height: 1.65; color: #46535F;
+    min-height: calc(1.65em * 4); transition: color 0.35s ease;
+  }
+
+  .sdl-pillar-footer { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-top: auto; padding-top: 18px; }
+  .sdl-pillar-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .sdl-pillar-tag {
+    font-size: 12px; font-weight: 600; color: #3A5C8C; background: rgba(43,73,219,0.08);
+    padding: 5px 10px; border-radius: 999px; white-space: nowrap;
+    transition: color 0.35s ease, background 0.35s ease;
+  }
+
+  .sdl-pillar-cta {
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    width: 44px; height: 44px; border-radius: 50%; border: 1px solid #E4E9F2; color: #162833;
+    transition: border-color 0.25s ease, background 0.25s ease, transform 0.18s ease, color 0.25s ease;
+  }
+  .sdl-pillar-cta-arrow { display: inline-block; font-size: 16px; transition: transform 0.18s ease; }
+  .sdl-pillar-cta:hover .sdl-pillar-cta-arrow { transform: translate(2px, -2px); }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sdl-pillar-card:hover {
+      background: var(--accent); border-color: var(--accent);
+      box-shadow: 0 16px 32px rgba(43,73,219,0.2); transform: translateY(-3px);
+    }
+    .sdl-pillar-card:hover .sdl-pillar-glow {
+      opacity: 0.55; transform: translateY(-50%);
+      background: radial-gradient(circle, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 72%);
+    }
+    .sdl-pillar-card:hover .sdl-pillar-glyph { color: rgba(255,255,255,0.95); }
+    .sdl-pillar-card:hover .sdl-pillar-orb {
+      background: radial-gradient(circle at 36% 30%, #FFFFFF 0%, rgba(255,255,255,0.7) 45%, rgba(255,255,255,0) 82%);
+    }
+    .sdl-pillar-card:hover .sdl-pillar-title { color: #FFFFFF; }
+    .sdl-pillar-card:hover .sdl-pillar-tagline { color: #FFFFFF; }
+    .sdl-pillar-card:hover .sdl-pillar-desc { color: rgba(255,255,255,0.78); }
+    .sdl-pillar-card:hover .sdl-pillar-tag { color: rgba(255,255,255,0.92); background: rgba(255,255,255,0.16); }
+    .sdl-pillar-card:hover .sdl-pillar-cta { border-color: rgba(255,255,255,0.4); color: #FFFFFF; }
+    .sdl-pillar-card:hover .sdl-pillar-cta:hover { border-color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.12); }
+  }
+
+  @media (max-width: 900px) {
+    .sdl-pillars-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ---------- hero-explainer: from potential to impact ---------- */
+  .sdl-explain { padding: 8px 48px 96px; }
+  .sdl-explain-inner { max-width: 1180px; margin: 0 auto; }
+  .sdl-explain-kicker { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 18px; }
+  .sdl-explain-kicker .kicker-line { display: inline-block; width: 20px; height: 1px; background: var(--accent); }
+  .sdl-explain-kicker-label {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent);
+  }
+  .sdl-explain-title {
+    text-align: center; font-family: 'Manrope', sans-serif;
+    font-size: clamp(26px, 2.8vw, 34px); font-weight: 500; line-height: 1.25;
+    letter-spacing: -0.01em; color: #162833; margin-bottom: 52px;
+  }
+  .sdl-explain-panel {
+    background: rgba(255,255,255,0.55); border: 1px solid rgba(22,40,51,0.08);
+    border-radius: 28px; padding: 44px 40px 40px; backdrop-filter: blur(6px);
+  }
+  .sdl-explain-row { display: flex; align-items: flex-start; justify-content: center; gap: 4px; }
+  .sdl-explain-step { display: flex; flex-direction: column; align-items: flex-start; width: 224px; flex-shrink: 0; }
+  .sdl-explain-icon { width: 96px; height: 58px; margin-bottom: 14px; }
+  .sdl-explain-step-title { font-size: 16px; font-weight: 700; color: #162833; margin-bottom: 6px; }
+  .sdl-explain-step-desc { font-size: 14px; line-height: 1.55; color: #46535F; }
+  .sdl-explain-arrow { align-self: center; color: var(--accent); opacity: 0.45; font-size: 22px; margin-top: 29px; flex-shrink: 0; padding: 0 4px; }
+
+  .sdl-explain-note {
+    margin: 44px auto 0; max-width: 600px; background: #FFFFFF; border: 1px solid #E4E9F9;
+    border-radius: 999px; padding: 13px 26px; display: flex; align-items: center; justify-content: center;
+    gap: 14px; flex-wrap: wrap;
+  }
+  .sdl-explain-note-icon { display: flex; color: var(--accent); flex-shrink: 0; }
+  .sdl-explain-note-strong { font-weight: 700; color: #162833; font-size: 14px; white-space: nowrap; }
+  .sdl-explain-note-divider { width: 1px; height: 16px; background: #E4E9F2; flex-shrink: 0; }
+  .sdl-explain-note-accent { font-weight: 700; color: var(--accent); font-size: 14px; white-space: nowrap; }
+
+  @media (max-width: 900px) {
+    .sdl-explain { padding: 64px 24px 72px; }
+    .sdl-explain-row { flex-direction: column; align-items: center; gap: 22px; }
+    .sdl-explain-step { width: 100%; max-width: 320px; align-items: center; text-align: center; }
+    .sdl-explain-arrow { transform: rotate(90deg); margin-top: 0; }
+  }
+
+  /* ---------- shared section primitives ---------- */
+  .sdl-section { padding: 96px 48px 108px; }
+  .sdl-section--tight { padding-top: 56px; padding-bottom: 64px; }
+  .sdl-section-inner { max-width: 1360px; margin: 0 auto; }
+  .sdl-section--alt { background: #F6F8FC; }
+  .sdl-section--white { background: #FFFFFF; }
+  .sdl-eyebrow { font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
+  .sdl-section-title {
+    font-family: 'Manrope', sans-serif;
+    font-size: clamp(30px, 3.2vw, 40px); line-height: 1.22; font-weight: 500;
+    letter-spacing: -0.01em; color: #162833;
+  }
+  .sdl-section-title--sm { font-size: clamp(24px, 2.4vw, 30px); }
+  .sdl-section-sub { margin-top: 16px; font-size: 18px; line-height: 1.6; color: #46535F; max-width: 640px; }
+  .sdl-cta-link { display: inline-flex; align-items: center; gap: 8px; color: var(--accent); font-weight: 700; font-size: 16px; }
+  .sdl-cta-link--sm { transition: color 0.15s ease; }
+  .sdl-cta-link--sm:hover { color: var(--accent-hover); }
+
+  /* ---------- investment section ---------- */
+  .sdl-invest-card {
+    position: relative; border-radius: 28px; overflow: hidden;
+    background: #101826; padding: 56px;
+  }
+  .sdl-invest-title { font-family: 'Manrope', sans-serif; font-weight: 700; font-size: clamp(28px, 3vw, 38px); line-height: 1.25; color: #FFFFFF; }
+  .sdl-invest-sub { margin-top: 20px; max-width: 900px; font-size: 17px; line-height: 1.65; color: rgba(255,255,255,0.68); }
+
+  .sdl-invest-steps {
+    margin-top: 48px; display: flex; border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; overflow: hidden;
+  }
+  .sdl-invest-step {
+    flex: 1; min-width: 0; padding: 26px 22px; display: flex; flex-direction: column; justify-content: space-between;
+    border-right: 1px solid rgba(255,255,255,0.1); min-height: 210px;
+    background: transparent; transition: background 0.2s ease;
+  }
+  .sdl-invest-step:last-child { border-right: none; }
+  .sdl-invest-step-top { display: flex; align-items: center; justify-content: space-between; }
+  .sdl-invest-step-num {
+    font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 700; color: var(--success);
+    letter-spacing: 0.02em; transition: color 0.2s ease;
+  }
+  .sdl-invest-step-arrow { color: var(--success); font-size: 15px; line-height: 1; transition: color 0.2s ease; }
+  .sdl-invest-step-tick { width: 28px; height: 2px; background: var(--success); transition: background 0.2s ease; }
+  .sdl-invest-step-title { margin-top: 14px; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 18px; color: #FFFFFF; }
+  .sdl-invest-step-caption { margin-top: 4px; font-size: 13px; color: rgba(255,255,255,0.55); }
+  .sdl-invest-step:hover { background: var(--accent); }
+  .sdl-invest-step:hover .sdl-invest-step-num,
+  .sdl-invest-step:hover .sdl-invest-step-arrow { color: rgba(255,255,255,0.75); }
+  .sdl-invest-step:hover .sdl-invest-step-tick { background: var(--attention); }
+
+  .sdl-invest-divider { margin-top: 44px; height: 1px; background: rgba(255,255,255,0.12); }
+
+  .sdl-invest-closing { margin-top: 32px; }
+  .sdl-invest-closing div {
+    font-family: 'Manrope', sans-serif; font-weight: 700; font-size: clamp(24px, 3vw, 34px); line-height: 1.3;
+  }
+  .sdl-invest-closing .line1 { color: #FFFFFF; }
+  .sdl-invest-closing .line2 { color: var(--success); }
+
+  /* ---------- AI value section ---------- */
+  .sdl-ai-grid { margin-top: 0; display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 64px; align-items: stretch; }
+  .sdl-ai-left { display: flex; flex-direction: column; justify-content: space-between; }
+  .sdl-ai-left .sdl-kicker { margin-bottom: 14px; }
+  .sdl-kicker.sdl-ai-kicker { color: var(--accent); }
+  .sdl-ai-kicker .kicker-line { background: var(--accent); }
+  .sdl-ai-left p { font-size: 16px; line-height: 1.65; color: #46535F; }
+  .sdl-ai-right-body p { margin: 16px 0 0; font-size: 17px; line-height: 1.65; color: #46535F; }
+
+  .sdl-ai-cta-btn {
+    display: inline-flex; align-items: center; gap: 8px; align-self: flex-start; margin-top: 28px;
+    background: var(--accent); color: #FFFFFF; font-weight: 700; font-size: 15px;
+    padding: 14px 26px; border-radius: 999px; transition: background 0.15s ease, transform 0.15s ease;
+  }
+  .sdl-ai-cta-btn:hover { background: var(--accent-hover); color: #FFFFFF; transform: translateY(-1px); }
+
+  .sdl-process-grid {
+    margin-top: 44px; display: grid; grid-template-columns: repeat(4, 1fr);
+    border: 1px solid #E4E9F2; border-radius: 4px; overflow: hidden; background: #E4E9F2; gap: 1px;
+  }
+  .sdl-process-item { background: #FFFFFF; padding: 28px 24px; transition: background 0.2s ease; }
+  .sdl-process-item:hover { background: #F9FBFF; }
+  .sdl-process-num { font-size: 13px; font-weight: 700; color: var(--success); letter-spacing: 0.03em; }
+  .sdl-process-title { margin-top: 28px; font-family: 'Manrope', sans-serif; font-size: 22px; font-weight: 700; color: #162833; }
+  .sdl-process-desc { margin-top: 10px; font-size: 14px; line-height: 1.55; color: #46535F; }
+
+  /* ---------- shared kicker ---------- */
+  .sdl-kicker {
+    display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase; color: #8891A0;
+  }
+  .sdl-kicker .kicker-num { color: var(--success); }
+  .sdl-kicker .kicker-line { display: inline-block; width: 20px; height: 1px; background: var(--accent); }
+
+  /* ---------- proof section ---------- */
+  .sdl-proof-head { max-width: 900px; }
+  .sdl-proof-head p { margin-top: 16px; font-size: 17px; line-height: 1.65; color: #46535F; }
+  .sdl-proof-split { margin-top: 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: end; }
+  .sdl-proof-split-text { margin-top: 0; font-size: 15px; line-height: 1.65; color: #46535F; }
+  .sdl-proof-callout {
+    margin-top: 28px; padding-left: 16px; border-left: 3px solid var(--success);
+    font-size: 15px; font-weight: 600; color: #162833; line-height: 1.55;
+  }
+  .sdl-proof-clients-cta { display: inline-flex; margin-top: 24px; }
+  .sdl-proof-block-title { font-size: 12px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #8891A0; }
+  .sdl-logo-strip {
+    margin-top: 20px; display: grid; grid-template-columns: repeat(3, 1fr);
+    border: 1px solid #E4E9F2; background: #E4E9F2; gap: 1px; border-radius: 4px; overflow: hidden;
+  }
+  .sdl-logo-cell { background: #FFFFFF; height: 104px; display: flex; align-items: center; justify-content: center; padding: 14px; }
+  .sdl-logo-cell img {
+    max-width: 100%; max-height: 50px; object-fit: contain; display: block;
+    filter: grayscale(1) opacity(0.65); transition: filter 0.2s ease;
+  }
+  .sdl-logo-cell:hover img { filter: grayscale(0) opacity(1); }
+
+  .sdl-proof-divider { margin-top: 64px; height: 1px; background: #E4E9F2; }
+
+  .sdl-testimonials-head {
+    margin-top: 56px; display: flex; align-items: center; justify-content: center; gap: 24px; flex-wrap: wrap;
+    text-align: center;
+  }
+  .sdl-testimonials-head-text { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .sdl-testimonials-grid { margin-top: 32px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .sdl-testimonials-cta { display: flex; justify-content: center; margin-top: 32px; }
+  .sdl-testimonial-card {
+    background: #FFFFFF; border: 1px solid #EEF1F6; border-radius: 18px; padding: 32px;
+    display: flex; flex-direction: column;
+  }
+  .sdl-testimonial-person { display: flex; align-items: center; gap: 12px; }
+  .sdl-testimonial-avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; flex-shrink: 0; background: #EEF1F6; }
+  .sdl-testimonial-name { font-size: 14px; font-weight: 700; color: #162833; }
+  .sdl-testimonial-role { font-size: 11.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--success); margin-top: 2px; }
+  .sdl-testimonial-text { margin-top: 18px; font-size: 15px; line-height: 1.65; color: #3F4A57; }
+  .sdl-testimonial-tick { margin-top: 24px; width: 28px; height: 2px; background: var(--success); }
+
+  /* ---------- insights section ---------- */
+  .sdl-insights-nav-row { margin-top: 40px; display: flex; align-items: center; justify-content: space-between; }
+  .sdl-insights-arrows { display: flex; gap: 10px; }
+  .sdl-arrow-btn {
+    width: 46px; height: 46px; border-radius: 50%; border: none; background: #162833; color: #FFFFFF;
+    display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 20px;
+    transition: background 0.15s ease, transform 0.15s ease;
+  }
+  .sdl-arrow-btn:hover { background: var(--accent); transform: translateY(-1px); }
+  .sdl-insights-scroll {
+    margin-top: 20px; display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x proximity;
+    padding-bottom: 4px; scrollbar-width: none;
+  }
+  .sdl-insights-scroll::-webkit-scrollbar { display: none; }
+  .sdl-insight-card {
+    position: relative; flex: 0 0 calc((100% - 40px) / 3); height: 330px; border-radius: 16px;
+    overflow: hidden; scroll-snap-align: start; display: flex; flex-direction: column; justify-content: flex-end;
+    color: #FFFFFF; transition: transform 0.2s ease; background-size: cover; background-position: center;
+  }
+  .sdl-insight-card:hover { transform: translateY(-3px); }
+  .sdl-insight-card::before {
+    content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.35) 50%, rgba(0,0,0,0.05) 75%);
+  }
+  .sdl-insight-card--color::before { content: none; }
+  .sdl-insight-card--dark { color: #162833; }
+  .sdl-insight-card--light { color: #FFFFFF; }
+  .sdl-insight-top-row { position: relative; z-index: 2; display: flex; align-items: flex-start; justify-content: space-between; padding: 20px; }
+  .sdl-insight-thumb-badge {
+    background: rgba(255,255,255,0.16); backdrop-filter: blur(4px);
+    color: #FFFFFF; font-size: 10.5px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+    padding: 5px 11px; border-radius: 999px;
+  }
+  .sdl-insight-card--dark .sdl-insight-thumb-badge { background: rgba(22,40,51,0.12); color: #162833; }
+  .sdl-insight-card--light .sdl-insight-thumb-badge { background: rgba(255,255,255,0.22); color: #FFFFFF; }
+  .sdl-insight-link-icon {
+    width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.4);
+    display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
+  }
+  .sdl-insight-card--dark .sdl-insight-link-icon { border-color: rgba(22,40,51,0.3); }
+  .sdl-insight-card--light .sdl-insight-link-icon { border-color: rgba(255,255,255,0.55); }
+  .sdl-insight-card:hover .sdl-insight-link-icon {
+    background: var(--accent); border-color: var(--accent); color: #FFFFFF; transform: rotate(45deg);
+  }
+  .sdl-insight-body { position: relative; z-index: 2; padding: 20px; }
+  .sdl-insight-title { font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 22px; line-height: 1.3; }
+  .sdl-insight-meta {
+    margin-top: 20px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.2);
+    display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: rgba(255,255,255,0.7);
+  }
+  .sdl-insight-card--dark .sdl-insight-meta { border-top-color: rgba(22,40,51,0.18); color: rgba(22,40,51,0.65); }
+  .sdl-insight-card--light .sdl-insight-meta { border-top-color: rgba(255,255,255,0.3); color: rgba(255,255,255,0.8); }
+  .sdl-insight-meta .read-link { color: #FFFFFF; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; text-decoration: none; }
+  .sdl-insight-card--dark .sdl-insight-meta .read-link { color: #162833; }
+  .sdl-insight-card--light .sdl-insight-meta .read-link { color: #FFFFFF; }
+  .sdl-insight-card:hover .sdl-insight-meta .read-link { text-decoration: underline; }
+
+  .sdl-insights-footer-row {
+    margin-top: 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+    font-size: 14px; color: #8891A0;
+  }
+
+  /* ---------- contact section ---------- */
+  .sdl-contact-section { position: relative; overflow: hidden; background: #101826; }
+  .sdl-contact-grid { position: relative; margin-top: 48px; display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 64px; align-items: center; }
+
+  .sdl-kicker--dark { color: rgba(255,255,255,0.55); }
+  .sdl-kicker--dark .kicker-line { display: inline-block; width: 20px; height: 1px; background: var(--success); }
+  .sdl-contact-heading {
+    margin-top: 20px; font-family: 'Manrope', sans-serif; font-weight: 800;
+    font-size: clamp(36px, 5vw, 56px); line-height: 1.15; color: #FFFFFF;
+  }
+  .sdl-contact-heading .accent { color: var(--success); }
+  .sdl-contact-sub-dark { margin-top: 22px; max-width: 420px; font-size: 16px; line-height: 1.65; color: rgba(255,255,255,0.65); }
+  .sdl-contact-pill {
+    margin-top: 32px; display: inline-flex; align-items: center; gap: 10px;
+    border: 1px solid rgba(255,255,255,0.14); border-radius: 999px; padding: 10px 18px 10px 10px;
+    font-size: 13px; color: rgba(255,255,255,0.8);
+  }
+  .sdl-contact-pill .pill-icon {
+    width: 22px; height: 22px; border-radius: 50%; background: rgba(40,199,111,0.18); color: var(--success);
+    display: flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0;
+  }
+
+  .sdl-form-card {
+    position: relative; background: #FBFAF7; border-radius: 24px; overflow: hidden;
+    box-shadow: 0 30px 70px rgba(0,0,0,0.35);
+  }
+  .sdl-form-card-head {
+    display: flex; justify-content: space-between; padding: 20px 40px 0;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #97A1B0;
+  }
+  .sdl-form { padding: 16px 40px 40px; }
+  .sdl-form-row-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .sdl-form-row { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+  .sdl-form-row label { font-size: 13px; font-weight: 700; color: #162833; }
+  .sdl-form-row label .optional { font-weight: 500; color: #97A1B0; text-transform: none; letter-spacing: 0; }
+  .sdl-form-row input, .sdl-form-row textarea {
+    font-family: inherit; font-size: 15px; color: #162833; padding: 13px 16px; border-radius: 10px;
+    border: 1.5px solid #E4E9F2; background: #FFFFFF; outline: none; resize: vertical; transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .sdl-form-row input::placeholder, .sdl-form-row textarea::placeholder { color: #B9C0CC; }
+  .sdl-form-row input:focus, .sdl-form-row textarea:focus { border-color: var(--accent); background: #FFFFFF; }
+  .sdl-form-submit {
+    width: 100%; margin-top: 6px; border: none; cursor: pointer; background: var(--accent); color: #FFFFFF;
+    font-weight: 700; font-size: 16px; padding: 16px; border-radius: 999px; font-family: inherit;
+    display: flex; align-items: center; justify-content: center; gap: 8px; transition: background 0.15s ease, transform 0.15s ease;
+  }
+  .sdl-form-submit:hover { background: var(--accent-hover); transform: translateY(-1px); }
+  .sdl-form-submit-icon { display: inline-block; transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .sdl-form-submit:hover .sdl-form-submit-icon { transform: translate(6px, -3px) rotate(12deg); }
+  .sdl-form-fineprint { margin-top: 14px; text-align: center; font-size: 12.5px; color: #97A1B0; }
+  .sdl-form-success { display: none; text-align: center; padding: 24px 0; }
+  .sdl-form-success.show { display: block; }
+  .sdl-form-success .icon {
+    width: 52px; height: 52px; border-radius: 50%; background: rgba(40,199,111,0.14); color: var(--success);
+    display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;
+  }
+  .sdl-form-success .title { font-size: 19px; font-weight: 700; color: #162833; }
+  .sdl-form-success .sub { margin-top: 8px; font-size: 15px; color: #46535F; }
+
+  /* ---------- footer ---------- */
+  .sdl-footer { position: relative; background: #101826; color: #A9B2C0; padding: 56px 48px 28px; }
+  .sdl-footer-inner { max-width: 1360px; margin: 0 auto; }
+
+  .sdl-footer-top {
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 48px; flex-wrap: wrap;
+    padding-bottom: 32px; margin-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .sdl-footer-brand { max-width: 280px; flex-shrink: 0; }
+  .sdl-footer-logo { height: 34px; width: auto; display: block; filter: brightness(0) invert(1); }
+  .sdl-footer-tagline { margin-top: 14px; font-size: 14px; line-height: 1.6; color: #8891A0; }
+
+  .sdl-footer-cols { flex: 1 1 auto; display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; }
+  .sdl-footer-col-title { font-size: 12px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #FFFFFF; margin-bottom: 14px; }
+  .sdl-footer-links { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .sdl-footer-links a { color: #A9B2C0; font-size: 13.5px; transition: color 0.15s ease; }
+  .sdl-footer-links a:hover { color: #FFFFFF; }
+
+  .sdl-footer-social-icon {
+    width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.06); color: #A9B2C0 !important;
+    display: flex; align-items: center; justify-content: center; transition: background 0.15s ease, color 0.15s ease !important;
+  }
+  .sdl-footer-social-icon:hover { background: var(--accent); color: #FFFFFF !important; }
+
+  .sdl-footer-bottom {
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+    font-size: 13px; color: #7A8494;
+  }
+  .sdl-footer-bottom-right { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+
+  @media (max-width: 1060px) {
+    .sdl-invest-card { padding: 36px 28px; }
+    .sdl-invest-steps { flex-wrap: wrap; }
+    .sdl-invest-step { flex: 1 1 50%; border-bottom: 1px solid rgba(255,255,255,0.1); min-height: 170px; }
+    .sdl-ai-grid { grid-template-columns: 1fr; gap: 24px; }
+    .sdl-ai-left { padding-top: 0; }
+    .sdl-process-grid { grid-template-columns: repeat(2, 1fr); }
+    .sdl-proof-split { grid-template-columns: 1fr; gap: 32px; }
+    .sdl-logo-strip { grid-template-columns: repeat(3, 1fr); }
+    .sdl-testimonials-grid { grid-template-columns: 1fr; }
+    .sdl-insight-card { flex: 0 0 calc(50% - 10px); }
+    .sdl-form-row-pair { grid-template-columns: 1fr; }
+    .sdl-contact-grid { grid-template-columns: 1fr; gap: 32px; }
+    .sdl-footer-cols { max-width: none; grid-template-columns: repeat(2, 1fr); row-gap: 32px; }
+  }
+
+  @media (max-width: 1060px) {
+    .sdl-desktop-nav, .sdl-desktop-cta { display: none !important; }
+    .sdl-mobile-toggle { display: flex !important; }
+    .sdl-header-inner { padding-left: 24px !important; padding-right: 24px !important; }
+    .sdl-hero { grid-template-columns: 1fr !important; padding: 56px 24px 64px !important; }
+    .sdl-hero-copy { font-size: 38px !important; }
+    .sdl-hero-visual { max-width: 420px; margin: 0 auto; order: -1; }
+    .sdl-pillars { padding: 72px 24px 80px; }
+    .sdl-section { padding: 72px 24px 80px; }
+    .sdl-section--tight { padding-top: 48px; padding-bottom: 56px; }
+    .sdl-footer { padding: 64px 24px 28px; }
+    .sdl-explain { padding: 8px 24px 56px; }
+  }
+
+  @media (max-width: 560px) {
+    .sdl-pillars-grid { grid-template-columns: 1fr; }
+    .sdl-footer-top { flex-direction: column; align-items: flex-start; }
+    .sdl-footer-cols { grid-template-columns: 1fr; }
+    .sdl-invest-step { flex: 1 1 100%; }
+    .sdl-process-grid { grid-template-columns: 1fr; }
+    .sdl-logo-strip { grid-template-columns: repeat(2, 1fr); }
+    .sdl-insight-card { flex: 0 0 88%; }
+  }
+
+  /* ---------- scroll-reveal motion ---------- */
+  /* Uses `animation` (not `transition`) so it never clobbers components' own
+     hover/interaction transitions, which share the same properties. */
+  .reveal, .reveal-group > * { opacity: 0; transform: translateY(24px); }
+  .reveal.is-visible, .reveal-group.is-visible > * {
+    animation: sdlRevealIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  @keyframes sdlRevealIn { to { opacity: 1; transform: translateY(0); } }
+  .reveal-group > *:nth-child(1) { animation-delay: 0s; }
+  .reveal-group > *:nth-child(2) { animation-delay: 0.07s; }
+  .reveal-group > *:nth-child(3) { animation-delay: 0.14s; }
+  .reveal-group > *:nth-child(4) { animation-delay: 0.21s; }
+  .reveal-group > *:nth-child(5) { animation-delay: 0.28s; }
+  .reveal-group > *:nth-child(6) { animation-delay: 0.35s; }
+  .reveal-group > *:nth-child(7) { animation-delay: 0.42s; }
+  .reveal-group > *:nth-child(8) { animation-delay: 0.49s; }
+
+  .sdl-hero-copy-wrap, .sdl-hero-visual {
+    opacity: 0; transform: translateY(18px);
+    animation: sdlRevealIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  .sdl-hero-visual { animation-delay: 0.15s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal, .reveal-group > *, .sdl-hero-copy-wrap, .sdl-hero-visual {
+      animation: none !important; opacity: 1 !important; transform: none !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div style="font-family:'Inter',sans-serif;background:#F6F8FC;min-height:100vh">
+
+  <header class="sdl-header" id="sdlHeader">
+    <div class="sdl-header-inner">
+      <div class="sdl-header-left">
+        <a href="index.html" style="display: flex; align-items: center; flex-shrink: 0; color: inherit; text-decoration: none;">
+          <img src="assets/sdl-logo.svg" alt="Social DNA Labs" class="sdl-logo" />
+        </a>
+      </div>
+
+      <div class="sdl-header-nav-wrap">
+        <nav class="sdl-desktop-nav" id="desktopNav"></nav>
+      </div>
+
+      <div class="sdl-header-right">
+        <a href="#contact" class="sdl-cta sdl-desktop-cta">Let's talk →</a>
+
+        <button class="sdl-mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+          <svg width="22" height="16" viewBox="0 0 22 16"><rect width="22" height="2" fill="#162833"></rect><rect y="7" width="22" height="2" fill="#162833"></rect><rect y="14" width="22" height="2" fill="#162833"></rect></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="sdl-mega-panel" id="megaPanel"></div>
+    <div class="sdl-mobile-panel" id="mobilePanel"></div>
+  </header>
+
+  <section class="sdl-hero">
+    <div class="sdl-hero-copy-wrap">
+      <div class="sdl-hero-copy">
+        <div><span class="accent">AI</span> accelerates.</div>
+        <div>Experience <span class="accent">directs.</span></div>
+        <div>Business impact <span class="accent">follows.</span></div>
+      </div>
+      <p class="sdl-hero-sub">
+        Harness AI, technology and experience to move faster, build better and create measurable business impact.
+      </p>
+      <div class="sdl-hero-actions">
+        <a href="#" class="sdl-hero-primary">Talk to an expert →</a>
+        <a href="#" class="sdl-hero-secondary">Explore capabilities →</a>
+      </div>
+    </div>
+
+    <div class="sdl-hero-visual">
+      <canvas id="heroCanvas" width="1040" height="960"></canvas>
+    </div>
+  </section>
+
+  <section class="sdl-explain" id="approach">
+    <div class="sdl-explain-inner">
+      <div class="sdl-explain-kicker reveal"><span class="kicker-line"></span><span class="sdl-explain-kicker-label">Our approach</span><span class="kicker-line"></span></div>
+      <div class="sdl-explain-title reveal">From potential to impact.</div>
+
+      <div class="sdl-explain-panel">
+      <div class="sdl-explain-row reveal-group">
+        <div class="sdl-explain-step">
+          <svg class="sdl-explain-icon" viewBox="0 0 120 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="14" cy="18" r="3" fill="#2DD4BF"/>
+            <circle cx="34" cy="10" r="2.4" fill="#60A5FA"/>
+            <circle cx="52" cy="24" r="3.2" fill="#4F76F6"/>
+            <circle cx="20" cy="42" r="2.6" fill="#22D3EE"/>
+            <circle cx="46" cy="46" r="2.2" fill="#7C6BF0"/>
+            <circle cx="66" cy="14" r="2.6" fill="#38BDF8"/>
+            <circle cx="72" cy="40" r="3" fill="#2DD4BF"/>
+            <circle cx="8" cy="58" r="2.2" fill="#60A5FA"/>
+            <circle cx="30" cy="64" r="2.8" fill="#4F76F6"/>
+            <circle cx="58" cy="60" r="2.4" fill="#22D3EE"/>
+            <circle cx="86" cy="26" r="2.4" fill="#7C6BF0"/>
+            <circle cx="80" cy="58" r="2.2" fill="#38BDF8"/>
+            <circle cx="42" cy="30" r="1.8" fill="#2DD4BF"/>
+            <circle cx="60" cy="36" r="2" fill="#60A5FA"/>
+          </svg>
+          <div class="sdl-explain-step-title">Ideas everywhere</div>
+          <div class="sdl-explain-step-desc">Every business has possibilities.</div>
+        </div>
+
+        <div class="sdl-explain-arrow">›</div>
+
+        <div class="sdl-explain-step">
+          <svg class="sdl-explain-icon" viewBox="0 0 120 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g stroke="#8FB6F5" stroke-width="1" opacity="0.8">
+              <line x1="10" y1="14" x2="92" y2="40"/>
+              <line x1="16" y1="60" x2="92" y2="40"/>
+              <line x1="30" y1="10" x2="92" y2="40"/>
+              <line x1="8" y1="40" x2="92" y2="40"/>
+              <line x1="40" y1="64" x2="92" y2="40"/>
+              <line x1="46" y1="16" x2="92" y2="40"/>
+            </g>
+            <circle cx="10" cy="14" r="2.6" fill="#60A5FA"/>
+            <circle cx="16" cy="60" r="2.6" fill="#4F76F6"/>
+            <circle cx="30" cy="10" r="2.2" fill="#22D3EE"/>
+            <circle cx="8" cy="40" r="2.4" fill="#7C6BF0"/>
+            <circle cx="40" cy="64" r="2.2" fill="#38BDF8"/>
+            <circle cx="46" cy="16" r="2" fill="#2DD4BF"/>
+            <circle cx="92" cy="40" r="4.5" fill="#2FD4C4"/>
+          </svg>
+          <div class="sdl-explain-step-title">Intelligence connects</div>
+          <div class="sdl-explain-step-desc">AI and technology find what matters.</div>
+        </div>
+
+        <div class="sdl-explain-arrow">›</div>
+
+        <div class="sdl-explain-step">
+          <svg class="sdl-explain-icon" viewBox="0 0 120 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="96" cy="40" r="12" fill="#38BDF8" opacity="0.14"/>
+            <g stroke="#3E7BF2" stroke-width="1.4" opacity="0.9">
+              <line x1="14" y1="20" x2="96" y2="40"/>
+              <line x1="14" y1="60" x2="96" y2="40"/>
+              <line x1="30" y1="12" x2="96" y2="40"/>
+              <line x1="30" y1="68" x2="96" y2="40"/>
+            </g>
+            <circle cx="14" cy="20" r="2.6" fill="#4F76F6"/>
+            <circle cx="14" cy="60" r="2.6" fill="#4F76F6"/>
+            <circle cx="30" cy="12" r="2.2" fill="#38BDF8"/>
+            <circle cx="30" cy="68" r="2.2" fill="#38BDF8"/>
+            <circle cx="96" cy="40" r="5" fill="#2FE0C8"/>
+          </svg>
+          <div class="sdl-explain-step-title">Acceleration happens</div>
+          <div class="sdl-explain-step-desc">Work moves faster with the right direction.</div>
+        </div>
+
+        <div class="sdl-explain-arrow">›</div>
+
+        <div class="sdl-explain-step">
+          <svg class="sdl-explain-icon" viewBox="0 0 120 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="32" r="2.4" fill="#7DD8F0"/>
+            <circle cx="20" cy="40" r="2.4" fill="#7DD8F0"/>
+            <circle cx="20" cy="48" r="2.4" fill="#7DD8F0"/>
+            <circle cx="34" cy="32" r="2.6" fill="#5AB4EA"/>
+            <circle cx="34" cy="40" r="2.6" fill="#5AB4EA"/>
+            <circle cx="34" cy="48" r="2.6" fill="#5AB4EA"/>
+            <circle cx="48" cy="32" r="2.8" fill="#4A93E8"/>
+            <circle cx="48" cy="40" r="2.8" fill="#4A93E8"/>
+            <circle cx="48" cy="48" r="2.8" fill="#4A93E8"/>
+            <circle cx="56" cy="20" r="2.6" fill="#3E7BF2"/>
+            <circle cx="56" cy="40" r="3" fill="#3E7BF2"/>
+            <circle cx="56" cy="60" r="2.6" fill="#3E7BF2"/>
+            <circle cx="68" cy="24" r="2.8" fill="#3568E8"/>
+            <circle cx="68" cy="40" r="3.2" fill="#3568E8"/>
+            <circle cx="68" cy="56" r="2.8" fill="#3568E8"/>
+            <circle cx="80" cy="28" r="3" fill="#2E52D8"/>
+            <circle cx="80" cy="40" r="3.4" fill="#2E52D8"/>
+            <circle cx="80" cy="52" r="3" fill="#2E52D8"/>
+            <circle cx="92" cy="34" r="3.2" fill="#2C3FC8"/>
+            <circle cx="92" cy="40" r="3.6" fill="#2C3FC8"/>
+            <circle cx="92" cy="46" r="3.2" fill="#2C3FC8"/>
+            <circle cx="102" cy="40" r="4" fill="#2C2C9E"/>
+          </svg>
+          <div class="sdl-explain-step-title">Impact delivered</div>
+          <div class="sdl-explain-step-desc">Stronger outcomes. Measurable value.</div>
+        </div>
+      </div>
+
+      <div class="sdl-explain-note reveal">
+        <span class="sdl-explain-note-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8L12 2z"/></svg>
+        </span>
+        <span class="sdl-explain-note-strong">Technology is powerful.</span>
+        <span class="sdl-explain-note-divider"></span>
+        <span class="sdl-explain-note-accent">Purpose makes it valuable.</span>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sdl-pillars" id="capabilities">
+    <div class="sdl-pillars-bg" aria-hidden="true">
+      <div class="sdl-pillars-bg-dots"></div>
+      <svg class="sdl-pillars-bg-glyph" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 2C53 32 68 47 98 50C68 53 53 68 50 98C47 68 32 53 2 50C32 47 47 32 50 2Z" fill="#2B49DB"/>
+      </svg>
+    </div>
+    <div class="sdl-pillars-inner">
+      <svg class="sdl-pillars-blueprint" viewBox="0 0 440 290" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <g id="sdlBlueprintRow">
+            <rect x="22" y="0" width="150" height="34" fill="none" stroke="#C3CAD6" stroke-width="1" />
+            <g fill="none" stroke="#DCE1E9" stroke-width="0.75">
+              <line x1="34" y1="9" x2="34" y2="25" /><line x1="50" y1="9" x2="50" y2="25" />
+              <line x1="66" y1="9" x2="66" y2="25" />
+            </g>
+            <circle cx="152" cy="17" r="4" fill="none" stroke="#C3CAD6" stroke-width="1" />
+          </g>
+        </defs>
+
+        <!-- height bracket, capped at both ends of the stack -->
+        <g stroke="#C3CAD6" stroke-width="1">
+          <line x1="6" y1="20" x2="6" y2="254" />
+          <line x1="2" y1="20" x2="10" y2="20" />
+          <line x1="2" y1="254" x2="10" y2="254" />
+        </g>
+
+        <!-- the stack: every row drawn from one definition, so the rhythm never breaks -->
+        <use href="#sdlBlueprintRow" y="20" />
+        <use href="#sdlBlueprintRow" y="60" />
+        <use href="#sdlBlueprintRow" y="140" />
+        <use href="#sdlBlueprintRow" y="180" />
+        <use href="#sdlBlueprintRow" y="220" />
+
+        <!-- the one selected row -->
+        <rect x="22" y="100" width="150" height="34" fill="rgba(43,73,219,0.08)" stroke="#2B49DB" stroke-opacity="0.55" stroke-width="1.25" />
+        <g stroke="#2B49DB" stroke-opacity="0.5" stroke-width="0.9">
+          <line x1="34" y1="109" x2="34" y2="125" /><line x1="50" y1="109" x2="50" y2="125" />
+          <line x1="66" y1="109" x2="66" y2="125" />
+        </g>
+        <circle cx="152" cy="117" r="4" fill="#2B49DB" fill-opacity="0.6" />
+
+        <!-- width dimension across the stack -->
+        <g stroke="#C3CAD6" stroke-width="1">
+          <line x1="22" y1="272" x2="172" y2="272" />
+          <line x1="22" y1="268" x2="22" y2="276" />
+          <line x1="172" y1="268" x2="172" y2="276" />
+        </g>
+
+        <!-- the selected row routes out to both downstream modules -->
+        <g fill="none" stroke="#2B49DB" stroke-opacity="0.32" stroke-width="1">
+          <path d="M172 117 L192 117 L192 66 L210 66" />
+          <path d="M192 117 L192 206 L214 206" />
+        </g>
+        <circle cx="192" cy="117" r="2.6" fill="#2B49DB" fill-opacity="0.45" />
+
+        <!-- module one: a measured result -->
+        <rect x="210" y="40" width="140" height="82" fill="none" stroke="#C3CAD6" stroke-width="1" />
+        <g fill="none" stroke="#DCE1E9" stroke-width="0.75">
+          <line x1="222" y1="56" x2="222" y2="108" />
+          <line x1="222" y1="108" x2="338" y2="108" />
+        </g>
+        <polyline points="222,98 250,84 278,90 306,68 334,60" fill="none" stroke="#2B49DB" stroke-opacity="0.35" stroke-width="1.2" />
+        <g fill="#2B49DB" fill-opacity="0.4">
+          <circle cx="250" cy="84" r="2" /><circle cx="278" cy="90" r="2" />
+          <circle cx="306" cy="68" r="2" /><circle cx="334" cy="60" r="2" />
+        </g>
+
+        <!-- module two: connected capabilities -->
+        <rect x="214" y="168" width="158" height="92" fill="none" stroke="#DCE1E9" stroke-width="0.75" stroke-dasharray="4 5" />
+        <g stroke="#C3CAD6" stroke-width="1">
+          <line x1="238" y1="238" x2="272" y2="196" />
+          <line x1="272" y1="196" x2="310" y2="234" />
+          <line x1="310" y1="234" x2="348" y2="192" />
+          <line x1="272" y1="196" x2="348" y2="192" />
+        </g>
+        <g fill="none" stroke="#C3CAD6" stroke-width="1">
+          <circle cx="238" cy="238" r="5" /><circle cx="310" cy="234" r="5" /><circle cx="348" cy="192" r="5" />
+        </g>
+        <circle cx="272" cy="196" r="5.5" fill="#2B49DB" fill-opacity="0.5" />
+
+        <!-- registration mark -->
+        <g stroke="#C3CAD6" stroke-width="1" fill="none">
+          <circle cx="404" cy="150" r="9" />
+          <line x1="392" y1="150" x2="416" y2="150" />
+          <line x1="404" y1="138" x2="404" y2="162" />
+        </g>
+      </svg>
+      <div class="sdl-pillars-head sdl-split-head reveal">
+        <div>
+          <div class="sdl-kicker"><span class="kicker-line"></span> Capabilities</div>
+        </div>
+        <div class="sdl-split-head-body">
+          <div class="sdl-pillars-title">Where technology can make a difference.</div>
+          <p class="sdl-pillars-sub">Technology creates possibilities. Experience turns the right ones into business capability.</p>
+        </div>
+      </div>
+
+      <div class="sdl-pillars-grid reveal-group" id="pillarsGrid"></div>
+
+      <div class="sdl-pillars-footer-row">
+        <a class="sdl-cta-link" href="services.html">View all services →</a>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="sdl-section sdl-section--white">
+    <div class="sdl-section-inner">
+      <div class="sdl-invest-card reveal">
+        <div class="sdl-kicker sdl-kicker--dark"><span class="kicker-line"></span> Investment</div>
+        <div class="sdl-invest-title" style="margin-top: 14px;">Technology is an investment. Make it return.</div>
+        <p class="sdl-invest-sub">Every technology investment should create something better. The goal isn't more technology. It's more value from the technology you already have, and the technology you add next.</p>
+
+        <div class="sdl-invest-steps reveal-group" id="investSteps"></div>
+
+        <div class="sdl-invest-divider"></div>
+
+        <div class="sdl-invest-closing">
+          <div class="line1">More effective growth.</div>
+          <div class="line2">More value from technology.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sdl-section sdl-section--white sdl-section--tight">
+    <div class="sdl-section-inner">
+      <div class="sdl-ai-grid">
+        <div class="sdl-ai-left reveal">
+          <div class="sdl-kicker sdl-ai-kicker"><span class="kicker-line"></span> AI with purpose</div>
+          <p>SDL brings AI together with engineering and business experience to move from experimentation to practical impact.</p>
+          <a class="sdl-ai-cta-btn" href="ai-transformation.html">Explore AI transformation <span aria-hidden="true">↗</span></a>
+        </div>
+
+        <div class="reveal">
+          <div class="sdl-section-title">AI is everywhere. Value isn't.</div>
+          <div class="sdl-ai-right-body">
+            <p>AI is changing what businesses can build and how quickly they can move. The opportunity isn't to use AI everywhere. It's to know where it can create meaningful advantage.</p>
+          </div>
+
+          <div class="sdl-process-grid reveal-group" id="aiProcess"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sdl-section sdl-section--alt" id="proof">
+    <div class="sdl-section-inner">
+      <div class="sdl-proof-head sdl-split-head reveal">
+        <div class="sdl-kicker"><span class="kicker-line"></span> Proof</div>
+        <div class="sdl-split-head-body">
+          <div class="sdl-section-title">Experience changes the outcome.</div>
+        </div>
+      </div>
+
+      <div class="sdl-proof-split">
+        <div class="reveal">
+          <p class="sdl-proof-split-text">15+ years of technology delivery have taught SDL something simple: good technology has to work in the real world. Across complex systems, digital products, customer experiences and business operations, the focus remains the same: technology that people can use, businesses can run and teams can build on.</p>
+          <div class="sdl-proof-callout">Built for real business. Trusted by teams building what comes next.</div>
+          <a class="sdl-cta-link sdl-cta-link--sm sdl-proof-clients-cta" href="#">View all clients →</a>
+        </div>
+
+        <div class="reveal">
+          <div class="sdl-proof-block-title">Built for real business</div>
+          <div class="sdl-logo-strip reveal-group" id="logoStrip"></div>
+        </div>
+      </div>
+
+      <div class="sdl-proof-divider"></div>
+
+      <div class="sdl-testimonials-head reveal">
+        <div class="sdl-testimonials-head-text">
+          <div class="sdl-kicker">Client perspective</div>
+          <div class="sdl-section-title sdl-section-title--sm">Experience, in their words.</div>
+        </div>
+      </div>
+      <div class="sdl-testimonials-grid reveal-group" id="testimonialsGrid"></div>
+      <a class="sdl-cta-link sdl-cta-link--sm sdl-testimonials-cta" href="#">View all testimonials →</a>
+    </div>
+  </section>
+
+  <section class="sdl-section sdl-section--white sdl-section--tight" id="insights">
+    <div class="sdl-section-inner">
+      <div class="sdl-pillars-head sdl-split-head reveal">
+        <div class="sdl-kicker"><span class="kicker-line"></span> Insights</div>
+        <div class="sdl-split-head-body">
+          <div class="sdl-section-title">Think ahead.</div>
+          <p class="sdl-section-sub">Perspectives on AI, technology, transformation and digital growth for businesses navigating what's next.</p>
+        </div>
+      </div>
+
+      <div class="sdl-insights-nav-row">
+        <div class="sdl-kicker" id="insightsCount"></div>
+        <div class="sdl-insights-arrows">
+          <button class="sdl-arrow-btn" id="insightsPrev" aria-label="Previous">‹</button>
+          <button class="sdl-arrow-btn" id="insightsNext" aria-label="Next">›</button>
+        </div>
+      </div>
+
+      <div class="sdl-insights-scroll reveal-group" id="insightsGrid"></div>
+
+      <div class="sdl-insights-footer-row">
+        <span>Swipe through the latest thinking</span>
+        <a class="sdl-cta-link" href="#">Explore insights →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sdl-section sdl-contact-section" id="contact">
+    <div class="sdl-section-inner sdl-contact-grid">
+      <div class="reveal">
+        <div class="sdl-kicker sdl-kicker--dark"><span class="kicker-line"></span> Start a conversation</div>
+        <div class="sdl-contact-heading">Have an outcome<br><span class="accent">in mind?</span></div>
+        <p class="sdl-contact-sub-dark">Tell us what you're trying to build, improve or change. The conversation starts with the business challenge, not the technology.</p>
+
+        <div class="sdl-contact-pill">
+          <span class="pill-icon">✦</span> Business-first thinking. Technology that earns its place.
+        </div>
+      </div>
+
+      <div class="sdl-form-card reveal">
+        <div class="sdl-form-card-head">
+          <span>Let's talk</span><span id="formStepCount">01 / 01</span>
+        </div>
+        <div class="sdl-form">
+          <form id="contactForm" novalidate>
+            <div class="sdl-form-row-pair">
+              <div class="sdl-form-row">
+                <label for="cf-name">Name*</label>
+                <input id="cf-name" name="name" type="text" required autocomplete="name" placeholder="Your name" />
+              </div>
+              <div class="sdl-form-row">
+                <label for="cf-email">Work email*</label>
+                <input id="cf-email" name="email" type="email" required autocomplete="email" placeholder="you@company.com" />
+              </div>
+            </div>
+            <div class="sdl-form-row-pair">
+              <div class="sdl-form-row">
+                <label for="cf-company">Company*</label>
+                <input id="cf-company" name="company" type="text" required autocomplete="organization" placeholder="Your company" />
+              </div>
+              <div class="sdl-form-row">
+                <label for="cf-phone">Phone <span class="optional">(optional)</span></label>
+                <input id="cf-phone" name="phone" type="tel" autocomplete="tel" placeholder="+1" />
+              </div>
+            </div>
+            <div class="sdl-form-row">
+              <label for="cf-goal">What are you looking to achieve?*</label>
+              <textarea id="cf-goal" name="goal" rows="4" placeholder="A little about the challenge or opportunity…"></textarea>
+            </div>
+            <button type="submit" class="sdl-form-submit">Start the conversation <span class="sdl-form-submit-icon" aria-hidden="true">✈</span></button>
+            <div class="sdl-form-fineprint">We'll only use your details to respond to this enquiry.</div>
+          </form>
+          <div class="sdl-form-success" id="formSuccess">
+            <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+            <div class="title">Thanks — message received.</div>
+            <div class="sub">Someone from SDL will get back to you shortly.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer class="sdl-footer">
+  <div class="sdl-footer-inner">
+    <div class="sdl-footer-top">
+      <div class="sdl-footer-brand">
+        <img src="assets/sdl-logo.svg" alt="Social DNA Labs" class="sdl-footer-logo" />
+        <p class="sdl-footer-tagline">Technology, experience and AI for businesses building what comes next.</p>
+      </div>
+
+      <div class="sdl-footer-cols" id="footerCols"></div>
+    </div>
+
+    <div class="sdl-footer-bottom">
+      <div id="footerYear">© Social DNA Labs</div>
+      <div class="sdl-footer-bottom-right">
+        <div>Business impact, by design.</div>
+        <a href="#" class="sdl-footer-social-icon" aria-label="LinkedIn"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zm7 0h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.6c0-1.34-.02-3.06-1.87-3.06-1.87 0-2.16 1.46-2.16 2.96V21h-4z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var ACCENT = '#2B49DB';
+  var MEGA_MENU_ENABLED = true;
+
+  var MENUS = [
+    { key: 'services', label: 'Services', href: 'services.html', cta: { label: 'View all services', href: 'services.html' }, items: [
+      { title: 'AI transformation', desc: 'Turn AI potential into practical business value.', href: 'ai-transformation.html' },
+      { title: 'Digital engineering', desc: 'Build, modernize and scale digital products.', href: 'digital-engineering.html' },
+      { title: 'Business transformation', desc: 'Rethink systems, processes and ways of working.', href: 'business-transformation.html' },
+      { title: 'Digital experience', desc: 'Create better experiences across every touchpoint.', href: 'digital-experience.html' },
+      { title: 'Growth transformation', desc: 'Turn digital attention into qualified demand.', href: 'growth-transformation.html' }
+    ]},
+    { key: 'products', label: 'Products & Platforms', cta: { label: 'Explore EVOQ', href: 'evoq.html' }, items: [
+      { title: 'EVOQ', desc: 'The unified business suite for modern operations.', href: 'evoq.html' }
+    ]},
+    { key: 'insights', label: 'Insights', cta: { label: 'Explore insights', href: '#' }, items: [
+      { title: 'Blogs', desc: 'Ideas, perspectives and practical thinking.' },
+      { title: 'Case studies', desc: 'Real projects. Real business outcomes.' },
+      { title: 'Whitepapers', desc: 'In-depth research and perspectives.' },
+      { title: 'Featured projects', desc: 'Selected work and digital experiences.' }
+    ]},
+    { key: 'company', label: 'Company', cta: null, items: [
+      { title: 'About', desc: 'The people and experience behind SDL.' },
+      { title: 'Our approach', desc: 'How SDL thinks, builds and works.' },
+      { title: 'Clients', desc: 'The businesses SDL works with.' },
+      { title: 'Careers', desc: "Build what's next with SDL." }
+    ]}
+  ];
+
+  var ICONS = {
+    'AI transformation': '<path d="M24 6l4.2 9.4L38 20l-9.8 4.6L24 34l-4.2-9.4L10 20l9.8-4.6L24 6z"/><circle cx="24" cy="20" r="3.4"/>',
+    'Digital engineering': '<path d="M17 15l-8 8 8 8M31 15l8 8-8 8M27 12l-6 24"/>',
+    'Business transformation': '<circle cx="24" cy="24" r="7"/><path d="M24 8v5M24 39v5M8 24h5M39 24h5M12.9 12.9l3.5 3.5M31.6 31.6l3.5 3.5M35.1 12.9l-3.5 3.5M16.4 31.6l-3.5 3.5"/>',
+    'Digital experience': '<rect x="10" y="12" width="28" height="20" rx="2.5"/><path d="M18 40h12M24 32v8"/>',
+    'Growth transformation': '<path d="M9 33l9-11 7 7 14-17"/><path d="M31 12h8v8"/>',
+    'Products & platforms': '<rect x="9" y="9" width="13" height="13" rx="2"/><rect x="26" y="9" width="13" height="13" rx="2"/><rect x="9" y="26" width="13" height="13" rx="2"/><rect x="26" y="26" width="13" height="13" rx="2"/>',
+    'EVOQ': '<rect x="9" y="9" width="13" height="13" rx="2"/><rect x="26" y="9" width="13" height="13" rx="2"/><rect x="9" y="26" width="13" height="13" rx="2"/><rect x="26" y="26" width="13" height="13" rx="2"/>',
+    'Blogs': '<path d="M14 8h14l6 6v22a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2z"/><path d="M28 8v6h6M17 24h14M17 30h14"/>',
+    'Case studies': '<path d="M14 8h14l6 6v22a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2z"/><path d="M28 8v6h6M18 26l4 4 8-9"/>',
+    'Whitepapers': '<path d="M14 8h14l6 6v22a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2z"/><path d="M28 8v6h6M17 22h14M17 28h9"/>',
+    'Featured projects': '<path d="M24 6l4.6 12.6L42 21l-9 9 2.3 13-11.3-6.5L12.7 43 15 30l-9-9 13.4-2.4L24 6z"/>',
+    'About': '<rect x="12" y="10" width="24" height="28" rx="2"/><path d="M18 18h4M26 18h4M18 26h4M26 26h4M20 38v-6h8v6"/>',
+    'Our approach': '<circle cx="24" cy="24" r="13"/><circle cx="24" cy="24" r="7"/><circle cx="24" cy="24" r="1.6" fill="currentColor" stroke="none"/>',
+    'Clients': '<circle cx="18" cy="18" r="5"/><circle cx="32" cy="20" r="4"/><path d="M9 38c1-6 5-10 9-10s8 4 9 10M27 38c1-5 4-9 8-9 3 0 6 2 7 6"/>',
+    'Careers': '<rect x="8" y="16" width="32" height="20" rx="3"/><path d="M17 16v-4a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v4"/><path d="M8 25h32"/>'
+  };
+  var ICON_DEFAULT = '<circle cx="24" cy="24" r="4" fill="currentColor" stroke="none"/>';
+
+  // Per-pillar motifs: distinct silhouettes rendered with currentColor so each
+  // can take its own accent from PILLAR_MOTIF_COLORS, matching the glowing
+  // gradient treatment used on the AI transformation page.
+  var PILLAR_GLYPHS = {
+    'Digital engineering':
+      '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">' +
+      '<path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M50 4L84 25L84 75L50 96L16 75L16 25Z M50 30A20 20 0 1 0 50.01 30Z"/></svg>',
+
+    'Business transformation':
+      '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">' +
+      '<path d="M74 28A34 34 0 1 1 28 24" fill="none" stroke="currentColor" stroke-width="14" stroke-linecap="round"/>' +
+      '<path d="M18 10 L30 24 L14 30 Z" fill="currentColor"/></svg>',
+
+    'Digital experience':
+      '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">' +
+      '<path d="M22 8 L22 84 L41 67 L53 92 L66 86 L54 61 L78 61 Z" fill="currentColor"/></svg>',
+
+    'Growth transformation':
+      '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">' +
+      '<path d="M18 82 L82 18" stroke="currentColor" stroke-width="14" stroke-linecap="round" fill="none"/>' +
+      '<path d="M46 18 L82 18 L82 54" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>',
+
+    'Products & platforms':
+      '<svg viewBox="0 0 100 116" xmlns="http://www.w3.org/2000/svg">' +
+      '<polygon points="50,6 92,28 50,50 8,28" fill="currentColor"/>' +
+      '<polygon points="50,36 92,58 50,80 8,58" fill="currentColor" opacity="0.7"/>' +
+      '<polygon points="50,66 92,88 50,110 8,88" fill="currentColor" opacity="0.45"/></svg>'
+  };
+
+  var PILLAR_MOTIF_COLORS = [
+    ['#7C97FF', '#2B49DB'],
+    ['#8FD6FF', '#2B8FDB'],
+    ['#FFE38A', '#F4C430'],
+    ['#6FDBA0', '#28C76F'],
+    ['#A9BBFF', '#3E5FE0'],
+    ['#9BEFC4', '#22B368']
+  ];
+
+  var PILLARS = [
+    {
+      title: 'AI transformation',
+      tagline: 'Put AI to work where it matters.',
+      desc: 'Identify meaningful opportunities, build practical AI capabilities and accelerate adoption.',
+      tags: ['AI strategy & consulting', 'Generative AI', 'AI applications', 'AI agents & automation', 'AI-enabled engineering', 'AI integration'],
+      cta: { label: 'Explore AI transformation', href: 'ai-transformation.html' }
+    },
+    {
+      title: 'Digital engineering',
+      tagline: 'Build what moves you forward.',
+      desc: 'Create, modernize and scale digital products, applications and platforms.',
+      tags: ['Web App', 'Mobile App', 'Microservices', 'Quality engineering', 'Application modernization', 'Cloud'],
+      cta: { label: 'Explore digital engineering', href: 'digital-engineering.html' }
+    },
+    {
+      title: 'Business transformation',
+      tagline: 'Rethink how work gets done.',
+      desc: 'Modernize systems and processes to create stronger, more efficient ways of working.',
+      tags: ['Digital transformation', 'E-commerce', 'Business applications', 'Process modernization', 'SaaS'],
+      cta: { label: 'Explore business transformation', href: 'business-transformation.html' }
+    },
+    {
+      title: 'Digital experience',
+      tagline: 'Make every interaction matter.',
+      desc: 'Create digital experiences that work better for customers, employees and the business.',
+      tags: ['UX strategy', 'UI design', 'Product design', 'Customer experience', 'Employee experience', 'Design systems'],
+      cta: { label: 'Explore digital experience', href: 'digital-experience.html' }
+    },
+    {
+      title: 'Growth transformation',
+      tagline: 'Turn attention into business.',
+      desc: 'Bring AI search, SEO, digital marketing and digital channels together to create qualified demand and improve conversion.',
+      tags: ['AI search & visibility', 'SEO', 'Performance marketing', 'Content & demand generation', 'Conversion optimization', 'Analytics & measurement'],
+      cta: { label: 'Explore growth transformation', href: 'growth-transformation.html' }
+    },
+    {
+      title: 'Products & platforms',
+      tagline: 'Extend what your business can do.',
+      desc: 'Practical business software for managing customers, operations and people.',
+      tags: ['CRM', 'Campaigns', 'ServiceOps', 'Desk', 'Projects', 'Sync', 'Inventory', 'Billing', 'HRMS', 'Skillberry'],
+      cta: { label: 'Explore EVOQ', href: 'evoq.html' }
+    }
+  ];
+
+  var pillarsGrid = document.getElementById('pillarsGrid');
+  PILLARS.forEach(function (p, i) {
+    var card = document.createElement('div');
+    card.className = 'sdl-pillar-card';
+
+    var colors = PILLAR_MOTIF_COLORS[i % PILLAR_MOTIF_COLORS.length];
+
+    var visual = document.createElement('div');
+    visual.className = 'sdl-pillar-visual';
+    visual.style.setProperty('--motif-light', colors[0]);
+    visual.style.setProperty('--motif-mid', colors[1]);
+
+    var glow = document.createElement('div');
+    glow.className = 'sdl-pillar-glow';
+    visual.appendChild(glow);
+
+    if (p.title === 'AI transformation') {
+      var orb = document.createElement('div');
+      orb.className = 'sdl-pillar-orb';
+      visual.appendChild(orb);
+    } else if (PILLAR_GLYPHS[p.title]) {
+      var glyph = document.createElement('div');
+      glyph.className = 'sdl-pillar-glyph';
+      glyph.innerHTML = PILLAR_GLYPHS[p.title];
+      visual.appendChild(glyph);
+    }
+
+    card.appendChild(visual);
+
+    var title = document.createElement('div');
+    title.className = 'sdl-pillar-title';
+    title.textContent = p.title;
+    card.appendChild(title);
+
+    var reveal = document.createElement('div');
+    reveal.className = 'sdl-pillar-reveal';
+
+    var tagline = document.createElement('div');
+    tagline.className = 'sdl-pillar-tagline';
+    tagline.textContent = p.tagline;
+    reveal.appendChild(tagline);
+
+    var desc = document.createElement('p');
+    desc.className = 'sdl-pillar-desc';
+    desc.textContent = p.desc;
+    reveal.appendChild(desc);
+
+    var footer = document.createElement('div');
+    footer.className = 'sdl-pillar-footer';
+
+    if (p.tags && p.tags.length) {
+      var tagsWrap = document.createElement('div');
+      tagsWrap.className = 'sdl-pillar-tags';
+      p.tags.forEach(function (t) {
+        var chip = document.createElement('span');
+        chip.className = 'sdl-pillar-tag';
+        chip.textContent = t;
+        tagsWrap.appendChild(chip);
+      });
+      footer.appendChild(tagsWrap);
+    }
+
+    if (p.cta) {
+      var ctaLink = document.createElement('a');
+      ctaLink.className = 'sdl-pillar-cta';
+      ctaLink.href = p.cta.href;
+      ctaLink.setAttribute('aria-label', p.cta.label);
+      var ctaArrow = document.createElement('span');
+      ctaArrow.className = 'sdl-pillar-cta-arrow';
+      ctaArrow.textContent = '↗';
+      ctaLink.appendChild(ctaArrow);
+      footer.appendChild(ctaLink);
+    }
+
+    reveal.appendChild(footer);
+    card.appendChild(reveal);
+    pillarsGrid.appendChild(card);
+  });
+
+  // ---------- Investment steps ----------
+  var INVEST_STEPS = [
+    { n: '01', title: 'Investment', caption: 'What you put in' },
+    { n: '02', title: 'Technology', caption: 'What you build' },
+    { n: '03', title: 'Acceleration', caption: 'How you move' },
+    { n: '04', title: 'Capability', caption: 'What gets stronger' },
+    { n: '05', title: 'Outcome', caption: 'What changes' }
+  ];
+  var investSteps = document.getElementById('investSteps');
+  INVEST_STEPS.forEach(function (s, i) {
+    var step = document.createElement('div');
+    step.className = 'sdl-invest-step';
+
+    var top = document.createElement('div');
+    top.className = 'sdl-invest-step-top';
+    var num = document.createElement('span');
+    num.className = 'sdl-invest-step-num';
+    num.textContent = s.n;
+    top.appendChild(num);
+    if (i < INVEST_STEPS.length - 1) {
+      var arrow = document.createElement('span');
+      arrow.className = 'sdl-invest-step-arrow';
+      arrow.textContent = '→';
+      top.appendChild(arrow);
+    }
+    step.appendChild(top);
+
+    var bottom = document.createElement('div');
+    var tick = document.createElement('div');
+    tick.className = 'sdl-invest-step-tick';
+    bottom.appendChild(tick);
+    var title = document.createElement('div');
+    title.className = 'sdl-invest-step-title';
+    title.textContent = s.title;
+    bottom.appendChild(title);
+    var caption = document.createElement('div');
+    caption.className = 'sdl-invest-step-caption';
+    caption.textContent = s.caption;
+    bottom.appendChild(caption);
+    step.appendChild(bottom);
+
+    investSteps.appendChild(step);
+  });
+
+  // ---------- AI value: Find / Build / Accelerate / Scale ----------
+  var AI_STEPS = [
+    { n: '01', title: 'Find', desc: 'Identify where AI can create value.' },
+    { n: '02', title: 'Build', desc: 'Turn opportunities into useful capabilities.' },
+    { n: '03', title: 'Accelerate', desc: 'Move from idea to implementation faster.' },
+    { n: '04', title: 'Scale', desc: 'Take what works into the business.' }
+  ];
+  var aiProcess = document.getElementById('aiProcess');
+  AI_STEPS.forEach(function (s) {
+    var item = document.createElement('div');
+    item.className = 'sdl-process-item';
+    item.innerHTML =
+      '<div class="sdl-process-num">' + s.n + '</div>' +
+      '<div class="sdl-process-title">' + s.title + '</div>' +
+      '<div class="sdl-process-desc">' + s.desc + '</div>';
+    aiProcess.appendChild(item);
+  });
+
+  // ---------- Proof: client logos ----------
+  var CLIENT_LOGOS = [
+    'assets/clients/client1.jpg', 'assets/clients/client2.jpg', 'assets/clients/client3.jpg',
+    'assets/clients/client4.jpg', 'assets/clients/client5.jpg', 'assets/clients/client6.jpg'
+  ];
+  var logoStrip = document.getElementById('logoStrip');
+  CLIENT_LOGOS.forEach(function (src) {
+    var cell = document.createElement('div');
+    cell.className = 'sdl-logo-cell';
+    var img = document.createElement('img');
+    img.src = src;
+    img.alt = 'Client logo';
+    img.loading = 'lazy';
+    cell.appendChild(img);
+    logoStrip.appendChild(cell);
+  });
+
+  var TESTIMONIALS = [
+    {
+      name: 'Andy Collen', role: 'Great flexibility!', avatar: 'assets/testimonials/andy.png',
+      quote: "Jumping into a new ring of technology can sometimes be frustrating. However, the professional, talented folks at Social DNA Labs made App development fun and exciting. With Social DNA Labs, the possibilities are endless."
+    },
+    {
+      name: 'Jay Shah', role: 'Super support!', avatar: 'assets/testimonials/jayesh.png',
+      quote: 'Social DNA Labs provided my business the Data Systems with fully-fledged digital marketing services encompassing demand generation, digital advertising, search engine optimization, marketing automation, and lead generation. Their team works as an extension of our team, who are extremely efficient and provide real-time metrics that indicate the constant value our organization is receiving.'
+    }
+  ];
+  var testimonialsGrid = document.getElementById('testimonialsGrid');
+  TESTIMONIALS.forEach(function (t) {
+    var card = document.createElement('div');
+    card.className = 'sdl-testimonial-card';
+
+    var person = document.createElement('div');
+    person.className = 'sdl-testimonial-person';
+    var avatar = document.createElement('img');
+    avatar.className = 'sdl-testimonial-avatar';
+    avatar.src = t.avatar;
+    avatar.alt = t.name;
+    person.appendChild(avatar);
+    var nameWrap = document.createElement('div');
+    nameWrap.innerHTML = '<div class="sdl-testimonial-name">' + t.name + '</div><div class="sdl-testimonial-role">' + t.role + '</div>';
+    person.appendChild(nameWrap);
+    card.appendChild(person);
+
+    var text = document.createElement('div');
+    text.className = 'sdl-testimonial-text';
+    text.textContent = t.quote;
+    card.appendChild(text);
+
+    var tick = document.createElement('div');
+    tick.className = 'sdl-testimonial-tick';
+    card.appendChild(tick);
+
+    testimonialsGrid.appendChild(card);
+  });
+
+  // ---------- Insights ----------
+  // Placeholder articles — swap in real published pieces per category.
+  var INSIGHT_COLORS = [
+    { bg: 'var(--success)', text: 'dark' },
+    { bg: 'var(--attention)', text: 'dark' },
+    { bg: 'var(--accent)', text: 'light' }
+  ];
+  var INSIGHTS = [
+    {
+      cat: 'AI / Technology', title: 'Add a strong recent AI or technology article',
+      readTime: '6 min read', thumb: 'url(assets/insights/ai-tech.jpg)'
+    },
+    {
+      cat: 'Business / Transformation', title: 'Add a strong strategic transformation article',
+      readTime: '8 min read'
+    },
+    {
+      cat: 'Growth / Digital', title: 'Add a strong practical growth article',
+      readTime: '5 min read', thumb: 'url(assets/insights/growth.jpg)'
+    },
+    {
+      cat: 'Data / Analytics', title: 'Add a strong data and analytics article',
+      readTime: '7 min read'
+    },
+    {
+      cat: 'Cloud / Platforms', title: 'Add a strong cloud and platforms article',
+      readTime: '6 min read', thumb: 'url(assets/insights/cloud.jpg)'
+    },
+    {
+      cat: 'Customer Experience', title: 'Add a strong customer experience article',
+      readTime: '5 min read'
+    }
+  ];
+  var insightsCountEl = document.getElementById('insightsCount');
+  var insightsGrid = document.getElementById('insightsGrid');
+  var colorIndex = 0;
+  INSIGHTS.forEach(function (a) {
+    var card = document.createElement('div');
+    if (a.thumb) {
+      card.className = 'sdl-insight-card';
+      card.style.backgroundImage = a.thumb;
+    } else {
+      var swatch = INSIGHT_COLORS[colorIndex % INSIGHT_COLORS.length];
+      card.className = 'sdl-insight-card sdl-insight-card--color sdl-insight-card--' + swatch.text;
+      card.style.background = swatch.bg;
+      colorIndex++;
+    }
+
+    var topRow = document.createElement('div');
+    topRow.className = 'sdl-insight-top-row';
+    var badge = document.createElement('span');
+    badge.className = 'sdl-insight-thumb-badge';
+    badge.textContent = a.cat;
+    var linkIcon = document.createElement('span');
+    linkIcon.className = 'sdl-insight-link-icon';
+    linkIcon.textContent = '↗';
+    topRow.appendChild(badge);
+    topRow.appendChild(linkIcon);
+
+    var body = document.createElement('div');
+    body.className = 'sdl-insight-body';
+    var title = document.createElement('div');
+    title.className = 'sdl-insight-title';
+    title.textContent = a.title;
+    var meta = document.createElement('div');
+    meta.className = 'sdl-insight-meta';
+    meta.innerHTML = '<span>' + a.readTime + '</span><span class="read-link">Read perspective ↗</span>';
+
+    body.appendChild(title);
+    body.appendChild(meta);
+    card.appendChild(topRow);
+    card.appendChild(body);
+    insightsGrid.appendChild(card);
+  });
+
+  function insightsStep() {
+    var firstCard = insightsGrid.firstElementChild;
+    return firstCard ? firstCard.getBoundingClientRect().width + 20 : insightsGrid.clientWidth;
+  }
+  document.getElementById('insightsPrev').addEventListener('click', function () {
+    insightsGrid.scrollBy({ left: -insightsStep(), behavior: 'smooth' });
+  });
+  document.getElementById('insightsNext').addEventListener('click', function () {
+    insightsGrid.scrollBy({ left: insightsStep(), behavior: 'smooth' });
+  });
+
+  function updateInsightsCount() {
+    var firstCard = insightsGrid.firstElementChild;
+    if (!firstCard) return;
+    var step = firstCard.getBoundingClientRect().width + 20;
+    var maxScroll = insightsGrid.scrollWidth - insightsGrid.clientWidth;
+    var scrollLeft = insightsGrid.scrollLeft;
+    var index;
+    if (maxScroll <= 0) {
+      index = 1;
+    } else if (scrollLeft >= maxScroll - 2) {
+      index = INSIGHTS.length;
+    } else {
+      index = Math.round(scrollLeft / step) + 1;
+    }
+    index = Math.max(1, Math.min(INSIGHTS.length, index));
+    insightsCountEl.textContent = String(index).padStart(2, '0') + ' / ' + String(INSIGHTS.length).padStart(2, '0') + ' Perspectives';
+  }
+  updateInsightsCount();
+  insightsGrid.addEventListener('scroll', updateInsightsCount);
+  window.addEventListener('resize', updateInsightsCount);
+
+  // ---------- Contact form ----------
+  var contactForm = document.getElementById('contactForm');
+  var formSuccess = document.getElementById('formSuccess');
+  contactForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!contactForm.checkValidity()) { contactForm.reportValidity(); return; }
+    contactForm.style.display = 'none';
+    formSuccess.classList.add('show');
+  });
+
+  // ---------- Footer ----------
+  var FOOTER_COLS = [
+    { title: 'Services', links: [
+      { label: 'AI transformation', href: 'ai-transformation.html' },
+      { label: 'Digital engineering', href: 'digital-engineering.html' },
+      { label: 'Business transformation', href: 'business-transformation.html' },
+      { label: 'Digital experience', href: 'digital-experience.html' },
+      { label: 'Growth transformation', href: 'growth-transformation.html' }
+    ]},
+    { title: 'Products & Platforms', links: [
+      { label: 'EVOQ', href: 'evoq.html' }
+    ]},
+    { title: 'Insights', links: [
+      { label: 'Blogs', href: '#' },
+      { label: 'Case studies', href: '#' },
+      { label: 'Whitepapers', href: '#' },
+      { label: 'Featured projects', href: '#' }
+    ]},
+    { title: 'Company', links: [
+      { label: 'About', href: '#' },
+      { label: 'Our approach', href: '#' },
+      { label: 'Clients', href: '#' },
+      { label: 'Careers', href: '#' }
+    ]},
+    { title: 'Connect', links: [
+      { label: "Let's talk", href: '#contact' },
+      { label: 'Contact us', href: '#contact' }
+    ]}
+  ];
+  var footerCols = document.getElementById('footerCols');
+  FOOTER_COLS.forEach(function (col) {
+    var wrap = document.createElement('div');
+    var title = document.createElement('div');
+    title.className = 'sdl-footer-col-title';
+    title.textContent = col.title;
+    var list = document.createElement('ul');
+    list.className = 'sdl-footer-links';
+    col.links.forEach(function (l) {
+      var li = document.createElement('li');
+      var a = document.createElement('a');
+      a.href = l.href;
+      a.textContent = l.label;
+      li.appendChild(a);
+      list.appendChild(li);
+    });
+    wrap.appendChild(title);
+    wrap.appendChild(list);
+    footerCols.appendChild(wrap);
+  });
+
+  document.getElementById('footerYear').textContent = '© ' + new Date().getFullYear() + ' Social DNA Labs';
+
+  // ---------- Desktop nav + mega menu ----------
+  var desktopNav = document.getElementById('desktopNav');
+  var megaPanel = document.getElementById('megaPanel');
+  var header = document.getElementById('sdlHeader');
+
+  var navButtons = [];
+
+  function closeMegaMenu() {
+    megaPanel.classList.remove('open');
+    megaPanel.innerHTML = '';
+    navButtons.forEach(function (b) { b.classList.remove('active'); });
+  }
+
+  function renderMegaMenu(menu, triggerBtn, triggerItem) {
+    if (!MEGA_MENU_ENABLED) return;
+    var inner = document.createElement('div');
+    inner.className = 'sdl-mega-panel-inner';
+    if (menu.items.length < 2) inner.style.gridTemplateColumns = '1fr';
+    menu.items.forEach(function (item) {
+      var wrap = document.createElement('div');
+      wrap.className = 'sdl-mega-item';
+      var icon = document.createElement('div');
+      icon.className = 'sdl-mega-item-icon';
+      icon.innerHTML = '<svg width="18" height="18" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">' + (ICONS[item.title] || ICON_DEFAULT) + '</svg>';
+      var textWrap = document.createElement('div');
+      var title = document.createElement('div');
+      title.className = 'sdl-mega-item-title';
+      title.textContent = item.title;
+      var desc = document.createElement('div');
+      desc.className = 'sdl-mega-item-desc';
+      desc.textContent = item.desc;
+      textWrap.appendChild(title);
+      textWrap.appendChild(desc);
+      wrap.appendChild(icon);
+      wrap.appendChild(textWrap);
+
+      if (item.href) {
+        var link = document.createElement('a');
+        link.href = item.href;
+        link.style.display = 'contents';
+        link.style.cursor = 'pointer';
+        link.style.color = 'inherit';
+        link.style.textDecoration = 'none';
+        link.appendChild(wrap);
+        inner.appendChild(link);
+      } else {
+        inner.appendChild(wrap);
+      }
+    });
+    if (menu.cta) {
+      var ctaWrap = document.createElement('div');
+      ctaWrap.className = 'sdl-mega-cta';
+      var ctaLink = document.createElement('a');
+      ctaLink.href = menu.cta.href;
+      ctaLink.textContent = menu.cta.label + ' →';
+      ctaLink.style.color = ACCENT;
+      ctaWrap.appendChild(ctaLink);
+      inner.appendChild(ctaWrap);
+    }
+    megaPanel.innerHTML = '';
+    megaPanel.appendChild(inner);
+    megaPanel.classList.add('open');
+
+    navButtons.forEach(function (b) { b.classList.toggle('active', b === triggerBtn); });
+
+    var headerRect = header.getBoundingClientRect();
+    var itemRect = triggerItem.getBoundingClientRect();
+    var panelWidth = megaPanel.offsetWidth;
+    var itemCenter = (itemRect.left - headerRect.left) + itemRect.width / 2;
+    var left = itemCenter - panelWidth / 2;
+    var maxLeft = header.offsetWidth - panelWidth - 24;
+    if (maxLeft < 24) maxLeft = 24;
+    left = Math.max(24, Math.min(left, maxLeft));
+    megaPanel.style.left = left + 'px';
+  }
+
+  MENUS.forEach(function (menu) {
+    var item = document.createElement('div');
+    item.className = 'sdl-nav-item';
+
+    if (menu.href && !menu.items.length) {
+      var link = document.createElement('a');
+      link.className = 'sdl-nav-btn';
+      link.href = menu.href;
+      link.textContent = menu.label;
+      item.appendChild(link);
+    } else {
+      var btn = document.createElement('button');
+      btn.className = 'sdl-nav-btn';
+      btn.innerHTML = menu.label + ' <span class="caret">▾</span>';
+      item.appendChild(btn);
+      item.addEventListener('mouseenter', function () { renderMegaMenu(menu, btn, item); });
+      navButtons.push(btn);
+    }
+
+    desktopNav.appendChild(item);
+  });
+
+  header.addEventListener('mouseleave', closeMegaMenu);
+
+  // ---------- Mobile nav ----------
+  var mobileToggle = document.getElementById('mobileToggle');
+  var mobilePanel = document.getElementById('mobilePanel');
+  var mobileOpenKey = null;
+
+  function renderMobilePanel() {
+    mobilePanel.innerHTML = '';
+    MENUS.forEach(function (menu) {
+      var itemEl = document.createElement('div');
+      itemEl.className = 'sdl-mobile-item';
+
+      if (menu.href && !menu.items.length) {
+        var link = document.createElement('a');
+        link.className = 'sdl-mobile-item-btn';
+        link.href = menu.href;
+        link.textContent = menu.label;
+        link.style.display = 'block';
+        link.style.cursor = 'pointer';
+        itemEl.appendChild(link);
+      } else {
+        var btn = document.createElement('button');
+        btn.className = 'sdl-mobile-item-btn';
+        btn.innerHTML = menu.label + ' <span class="caret">▾</span>';
+        btn.addEventListener('click', function () {
+          mobileOpenKey = mobileOpenKey === menu.key ? null : menu.key;
+          renderMobilePanel();
+        });
+        itemEl.appendChild(btn);
+
+        var sub = document.createElement('div');
+        sub.className = 'sdl-mobile-sub' + (mobileOpenKey === menu.key ? ' open' : '');
+        menu.items.forEach(function (subItem) {
+          var subWrap = document.createElement('div');
+          var t = document.createElement('div');
+          t.className = 'sdl-mobile-sub-title';
+          t.textContent = subItem.title;
+          var d = document.createElement('div');
+          d.className = 'sdl-mobile-sub-desc';
+          d.textContent = subItem.desc;
+          subWrap.appendChild(t);
+          subWrap.appendChild(d);
+          sub.appendChild(subWrap);
+        });
+        if (menu.cta) {
+          var ctaLink = document.createElement('a');
+          ctaLink.href = menu.cta.href;
+          ctaLink.textContent = menu.cta.label + ' →';
+          sub.appendChild(ctaLink);
+        }
+        itemEl.appendChild(sub);
+      }
+      mobilePanel.appendChild(itemEl);
+    });
+
+    var talkLink = document.createElement('a');
+    talkLink.href = '#contact';
+    talkLink.className = 'sdl-mobile-cta';
+    talkLink.textContent = "Let's talk →";
+    mobilePanel.appendChild(talkLink);
+  }
+  renderMobilePanel();
+
+  mobileToggle.addEventListener('click', function () {
+    mobilePanel.classList.toggle('open');
+  });
+
+  // ---------- Hero canvas animation ----------
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function lerpColor(c1, c2, t) {
+    var p1 = c1.match(/\w\w/g).map(function (h) { return parseInt(h, 16); });
+    var p2 = c2.match(/\w\w/g).map(function (h) { return parseInt(h, 16); });
+    var r = p1.map(function (v, i) { return Math.round(lerp(v, p2[i], t)); });
+    return '#' + r.map(function (v) { return v.toString(16).padStart(2, '0'); }).join('');
+  }
+  function mulberry32(seed) {
+    return function () {
+      seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+      var t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function easeInOutCubic(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+  function easeOutQuint(t) { return 1 - Math.pow(1 - t, 5); }
+  function easeInOutQuart(t) { return t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2; }
+  function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+  function rgba(hex, a) {
+    var p = hex.match(/\w\w/g).map(function (h) { return parseInt(h, 16); });
+    return 'rgba(' + p[0] + ',' + p[1] + ',' + p[2] + ',' + a + ')';
+  }
+
+  function HeroAnimation(canvas) {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext('2d');
+    this._rng = mulberry32(11);
+    this._W = 1040;
+    this._H = 960;
+    this._buildFormation();
+    this._buildParticles();
+  }
+
+  HeroAnimation.prototype._buildFormation = function () {
+    var tip = { x: 936, y: 480 };
+    var headBaseX = 712, headHalfH = 162;
+    var shaftLeftX = 494, shaftHalfH = 74;
+    var spacing = 23;
+    var A = { x: headBaseX, y: 480 - headHalfH };
+    var B = { x: headBaseX, y: 480 + headHalfH };
+    function sign(p1, p2, p3) { return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y); }
+    function inTriangle(pt) {
+      var d1 = sign(pt, A, B), d2 = sign(pt, B, tip), d3 = sign(pt, tip, A);
+      var hasNeg = d1 < 0 || d2 < 0 || d3 < 0, hasPos = d1 > 0 || d2 > 0 || d3 > 0;
+      return !(hasNeg && hasPos);
+    }
+    var pts = [];
+    for (var x = shaftLeftX; x <= tip.x; x += spacing) {
+      for (var y = 480 - headHalfH; y <= 480 + headHalfH; y += spacing) {
+        var inShaft = x <= headBaseX && Math.abs(y - 480) <= shaftHalfH;
+        var inHead = x >= headBaseX && inTriangle({ x: x, y: y });
+        if (inShaft || inHead) pts.push({ x: x, y: y });
+      }
+    }
+    var span = tip.x - shaftLeftX;
+    this._formation = pts.map(function (p) { return { pos: p, t: clamp01((p.x - shaftLeftX) / span) }; });
+    this._tipPos = tip;
+    this._focus = { x: 898, y: 480 };
+  };
+
+  HeroAnimation.prototype._buildParticles = function () {
+    var rng = this._rng;
+    var scatterPalette = ['#22D3EE', '#38BDF8', '#60A5FA', '#4F76F6', '#7C6BF0', '#8B5CF6'];
+    var center = { x: 262, y: 480 };
+    var focus = this._focus;
+    this._particles = this._formation.map(function (f) {
+      var a = rng() * Math.PI * 2;
+      var r = Math.pow(rng(), 0.62) * 178;
+      var scatter = { x: center.x + Math.cos(a) * r * 1.02, y: center.y + Math.sin(a) * r * 0.94 };
+      var approach = 0.82 + rng() * 0.14;
+      var converged = { x: lerp(scatter.x, focus.x, approach), y: lerp(scatter.y, focus.y, approach) };
+      var mx = (scatter.x + converged.x) / 2, my = (scatter.y + converged.y) / 2;
+      var dx = converged.x - scatter.x, dy = converged.y - scatter.y;
+      var len = Math.hypot(dx, dy) || 1;
+      var bow = (24 + rng() * 62) * (rng() > 0.5 ? 1 : -1);
+      var ctrl = { x: mx + (-dy / len) * bow, y: my + (dx / len) * bow };
+      return {
+        target: f.pos,
+        t: f.t,
+        formationColor: lerpColor('#7DD8F0', '#2C2C9E', Math.pow(f.t, 0.85)),
+        formationAlpha: lerp(0.5, 1, Math.pow(f.t, 0.7)),
+        formationSize: lerp(2.6, 5.4, Math.pow(f.t, 0.75)),
+        scatter: scatter,
+        converged: converged,
+        ctrl: ctrl,
+        scatterColor: scatterPalette[Math.floor(rng() * scatterPalette.length)],
+        scatterSize: 2.4 + Math.pow(rng(), 1.6) * 4.4,
+        stagger: Math.pow(rng(), 1.3) * 0.42,
+        driftAmp: 3 + rng() * 5,
+        driftSpeed: 0.32 + rng() * 0.4,
+        driftPhase: rng() * Math.PI * 2,
+        pulsePhase: rng() * Math.PI * 2
+      };
+    });
+  };
+
+  HeroAnimation.prototype.mount = function () {
+    var self = this;
+    this._resize();
+    if (window.ResizeObserver) {
+      this._ro = new ResizeObserver(function () { self._resize(); });
+      this._ro.observe(this.canvas);
+    }
+    this._startTime = performance.now();
+    this._T = { scatter: 1400, movement: 2600, convergeHold: 1000, resolve: 1700, formedHold: 3000, reset: 1900, pause: 500 };
+    this._cycle = 0;
+    for (var k in this._T) this._cycle += this._T[k];
+    this._interval = setInterval(function () {
+      self._draw(performance.now() - self._startTime);
+    }, 1000 / 30);
+  };
+
+  HeroAnimation.prototype.unmount = function () {
+    if (this._interval) clearInterval(this._interval);
+    if (this._ro) this._ro.disconnect();
+  };
+
+  HeroAnimation.prototype._resize = function () {
+    var canvas = this.canvas;
+    if (!canvas) return;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = canvas.clientWidth || 520;
+    canvas.width = Math.round(cw * dpr);
+    canvas.height = Math.round(cw * dpr * (this._H / this._W));
+    this._scale = canvas.width / this._W;
+    this.ctx.setTransform(this._scale, 0, 0, this._scale, 0, 0);
+    this.ctx.clearRect(0, 0, this._W, this._H);
+  };
+
+  HeroAnimation.prototype._phaseAt = function (cyclePos) {
+    var T = this._T;
+    var order = ['scatter', 'movement', 'convergeHold', 'resolve', 'formedHold', 'reset', 'pause'];
+    var start = 0;
+    for (var i = 0; i < order.length; i++) {
+      var name = order[i];
+      if (cyclePos < start + T[name]) return { phase: name, phaseT: (cyclePos - start) / T[name] };
+      start += T[name];
+    }
+    return { phase: 'pause', phaseT: 1 };
+  };
+
+  HeroAnimation.prototype._stateAt = function (p, elapsed) {
+    var pt = this._phaseAt(((elapsed % this._cycle) + this._cycle) % this._cycle);
+    var phase = pt.phase, phaseT = pt.phaseT;
+    var time = elapsed / 1000;
+    if (phase === 'scatter' || phase === 'pause') {
+      return {
+        x: p.scatter.x + Math.sin(time * p.driftSpeed + p.driftPhase) * p.driftAmp,
+        y: p.scatter.y + Math.cos(time * p.driftSpeed * 0.86 + p.driftPhase) * p.driftAmp,
+        alpha: phase === 'scatter' ? lerp(0.3, 0.8, clamp01(phaseT * 2.4)) : 0.8,
+        size: p.scatterSize, color: p.scatterColor, rayAlpha: 0, moving: false
+      };
+    }
+    if (phase === 'movement') {
+      var local = clamp01((phaseT - p.stagger) / (1 - p.stagger));
+      var e = easeInOutQuart(local);
+      var u = 1 - e;
+      var idle = (1 - e) * p.driftAmp;
+      return {
+        x: u * u * p.scatter.x + 2 * u * e * p.ctrl.x + e * e * p.converged.x + Math.sin(time * p.driftSpeed + p.driftPhase) * idle,
+        y: u * u * p.scatter.y + 2 * u * e * p.ctrl.y + e * e * p.converged.y + Math.cos(time * p.driftSpeed * 0.86 + p.driftPhase) * idle,
+        alpha: lerp(0.8, 1, e),
+        size: lerp(p.scatterSize, 4.2, e * 0.8),
+        color: lerpColor(p.scatterColor, '#3E7BF2', e),
+        rayAlpha: Math.sin(clamp01(e) * Math.PI) * 0.22, moving: true
+      };
+    }
+    if (phase === 'convergeHold') {
+      var breathe = Math.sin(time * 1.9 + p.pulsePhase);
+      return {
+        x: p.converged.x + breathe * 1.4,
+        y: p.converged.y + Math.cos(time * 1.6 + p.pulsePhase) * 1.4,
+        alpha: 1, size: 4.2 + breathe * 0.2, color: '#3E7BF2',
+        rayAlpha: 0.2 * (1 - phaseT * 0.35), moving: false
+      };
+    }
+    if (phase === 'resolve') {
+      var local2 = clamp01((phaseT - p.stagger * 0.5) / (1 - p.stagger * 0.5));
+      var e2 = easeOutQuint(local2);
+      return {
+        x: lerp(p.converged.x, p.target.x, e2),
+        y: lerp(p.converged.y, p.target.y, e2),
+        alpha: lerp(1, p.formationAlpha, e2),
+        size: lerp(4.2, p.formationSize, e2),
+        color: lerpColor('#3E7BF2', p.formationColor, e2),
+        rayAlpha: Math.max(0, 0.16 * (1 - e2 * 2.6)), moving: e2 < 0.98
+      };
+    }
+    if (phase === 'formedHold') {
+      var wavePos = ((time * 0.42) % 2.2) - 0.35;
+      var wave = Math.exp(-Math.pow(p.t - wavePos, 2) / 0.014);
+      return {
+        x: p.target.x, y: p.target.y,
+        alpha: clamp01(p.formationAlpha * (1 + wave * 0.35)),
+        size: p.formationSize * (1 + wave * 0.14),
+        color: lerpColor(p.formationColor, '#5EEAF6', wave * 0.35),
+        rayAlpha: 0, moving: false
+      };
+    }
+    var local3 = clamp01((phaseT - p.stagger * 0.6) / (1 - p.stagger * 0.6));
+    var e3 = easeInOutCubic(local3);
+    return {
+      x: lerp(p.target.x, p.scatter.x, e3),
+      y: lerp(p.target.y, p.scatter.y, e3),
+      alpha: lerp(p.formationAlpha, 0.45, e3),
+      size: lerp(p.formationSize, p.scatterSize, e3),
+      color: lerpColor(p.formationColor, p.scatterColor, e3),
+      rayAlpha: 0, moving: true
+    };
+  };
+
+  HeroAnimation.prototype._draw = function (elapsed) {
+    var ctx = this.ctx;
+    if (!ctx) return;
+    var W = this._W, H = this._H;
+    var pt = this._phaseAt(elapsed % this._cycle);
+    var phase = pt.phase, phaseT = pt.phaseT;
+    var time = elapsed / 1000;
+    ctx.clearRect(0, 0, W, H);
+
+    var formStrength = phase === 'formedHold' ? 1 : phase === 'resolve' ? easeOutQuint(phaseT) : 0;
+    if (formStrength > 0.01) {
+      var g = ctx.createRadialGradient(760, 480, 30, 760, 480, 400);
+      g.addColorStop(0, rgba('#3B82F6', 0.07 * formStrength));
+      g.addColorStop(1, rgba('#3B82F6', 0));
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, W, H);
+    }
+
+    ctx.lineCap = 'round';
+    for (var i = 0; i < this._particles.length; i++) {
+      var p = this._particles[i];
+      var s = this._stateAt(p, elapsed);
+
+      if (s.rayAlpha > 0.008) {
+        ctx.strokeStyle = rgba(s.color, s.rayAlpha * 0.8);
+        ctx.lineWidth = 0.7;
+        ctx.beginPath();
+        ctx.moveTo(p.scatter.x, p.scatter.y);
+        ctx.quadraticCurveTo(p.ctrl.x, p.ctrl.y, s.x, s.y);
+        ctx.stroke();
+      }
+
+      if (s.moving) {
+        var a = this._stateAt(p, elapsed - 38);
+        var b = this._stateAt(p, elapsed - 78);
+        if (Math.hypot(s.x - b.x, s.y - b.y) > 2) {
+          ctx.strokeStyle = rgba(s.color, Math.min(0.3, s.alpha * 0.26));
+          ctx.lineWidth = s.size * 0.9;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(s.x, s.y);
+          ctx.stroke();
+          ctx.strokeStyle = rgba(s.color, Math.min(0.11, s.alpha * 0.09));
+          ctx.lineWidth = s.size * 0.5;
+          ctx.beginPath();
+          ctx.moveTo(b.x, b.y);
+          ctx.lineTo(a.x, a.y);
+          ctx.stroke();
+        }
+      }
+
+      ctx.fillStyle = rgba(s.color, s.alpha * 0.13);
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.size * 2.6, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = rgba(s.color, s.alpha);
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    var coreStrength = phase === 'movement' ? clamp01((phaseT - 0.5) / 0.5)
+      : phase === 'convergeHold' ? 1
+      : phase === 'resolve' ? Math.max(0, 1 - phaseT * 3) : 0;
+    if (coreStrength > 0.01) {
+      var r = 46 * (1 + Math.sin(time * 2.6) * 0.06);
+      var g2 = ctx.createRadialGradient(this._focus.x, this._focus.y, 0, this._focus.x, this._focus.y, r);
+      g2.addColorStop(0, rgba('#FFFFFF', 0.9 * coreStrength));
+      g2.addColorStop(0.3, rgba('#38BDF8', 0.5 * coreStrength));
+      g2.addColorStop(1, rgba('#38BDF8', 0));
+      ctx.fillStyle = g2;
+      ctx.beginPath();
+      ctx.arc(this._focus.x, this._focus.y, r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  };
+
+  var canvas = document.getElementById('heroCanvas');
+  var anim = new HeroAnimation(canvas);
+  anim.mount();
+
+  // ---------- Scroll-reveal motion ----------
+  (function initScrollReveal() {
+    var targets = document.querySelectorAll('.reveal, .reveal-group');
+    if (!targets.length) return;
+    if (!('IntersectionObserver' in window)) {
+      targets.forEach(function (el) { el.classList.add('is-visible'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries, observer) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+    targets.forEach(function (el) { io.observe(el); });
+  })();
+})();
+</script>
+
+</body>
+</html>

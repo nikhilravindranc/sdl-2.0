@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Services — Social DNA Labs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --accent: #2B49DB; --accent-hover: #1E35B8; --heading: #162833; --body-text: #46535F;
+    --success: #28C76F; --attention: #F4C430; --critical: #E64A3C;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #F6F8FC; overflow-x: hidden; font-family: 'Inter', sans-serif; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { color: var(--accent-hover); }
+
+  .sdl-header { position: sticky; top: 0; z-index: 50; background: #F6F8FC; border-bottom: 1px solid rgba(16,24,40,0.07); }
+  .sdl-header-inner { max-width: 1360px; margin: 0 auto; padding: 0 48px; height: 88px; display: flex; align-items: center; }
+  .sdl-logo { height: 38px; width: auto; display: block; flex-shrink: 0; }
+
+  .sdl-header-left { display: flex; align-items: center; flex: 0 0 auto; }
+  .sdl-header-nav-wrap { flex: 1 1 auto; display: flex; align-items: center; justify-content: center; min-width: 0; }
+  .sdl-header-right { display: flex; align-items: center; gap: 32px; flex: 0 0 auto; }
+
+  .sdl-desktop-nav { display: flex; align-items: center; gap: 6px; }
+  .sdl-nav-item { position: relative; }
+  .sdl-nav-btn {
+    position: relative; display: flex; align-items: center; gap: 6px; background: none; border: none;
+    font-family: inherit; font-size: 15px; font-weight: 600; color: #162833;
+    cursor: pointer; padding: 12px 13px; border-radius: 8px; white-space: nowrap; flex-shrink: 0;
+  }
+  .sdl-nav-btn:hover { background: rgba(43,73,219,0.06); }
+  .sdl-nav-btn .caret { font-size: 10px; color: #8891A0; margin-top: 2px; transition: transform 0.15s ease; }
+  .sdl-nav-btn.active { color: var(--accent); }
+  .sdl-nav-btn.active .caret { color: var(--accent); transform: rotate(180deg); }
+  .sdl-nav-btn.active::after {
+    content: ''; position: absolute; left: 13px; right: 13px; bottom: 3px; height: 2px; border-radius: 2px;
+    background: linear-gradient(90deg, var(--accent), #6AA8FA);
+  }
+
+  .sdl-cta {
+    display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid var(--accent);
+    color: var(--accent); font-weight: 700; font-size: 14px; padding: 10px 22px;
+    border-radius: 999px; white-space: nowrap; flex-shrink: 0;
+  }
+  .sdl-cta:hover { background: rgba(43,73,219,0.06); color: var(--accent); }
+
+  .sdl-mobile-toggle {
+    display: none; align-items: center; justify-content: center; width: 40px; height: 40px;
+    background: none; border: none; cursor: pointer; flex-shrink: 0;
+  }
+
+  .sdl-mega-panel {
+    position: absolute; top: 100%; left: 48px; padding-top: 14px;
+    z-index: 100; display: none;
+  }
+  .sdl-mega-panel.open { display: block; }
+  .sdl-mega-panel-inner {
+    width: max-content; max-width: min(760px, calc(100vw - 96px)); padding: 30px 32px 24px;
+    display: grid; grid-template-columns: repeat(2, minmax(240px, 1fr));
+    column-gap: 36px; row-gap: 26px;
+    background: #FFFFFF; border-radius: 20px; border: 1px solid rgba(16,24,40,0.06);
+    box-shadow: 0 30px 60px rgba(16,24,40,0.16), 0 4px 14px rgba(16,24,40,0.06);
+    overflow: hidden;
+  }
+  .sdl-mega-item { display: flex; align-items: flex-start; gap: 14px; }
+  .sdl-mega-item-icon {
+    width: 36px; height: 36px; border-radius: 9px; background: rgba(43,73,219,0.08); color: var(--accent);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .sdl-mega-item-title { font-weight: 700; color: #162833; margin-bottom: 5px; font-size: 15px; }
+  .sdl-mega-item-desc { color: #46535F; font-size: 13px; line-height: 1.55; }
+  .sdl-mega-cta { grid-column: 1 / -1; border-top: 1px solid #EEF1F6; padding-top: 18px; }
+  .sdl-mega-cta a { color: var(--accent); font-weight: 700; font-size: 14px; display: inline-flex; align-items: center; gap: 6px; }
+
+  .sdl-mobile-panel {
+    display: none; background: #FFFFFF; border-top: 1px solid rgba(16,24,40,0.07);
+    padding: 8px 24px 24px; max-height: calc(100vh - 88px); overflow-y: auto;
+  }
+  .sdl-mobile-panel.open { display: block; }
+  .sdl-mobile-item { border-bottom: 1px solid #EEF1F6; }
+  .sdl-mobile-item-btn {
+    width: 100%; display: flex; align-items: center; justify-content: space-between;
+    background: none; border: none; font-family: inherit; font-size: 16px; font-weight: 700;
+    color: #162833; padding: 16px 4px; cursor: pointer;
+  }
+  .sdl-mobile-item-btn .caret { font-size: 12px; color: #8891A0; }
+  .sdl-mobile-sub { padding: 0 4px 18px; display: none; flex-direction: column; gap: 14px; }
+  .sdl-mobile-sub.open { display: flex; }
+  .sdl-mobile-sub-title { font-weight: 700; color: #162833; font-size: 14px; }
+  .sdl-mobile-sub-desc { color: #46535F; font-size: 13px; line-height: 1.5; margin-top: 2px; }
+  .sdl-mobile-sub a { color: var(--accent); font-weight: 700; font-size: 14px; }
+  .sdl-mobile-cta {
+    display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--accent);
+    color: #FFFFFF; font-weight: 700; font-size: 15px; padding: 14px; border-radius: 999px; margin-top: 20px;
+  }
+  .sdl-mobile-cta:hover { color: #FFFFFF; }
+
+  .sdl-hero {
+    max-width: 1360px; margin: 0 auto; padding: 84px 48px 56px;
+    display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px; align-items: center;
+  }
+  .sdl-hero-copy-wrap { max-width: 640px; }
+  .sdl-hero-copy {
+    font-family: 'Manrope', sans-serif;
+    font-size: 48px; line-height: 1.18; font-weight: 500;
+    letter-spacing: -0.01em; color: #162833;
+  }
+  .sdl-hero-copy .accent { color: var(--accent); }
+  .sdl-hero-sub { margin-top: 28px; font-size: 19px; line-height: 1.65; color: #46535F; max-width: 460px; }
+  .sdl-hero-actions { display: flex; align-items: center; gap: 28px; margin-top: 44px; flex-wrap: wrap; }
+  .sdl-hero-primary {
+    display: inline-flex; align-items: center; gap: 10px; background: var(--accent);
+    color: #FFFFFF; font-weight: 700; font-size: 16px; padding: 16px 30px; border-radius: 999px;
+  }
+  .sdl-hero-primary:hover { background: var(--accent-hover); color: #FFFFFF; }
+  .sdl-hero-secondary { display: inline-flex; align-items: center; gap: 8px; color: var(--accent); font-weight: 700; font-size: 16px; }
+  .sdl-hero-visual { width: 100%; aspect-ratio: 520/480; display: flex; align-items: center; }
+  .sdl-hero-visual canvas { width: 100%; height: 100%; display: block; }
+
+  /* ---------- services hero visual: the double helix ---------- */
+  /* The house signature — Social DNA Labs — drawn as a double helix and
+     annotated with the shifts the work delivers. Deliberately not a list of
+     services, so it stays true however many capabilities the firm offers. */
+  .svc-hero-visual { position: relative; width: 100%; aspect-ratio: 560/520; }
+  .svc-hero-visual svg { display: block; width: 100%; height: 100%; }
+
+  .svc-dna-label {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 10.5px; letter-spacing: 0.11em; fill: #162833;
+  }
+  .svc-dna-caption {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 9.5px; letter-spacing: 0.13em; fill: #9AA4B2;
+  }
+  .svc-dna-rule { stroke: #162833; stroke-width: 1; opacity: 0.28; }
+  .svc-dna-connector { fill: none; stroke: #2B49DB; stroke-width: 0.9; opacity: 0.42; }
+
+  .svc-dna-node-ring { animation: svcDnaNode 3.4s ease-in-out infinite; animation-delay: var(--node-delay, 0s); }
+  @keyframes svcDnaNode {
+    0%, 100% { opacity: 0.9; }
+    50% { opacity: 0.35; }
+  }
+
+  .sdl-hero-trust {
+    margin-top: 36px; padding-top: 24px; border-top: 1px solid #E4E9F2;
+    display: flex; align-items: center; gap: 10px; font-size: 13px; color: #8891A0;
+  }
+  .sdl-hero-trust strong { color: #162833; font-weight: 700; }
+  .sdl-hero-trust .dot { width: 4px; height: 4px; border-radius: 50%; background: #C7D0DC; flex-shrink: 0; }
+
+  .sdl-pillars { background: #FFFFFF; padding: 96px 48px 108px; }
+  .svc-caps { background: #FFFFFF; padding: 96px 48px 108px; }
+  .sdl-pillars-inner { max-width: 1360px; margin: 0 auto; }
+  .sdl-pillars-head { max-width: 860px; }
+  .sdl-pillars-title {
+    font-family: 'Manrope', sans-serif;
+    font-size: clamp(30px, 3.2vw, 40px); line-height: 1.22; font-weight: 500;
+    letter-spacing: -0.01em; color: #162833;
+  }
+  .sdl-pillars-sub { margin-top: 16px; font-size: 18px; line-height: 1.6; color: #46535F; }
+
+  /* ---------- services capability list ---------- */
+  .svc-caps-head {
+    display: grid; grid-template-columns: 0.7fr 1.3fr; gap: 40px; align-items: end;
+  }
+  .svc-caps-eyebrow {
+    display: flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase; color: #8891A0;
+  }
+  .svc-caps-eyebrow .num { color: var(--success); font-family: 'Manrope', sans-serif; }
+  .svc-caps-title-block { max-width: 640px; }
+  .svc-caps-title {
+    font-family: 'Manrope', sans-serif;
+    font-size: clamp(30px, 3.4vw, 44px); line-height: 1.18; font-weight: 500;
+    letter-spacing: -0.01em; color: #162833;
+  }
+  .svc-caps-sub { margin-top: 16px; font-size: 17px; line-height: 1.6; color: #46535F; }
+
+  /* ---------- generic section head: eyebrow left, title right ---------- */
+  .svc-section-head { display: grid; grid-template-columns: 0.7fr 1.3fr; gap: 40px; align-items: end; }
+  .svc-section-eyebrow {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #8891A0;
+  }
+  .svc-section-eyebrow--dark { color: rgba(255,255,255,0.55); }
+  .svc-section-title-block { max-width: 640px; }
+
+  .svc-cap-list { margin-top: 48px; border-top: 1px solid #EEF1F6; }
+  .svc-cap-row { border-bottom: 1px solid #EEF1F6; }
+  .svc-cap-row-head {
+    width: 100%; display: flex; align-items: center; gap: 28px; padding: 30px 4px;
+    background: none; border: none; font-family: inherit; text-align: left; cursor: pointer;
+  }
+  .svc-cap-num { flex-shrink: 0; width: 24px; font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 700; color: var(--success); }
+  .svc-cap-text { flex: 1 1 auto; min-width: 0; display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 28px; }
+  .svc-cap-title { flex: 0 0 auto; max-width: 340px; font-family: 'Manrope', sans-serif; font-size: 26px; font-weight: 600; color: #162833; letter-spacing: -0.01em; }
+  .svc-cap-tagline { flex: 1 1 220px; font-size: 16px; color: #46535F; }
+  .svc-cap-toggle {
+    flex-shrink: 0; width: 44px; height: 44px; border-radius: 50%;
+    border: 1px solid #E4E9F2; display: flex; align-items: center; justify-content: center;
+    color: #162833; font-size: 18px; transition: border-color 0.2s ease, color 0.2s ease, transform 0.25s ease;
+  }
+  .svc-cap-row:hover .svc-cap-toggle { border-color: var(--accent); color: var(--accent); }
+  .svc-cap-row.is-open .svc-cap-toggle { transform: rotate(45deg); border-color: var(--accent); color: var(--accent); }
+
+  .svc-cap-panel { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+  .svc-cap-panel-inner {
+    padding: 0 4px 30px 4px; display: grid;
+    grid-template-columns: 392px 1fr; column-gap: 28px;
+  }
+  .svc-cap-panel-spacer { flex-shrink: 0; }
+  .svc-cap-panel-content { min-width: 0; }
+  .svc-cap-desc { font-size: 16px; line-height: 1.65; color: #46535F; max-width: 640px; margin-bottom: 18px; }
+  .svc-cap-tags { font-size: 13px; font-weight: 600; line-height: 1.7; color: #3A5C8C; max-width: 640px; }
+  .svc-cap-cta-row { display: flex; justify-content: flex-end; max-width: 640px; margin-top: 18px; }
+  .svc-cap-cta {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: #162833; font-weight: 700; font-size: 14px;
+  }
+  .svc-cap-cta:hover { color: var(--accent); }
+  .svc-cap-cta-arrow { display: inline-block; font-size: 15px; transition: transform 0.18s ease; }
+  .svc-cap-cta:hover .svc-cap-cta-arrow { transform: translate(3px, -3px); }
+
+  @media (max-width: 900px) {
+    .svc-caps-head, .svc-section-head { grid-template-columns: 1fr; align-items: start; gap: 16px; }
+    .svc-cap-row-head { align-items: flex-start; gap: 16px; }
+    .svc-cap-text { flex-direction: column; gap: 4px; }
+    .svc-cap-title, .svc-cap-tagline { flex: 0 0 auto; }
+    .svc-cap-title { max-width: none; font-size: 21px; }
+    .svc-cap-panel-inner { grid-template-columns: 1fr; }
+    .svc-cap-panel-spacer { display: none; }
+  }
+
+  /* ---------- shared section primitives ---------- */
+  .sdl-section { padding: 96px 48px 108px; }
+  .sdl-section--tight { padding-top: 56px; padding-bottom: 64px; }
+  .sdl-section-inner { max-width: 1360px; margin: 0 auto; }
+  .sdl-section--alt { background: #F6F8FC; }
+  .sdl-section--white { background: #FFFFFF; }
+  .sdl-eyebrow { font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
+  .sdl-section-title {
+    font-family: 'Manrope', sans-serif;
+    font-size: clamp(30px, 3.2vw, 40px); line-height: 1.22; font-weight: 500;
+    letter-spacing: -0.01em; color: #162833;
+  }
+  .sdl-section-title--sm { font-size: clamp(24px, 2.4vw, 30px); }
+  .sdl-section-sub { margin-top: 16px; font-size: 18px; line-height: 1.6; color: #46535F; max-width: 640px; }
+  .sdl-cta-link { display: inline-flex; align-items: center; gap: 8px; color: var(--accent); font-weight: 700; font-size: 16px; }
+  .sdl-cta-link--sm { font-size: 13px; gap: 6px; transition: color 0.15s ease; }
+  .sdl-cta-link--sm:hover { color: var(--accent-hover); }
+
+  /* ---------- shared kicker ---------- */
+  .sdl-kicker {
+    display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase; color: #8891A0;
+  }
+  .sdl-kicker .kicker-num { color: var(--success); }
+
+  /* ---------- services timeline section ---------- */
+  .svc-timeline-section { background: #101826; padding: 96px 48px 108px; }
+  .svc-timeline-section .sdl-pillars-title { color: #FFFFFF; }
+  .svc-timeline-section .sdl-pillars-sub { color: rgba(255,255,255,0.65); }
+  .svc-timeline {
+    margin-top: 56px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;
+    position: relative;
+  }
+  .svc-timeline::before {
+    content: ''; position: absolute; top: 22px; left: 0; right: 0; height: 1px; background: rgba(255,255,255,0.14);
+  }
+  .svc-timeline-step { position: relative; padding-right: 32px; }
+  .svc-timeline-num {
+    position: relative; z-index: 1; display: inline-flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px; border-radius: 50%; background: #101826; border: 1.5px solid var(--success);
+    font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 14px; color: var(--success);
+  }
+  .svc-timeline-title { margin-top: 22px; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 21px; color: #FFFFFF; }
+  .svc-timeline-desc { margin-top: 10px; font-size: 14px; line-height: 1.6; color: rgba(255,255,255,0.6); }
+
+  /* ---------- insights carousel (matches homepage "Think ahead." style) ---------- */
+  .sdl-insights-nav-row { margin-top: 40px; display: flex; align-items: center; justify-content: space-between; }
+  .sdl-insights-arrows { display: flex; gap: 10px; }
+  .sdl-arrow-btn {
+    width: 46px; height: 46px; border-radius: 50%; border: none; background: #162833; color: #FFFFFF;
+    display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 20px;
+    transition: background 0.15s ease, transform 0.15s ease;
+  }
+  .sdl-arrow-btn:hover { background: var(--accent); transform: translateY(-1px); }
+  .sdl-insights-scroll {
+    margin-top: 20px; display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x proximity;
+    padding-bottom: 4px; scrollbar-width: none;
+  }
+  .sdl-insights-scroll::-webkit-scrollbar { display: none; }
+  .sdl-insight-card {
+    position: relative; flex: 0 0 calc((100% - 40px) / 3); height: 330px; border-radius: 16px;
+    overflow: hidden; scroll-snap-align: start; display: flex; flex-direction: column; justify-content: flex-end;
+    color: #FFFFFF; transition: transform 0.2s ease; background-size: cover; background-position: center;
+  }
+  .sdl-insight-card:hover { transform: translateY(-3px); }
+  .sdl-insight-card::before {
+    content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.35) 50%, rgba(0,0,0,0.05) 75%);
+  }
+  .sdl-insight-card--color::before { content: none; }
+  .sdl-insight-card--dark { color: #162833; }
+  .sdl-insight-card--light { color: #FFFFFF; }
+  .sdl-insight-top-row { position: relative; z-index: 2; display: flex; align-items: flex-start; justify-content: space-between; padding: 20px; }
+  .sdl-insight-thumb-badge {
+    background: rgba(255,255,255,0.16); backdrop-filter: blur(4px);
+    color: #FFFFFF; font-size: 10.5px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+    padding: 5px 11px; border-radius: 999px;
+  }
+  .sdl-insight-card--dark .sdl-insight-thumb-badge { background: rgba(22,40,51,0.12); color: #162833; }
+  .sdl-insight-card--light .sdl-insight-thumb-badge { background: rgba(255,255,255,0.22); color: #FFFFFF; }
+  .sdl-insight-link-icon {
+    width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.4);
+    display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
+  }
+  .sdl-insight-card--dark .sdl-insight-link-icon { border-color: rgba(22,40,51,0.3); }
+  .sdl-insight-card--light .sdl-insight-link-icon { border-color: rgba(255,255,255,0.55); }
+  .sdl-insight-card:hover .sdl-insight-link-icon {
+    background: var(--accent); border-color: var(--accent); color: #FFFFFF; transform: rotate(45deg);
+  }
+  .sdl-insight-body { position: relative; z-index: 2; padding: 20px; }
+  .sdl-insight-title { font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 22px; line-height: 1.3; }
+  .sdl-insight-meta {
+    margin-top: 20px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.2);
+    display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: rgba(255,255,255,0.7);
+  }
+  .sdl-insight-card--dark .sdl-insight-meta { border-top-color: rgba(22,40,51,0.18); color: rgba(22,40,51,0.65); }
+  .sdl-insight-card--light .sdl-insight-meta { border-top-color: rgba(255,255,255,0.3); color: rgba(255,255,255,0.8); }
+  .sdl-insight-meta .read-link { color: #FFFFFF; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; text-decoration: none; }
+  .sdl-insight-card--dark .sdl-insight-meta .read-link { color: #162833; }
+  .sdl-insight-card--light .sdl-insight-meta .read-link { color: #FFFFFF; }
+  .sdl-insight-card:hover .sdl-insight-meta .read-link { text-decoration: underline; }
+
+  .sdl-insights-footer-row {
+    margin-top: 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+    font-size: 14px; color: #8891A0;
+  }
+
+  /* ---------- contact section ---------- */
+  .sdl-contact-section { position: relative; overflow: hidden; background: #101826; }
+  .sdl-contact-grid { position: relative; margin-top: 48px; display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 64px; align-items: center; }
+
+  .sdl-kicker--dark { color: rgba(255,255,255,0.55); }
+  .sdl-kicker--dark .kicker-line { display: inline-block; width: 20px; height: 1px; background: var(--success); }
+  .sdl-contact-heading {
+    margin-top: 20px; font-family: 'Manrope', sans-serif; font-weight: 800;
+    font-size: clamp(36px, 5vw, 56px); line-height: 1.15; color: #FFFFFF;
+  }
+  .sdl-contact-heading .accent { color: var(--success); }
+  .sdl-contact-sub-dark { margin-top: 22px; max-width: 420px; font-size: 16px; line-height: 1.65; color: rgba(255,255,255,0.65); }
+  .sdl-contact-callout-card {
+    margin-top: 40px; max-width: 380px; background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.14); border-radius: 18px; padding: 24px 26px;
+  }
+  .sdl-contact-callout-title { font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 17px; color: #FFFFFF; }
+  .sdl-contact-callout-desc { margin-top: 6px; font-size: 14px; line-height: 1.55; color: rgba(255,255,255,0.6); }
+  .sdl-contact-callout-cta {
+    display: inline-flex; align-items: center; gap: 8px; margin-top: 16px;
+    color: var(--success); font-weight: 700; font-size: 14px;
+  }
+  .sdl-contact-callout-cta:hover { color: #FFFFFF; }
+
+  .sdl-form-card {
+    position: relative; background: #FBFAF7; border-radius: 24px; overflow: hidden;
+    box-shadow: 0 30px 70px rgba(0,0,0,0.35);
+  }
+  .sdl-form-card-head {
+    display: flex; justify-content: space-between; padding: 20px 40px 0;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #97A1B0;
+  }
+  .sdl-form { padding: 16px 40px 40px; }
+  .sdl-form-row-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .sdl-form-row { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+  .sdl-form-row label { font-size: 13px; font-weight: 700; color: #162833; }
+  .sdl-form-row label .optional { font-weight: 500; color: #97A1B0; text-transform: none; letter-spacing: 0; }
+  .sdl-form-row input, .sdl-form-row textarea, .sdl-form-row select {
+    font-family: inherit; font-size: 15px; color: #162833; padding: 13px 16px; border-radius: 10px;
+    border: 1.5px solid #E4E9F2; background: #FFFFFF; outline: none; resize: vertical; transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .sdl-form-row select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2397A1B0' stroke-width='1.6' fill='none' fill-rule='evenodd'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px; }
+  .sdl-form-row select:invalid { color: #B9C0CC; }
+  .sdl-form-row input::placeholder, .sdl-form-row textarea::placeholder { color: #B9C0CC; }
+  .sdl-form-row input:focus, .sdl-form-row textarea:focus, .sdl-form-row select:focus { border-color: var(--accent); background-color: #FFFFFF; }
+  .sdl-form-submit {
+    width: 100%; margin-top: 6px; border: none; cursor: pointer; background: var(--accent); color: #FFFFFF;
+    font-weight: 700; font-size: 16px; padding: 16px; border-radius: 999px; font-family: inherit;
+    display: flex; align-items: center; justify-content: center; gap: 8px; transition: background 0.15s ease, transform 0.15s ease;
+  }
+  .sdl-form-submit:hover { background: var(--accent-hover); transform: translateY(-1px); }
+  .sdl-form-fineprint { margin-top: 14px; text-align: center; font-size: 12.5px; color: #97A1B0; }
+  .sdl-form-success { display: none; text-align: center; padding: 24px 0; }
+  .sdl-form-success.show { display: block; }
+  .sdl-form-success .icon {
+    width: 52px; height: 52px; border-radius: 50%; background: rgba(40,199,111,0.14); color: var(--success);
+    display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;
+  }
+  .sdl-form-success .title { font-size: 19px; font-weight: 700; color: #162833; }
+  .sdl-form-success .sub { margin-top: 8px; font-size: 15px; color: #46535F; }
+
+  /* ---------- footer ---------- */
+  .sdl-footer { position: relative; background: #101826; color: #A9B2C0; padding: 56px 48px 28px; }
+  .sdl-footer-inner { max-width: 1360px; margin: 0 auto; }
+
+  .sdl-footer-top {
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 48px; flex-wrap: wrap;
+    padding-bottom: 32px; margin-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .sdl-footer-brand { max-width: 280px; flex-shrink: 0; }
+  .sdl-footer-logo { height: 34px; width: auto; display: block; filter: brightness(0) invert(1); }
+  .sdl-footer-tagline { margin-top: 14px; font-size: 14px; line-height: 1.6; color: #8891A0; }
+
+  .sdl-footer-cols { flex: 1 1 auto; display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; }
+  .sdl-footer-col-title { font-size: 12px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #FFFFFF; margin-bottom: 14px; }
+  .sdl-footer-links { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .sdl-footer-links a { color: #A9B2C0; font-size: 13.5px; transition: color 0.15s ease; }
+  .sdl-footer-links a:hover { color: #FFFFFF; }
+
+  .sdl-footer-social-icon {
+    width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.06); color: #A9B2C0 !important;
+    display: flex; align-items: center; justify-content: center; transition: background 0.15s ease, color 0.15s ease !important;
+  }
+  .sdl-footer-social-icon:hover { background: var(--accent); color: #FFFFFF !important; }
+
+  .sdl-footer-bottom {
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+    font-size: 13px; color: #7A8494;
+  }
+  .sdl-footer-bottom-right { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+
+  @media (max-width: 1060px) {
+    .svc-timeline { grid-template-columns: 1fr; gap: 36px; }
+    .svc-timeline::before { display: none; }
+    .sdl-insight-card { flex: 0 0 calc(50% - 10px); }
+    .svc-form-row-pair { grid-template-columns: 1fr; }
+    .sdl-form-row-pair { grid-template-columns: 1fr; }
+    .sdl-contact-grid { grid-template-columns: 1fr; gap: 32px; }
+    .sdl-footer-cols { max-width: none; grid-template-columns: repeat(2, 1fr); row-gap: 32px; }
+  }
+
+  @media (max-width: 1060px) {
+    .sdl-desktop-nav, .sdl-desktop-cta { display: none !important; }
+    .sdl-mobile-toggle { display: flex !important; }
+    .sdl-header-inner { padding-left: 24px !important; padding-right: 24px !important; }
+    .sdl-hero { grid-template-columns: 1fr !important; padding: 56px 24px 64px !important; }
+    .sdl-hero-copy { font-size: 38px !important; }
+    .sdl-hero-visual, .svc-hero-visual { max-width: 460px; margin: 0 auto; order: -1; }
+    /* the annotation type is sized in SVG user units, so it would shrink to
+       roughly 6px here — drop it and let the helix carry the hero alone */
+    .svc-dna-callouts, .svc-dna-footnote { display: none; }
+    .sdl-pillars, .svc-caps { padding: 72px 24px 80px; }
+    .svc-timeline-section { padding: 72px 24px 80px; }
+    .sdl-section { padding: 72px 24px 80px; }
+    .sdl-section--tight { padding-top: 48px; padding-bottom: 56px; }
+    .sdl-footer { padding: 64px 24px 28px; }
+  }
+
+  @media (max-width: 560px) {
+    .sdl-footer-top { flex-direction: column; align-items: flex-start; }
+    .sdl-footer-cols { grid-template-columns: 1fr; }
+    .sdl-insight-card { flex: 0 0 88%; }
+  }
+
+  /* ---------- scroll-reveal motion ---------- */
+  /* Uses `animation` (not `transition`) so it never clobbers components' own
+     hover/interaction transitions, which share the same properties. */
+  .reveal, .reveal-group > * { opacity: 0; transform: translateY(24px); }
+  .reveal.is-visible, .reveal-group.is-visible > * {
+    animation: sdlRevealIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  @keyframes sdlRevealIn { to { opacity: 1; transform: translateY(0); } }
+  .reveal-group > *:nth-child(1) { animation-delay: 0s; }
+  .reveal-group > *:nth-child(2) { animation-delay: 0.07s; }
+  .reveal-group > *:nth-child(3) { animation-delay: 0.14s; }
+  .reveal-group > *:nth-child(4) { animation-delay: 0.21s; }
+  .reveal-group > *:nth-child(5) { animation-delay: 0.28s; }
+  .reveal-group > *:nth-child(6) { animation-delay: 0.35s; }
+  .reveal-group > *:nth-child(7) { animation-delay: 0.42s; }
+  .reveal-group > *:nth-child(8) { animation-delay: 0.49s; }
+
+  .sdl-hero-copy-wrap, .svc-hero-visual {
+    opacity: 0; transform: translateY(18px);
+    animation: sdlRevealIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  .svc-hero-visual { animation-delay: 0.15s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal, .reveal-group > *, .sdl-hero-copy-wrap, .svc-hero-visual {
+      animation: none !important; opacity: 1 !important; transform: none !important;
+    }
+    .svc-dna-node-ring { animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div style="font-family:'Inter',sans-serif;background:#F6F8FC;min-height:100vh">
+
+  <header class="sdl-header" id="sdlHeader">
+    <div class="sdl-header-inner">
+      <div class="sdl-header-left">
+        <a href="index.html" style="display: flex; align-items: center; flex-shrink: 0; color: inherit; text-decoration: none;">
+          <img src="assets/sdl-logo.svg" alt="Social DNA Labs" class="sdl-logo" />
+        </a>
+      </div>
+
+      <div class="sdl-header-nav-wrap">
+        <nav class="sdl-desktop-nav" id="desktopNav"></nav>
+      </div>
+
+      <div class="sdl-header-right">
+        <a href="#contact" class="sdl-cta sdl-desktop-cta">Let's talk →</a>
+
+        <button class="sdl-mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+          <svg width="22" height="16" viewBox="0 0 22 16"><rect width="22" height="2" fill="#162833"></rect><rect y="7" width="22" height="2" fill="#162833"></rect><rect y="14" width="22" height="2" fill="#162833"></rect></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="sdl-mega-panel" id="megaPanel"></div>
+    <div class="sdl-mobile-panel" id="mobilePanel"></div>
+  </header>
+
+  <section class="sdl-hero">
+    <div class="sdl-hero-copy-wrap">
+      <div class="sdl-hero-copy">
+        <div>Technology that solves</div>
+        <div><span class="accent">business problems.</span></div>
+      </div>
+      <p class="sdl-hero-sub">
+        From AI and engineering to transformation, experience and growth, Social DNA Labs brings the capabilities needed to turn business priorities into practical outcomes.
+      </p>
+      <div class="sdl-hero-actions">
+        <a href="#contact" class="sdl-hero-primary">Talk to an expert →</a>
+        <a href="#capabilities" class="sdl-hero-secondary">Explore capabilities →</a>
+      </div>
+
+      <div class="sdl-hero-trust">
+        <strong>15+ years</strong> of technology delivery
+        <span class="dot"></span>
+        AI, engineering &amp; growth under one roof
+      </div>
+    </div>
+
+    <div class="svc-hero-visual">
+      <svg viewBox="0 0 560 520" xmlns="http://www.w3.org/2000/svg"
+           role="img" aria-label="A double helix — the Social DNA Labs signature — annotated with the shifts the work delivers: ideas into solutions, people into experiences, potential into progress, and complexity into clarity">
+        <defs>
+          <radialGradient id="svcDnaGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#C7D6FF" stop-opacity="0.5" />
+            <stop offset="58%" stop-color="#DCE6FF" stop-opacity="0.2" />
+            <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
+          </radialGradient>
+        </defs>
+
+        <ellipse cx="330" cy="250" rx="200" ry="320" fill="url(#svcDnaGlow)" transform="rotate(32 330 250)" />
+
+        <!-- strand segments running behind, then the rungs, then the segments
+             running in front — so the two strands genuinely weave -->
+        <g id="svcDnaBack"></g>
+        <g id="svcDnaRungs"></g>
+        <g id="svcDnaFront"></g>
+        <g id="svcDnaDust"></g>
+        <g id="svcDnaCallouts" class="svc-dna-callouts"></g>
+
+        <g class="svc-dna-footnote">
+          <text class="svc-dna-caption" x="542" y="492" text-anchor="end">BUILT ON</text>
+          <text class="svc-dna-caption" x="542" y="506" text-anchor="end">A BRIGHTER TOMORROW</text>
+          <line class="svc-dna-rule" x1="430" y1="514" x2="542" y2="514" />
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <section class="svc-caps" id="capabilities">
+    <div class="sdl-pillars-inner">
+      <div class="svc-caps-head reveal">
+        <div class="svc-caps-eyebrow">Capabilities</div>
+        <div class="svc-caps-title-block">
+          <div class="svc-caps-title">Capabilities built around your business</div>
+          <p class="svc-caps-sub">Solve today's challenges and build what comes next with the right combination of technology, expertise and experience.</p>
+        </div>
+      </div>
+
+      <div class="svc-cap-list reveal-group" id="pillarsGrid"></div>
+
+    </div>
+  </section>
+
+  <section class="svc-timeline-section">
+    <div class="sdl-section-inner">
+      <div class="svc-section-head reveal">
+        <div class="svc-section-eyebrow svc-section-eyebrow--dark">Process</div>
+        <div class="svc-section-title-block">
+          <div class="sdl-pillars-title">Move from opportunity to impact faster</div>
+          <p class="sdl-pillars-sub">AI is changing how digital products and business systems are built. Combine AI with modern engineering and business expertise to accelerate execution, make better decisions and keep improving as needs change.</p>
+        </div>
+      </div>
+
+      <div class="svc-timeline reveal-group" id="opportunityProcess"></div>
+    </div>
+  </section>
+
+  <section class="sdl-section sdl-section--white sdl-section--tight" id="insights">
+    <div class="sdl-section-inner">
+      <div class="svc-section-head reveal">
+        <div class="svc-section-eyebrow">Insights</div>
+        <div class="svc-section-title-block">
+          <div class="sdl-section-title">Ideas for what's next</div>
+          <p class="sdl-section-sub">Explore perspectives on AI, engineering, transformation and digital growth.</p>
+        </div>
+      </div>
+
+      <div class="sdl-insights-nav-row">
+        <div class="sdl-kicker" id="insightsCount"></div>
+        <div class="sdl-insights-arrows">
+          <button class="sdl-arrow-btn" id="insightsPrev" aria-label="Previous">‹</button>
+          <button class="sdl-arrow-btn" id="insightsNext" aria-label="Next">›</button>
+        </div>
+      </div>
+
+      <div class="sdl-insights-scroll reveal-group" id="insightsGrid"></div>
+
+      <div class="sdl-insights-footer-row">
+        <span>Swipe through the latest thinking</span>
+        <a class="sdl-cta-link" href="#">View all insights →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sdl-section sdl-contact-section" id="contact">
+    <div class="sdl-section-inner sdl-contact-grid">
+      <div class="reveal">
+        <div class="sdl-kicker sdl-kicker--dark"><span class="kicker-line"></span> Start a conversation</div>
+        <div class="sdl-contact-heading">Let's talk about <span class="accent">what you're building</span></div>
+        <p class="sdl-contact-sub-dark">Tell us what you're looking to build, improve or transform. Share a few details and we'll help identify the right next step.</p>
+
+        <div class="sdl-contact-callout-card">
+          <div class="sdl-contact-callout-title">Prefer to talk?</div>
+          <p class="sdl-contact-callout-desc">Book a consultation with an expert.</p>
+          <a href="#" class="sdl-contact-callout-cta">Book a consultation <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+
+      <div class="sdl-form-card reveal">
+        <div class="sdl-form-card-head">
+          <span>Let's talk</span><span id="formStepCount">01 / 01</span>
+        </div>
+        <div class="sdl-form">
+          <form id="contactForm" novalidate>
+            <div class="sdl-form-row-pair">
+              <div class="sdl-form-row">
+                <label for="cf-name">Name*</label>
+                <input id="cf-name" name="name" type="text" required autocomplete="name" placeholder="Your name" />
+              </div>
+              <div class="sdl-form-row">
+                <label for="cf-email">Work email*</label>
+                <input id="cf-email" name="email" type="email" required autocomplete="email" placeholder="you@company.com" />
+              </div>
+            </div>
+            <div class="sdl-form-row-pair">
+              <div class="sdl-form-row">
+                <label for="cf-company">Company*</label>
+                <input id="cf-company" name="company" type="text" required autocomplete="organization" placeholder="Your company" />
+              </div>
+              <div class="sdl-form-row">
+                <label for="cf-phone">Phone <span class="optional">(optional)</span></label>
+                <input id="cf-phone" name="phone" type="tel" autocomplete="tel" placeholder="+1" />
+              </div>
+            </div>
+            <div class="sdl-form-row">
+              <label for="cf-help">What can we help you with?*</label>
+              <select id="cf-help" name="help" required>
+                <option value="" disabled selected>Select an area</option>
+                <option>AI transformation</option>
+                <option>Digital engineering</option>
+                <option>Business transformation</option>
+                <option>Digital experience</option>
+                <option>Growth transformation</option>
+                <option>Something else</option>
+              </select>
+            </div>
+            <div class="sdl-form-row">
+              <label for="cf-goal">Tell us about your requirement*</label>
+              <textarea id="cf-goal" name="goal" rows="4" required placeholder="A little about the challenge or opportunity…"></textarea>
+            </div>
+            <button type="submit" class="sdl-form-submit">Submit <span aria-hidden="true">✈</span></button>
+            <div class="sdl-form-fineprint">We'll only use your details to respond to this enquiry.</div>
+          </form>
+          <div class="sdl-form-success" id="formSuccess">
+            <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+            <div class="title">Thanks — message received.</div>
+            <div class="sub">Someone from Social DNA Labs will get back to you shortly.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer class="sdl-footer">
+  <div class="sdl-footer-inner">
+    <div class="sdl-footer-top">
+      <div class="sdl-footer-brand">
+        <img src="assets/sdl-logo.svg" alt="Social DNA Labs" class="sdl-footer-logo" />
+        <p class="sdl-footer-tagline">Technology, experience and AI for businesses building what comes next.</p>
+      </div>
+
+      <div class="sdl-footer-cols" id="footerCols"></div>
+    </div>
+
+    <div class="sdl-footer-bottom">
+      <div id="footerYear">© Social DNA Labs</div>
+      <div class="sdl-footer-bottom-right">
+        <div>Business impact, by design.</div>
+        <a href="#" class="sdl-footer-social-icon" aria-label="LinkedIn"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zm7 0h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.6c0-1.34-.02-3.06-1.87-3.06-1.87 0-2.16 1.46-2.16 2.96V21h-4z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var ACCENT = '#2B49DB';
+  var MEGA_MENU_ENABLED = true;
+
+  var MENUS = [
+    { key: 'services', label: 'Services', href: 'services.html', cta: { label: 'View all services', href: 'services.html' }, items: [
+      { title: 'AI transformation', desc: 'Turn AI potential into practical business value.', href: 'ai-transformation.html' },
+      { title: 'Digital engineering', desc: 'Build, modernize and scale digital products.', href: 'digital-engineering.html' },
+      { title: 'Business transformation', desc: 'Rethink systems, processes and ways of working.', href: 'business-transformation.html' },
+      { title: 'Digital experience', desc: 'Create better experiences across every touchpoint.', href: 'digital-experience.html' },
+      { title: 'Growth transformation', desc: 'Turn digital attention into qualified demand.', href: 'growth-transformation.html' }
+    ]},
+    { key: 'products', label: 'Products & Platforms', cta: { label: 'Explore EVOQ', href: 'evoq.html' }, items: [
+      { title: 'EVOQ', desc: 'The unified business suite for modern operations.', href: 'evoq.html' }
+    ]},
+    { key: 'insights', label: 'Insights', cta: { label: 'Explore insights', href: '#' }, items: [
+      { title: 'Blogs', desc: 'Ideas, perspectives and practical thinking.' },
+      { title: 'Case studies', desc: 'Real projects. Real business outcomes.' },
+      { title: 'Whitepapers', desc: 'In-depth research and perspectives.' },
+      { title: 'Featured projects', desc: 'Selected work and digital experiences.' }
+    ]},
+    { key: 'company', label: 'Company', cta: null, items: [
+      { title: 'About', desc: 'The people and experience behind Social DNA Labs.' },
+      { title: 'Our approach', desc: 'How Social DNA Labs thinks, builds and works.' },
+      { title: 'Clients', desc: 'The businesses Social DNA Labs works with.' },
+      { title: 'Careers', desc: "Build what's next with Social DNA Labs." }
+    ]}
+  ];
+
+  var ICONS = {
+    'AI transformation': '<path d="M24 6l4.2 9.4L38 20l-9.8 4.6L24 34l-4.2-9.4L10 20l9.8-4.6L24 6z"/><circle cx="24" cy="20" r="3.4"/>',
+    'Digital engineering': '<path d="M17 15l-8 8 8 8M31 15l8 8-8 8M27 12l-6 24"/>',
+    'Business transformation': '<circle cx="24" cy="24" r="7"/><path d="M24 8v5M24 39v5M8 24h5M39 24h5M12.9 12.9l3.5 3.5M31.6 31.6l3.5 3.5M35.1 12.9l-3.5 3.5M16.4 31.6l-3.5 3.5"/>',
+    'Digital experience': '<rect x="10" y="12" width="28" height="20" rx="2.5"/><path d="M18 40h12M24 32v8"/>',
+    'Growth transformation': '<path d="M9 33l9-11 7 7 14-17"/><path d="M31 12h8v8"/>',
+    'Products & platforms': '<rect x="9" y="9" width="13" height="13" rx="2"/><rect x="26" y="9" width="13" height="13" rx="2"/><rect x="9" y="26" width="13" height="13" rx="2"/><rect x="26" y="26" width="13" height="13" rx="2"/>',
+    'EVOQ': '<rect x="9" y="9" width="13" height="13" rx="2"/><rect x="26" y="9" width="13" height="13" rx="2"/><rect x="9" y="26" width="13" height="13" rx="2"/><rect x="26" y="26" width="13" height="13" rx="2"/>',
+    'Blogs': '<path d="M14 8h14l6 6v22a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2z"/><path d="M28 8v6h6M17 24h14M17 30h14"/>',
+    'Case studies': '<path d="M14 8h14l6 6v22a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2z"/><path d="M28 8v6h6M18 26l4 4 8-9"/>',
+    'Whitepapers': '<path d="M14 8h14l6 6v22a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2z"/><path d="M28 8v6h6M17 22h14M17 28h9"/>',
+    'Featured projects': '<path d="M24 6l4.6 12.6L42 21l-9 9 2.3 13-11.3-6.5L12.7 43 15 30l-9-9 13.4-2.4L24 6z"/>',
+    'About': '<rect x="12" y="10" width="24" height="28" rx="2"/><path d="M18 18h4M26 18h4M18 26h4M26 26h4M20 38v-6h8v6"/>',
+    'Our approach': '<circle cx="24" cy="24" r="13"/><circle cx="24" cy="24" r="7"/><circle cx="24" cy="24" r="1.6" fill="currentColor" stroke="none"/>',
+    'Clients': '<circle cx="18" cy="18" r="5"/><circle cx="32" cy="20" r="4"/><path d="M9 38c1-6 5-10 9-10s8 4 9 10M27 38c1-5 4-9 8-9 3 0 6 2 7 6"/>',
+    'Careers': '<rect x="8" y="16" width="32" height="20" rx="3"/><path d="M17 16v-4a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v4"/><path d="M8 25h32"/>'
+  };
+  var ICON_DEFAULT = '<circle cx="24" cy="24" r="4" fill="currentColor" stroke="none"/>';
+
+  var PILLARS = [
+    {
+      title: 'AI transformation',
+      tagline: 'Put AI to work.',
+      desc: 'Identify meaningful opportunities, build practical AI capabilities and accelerate adoption. From strategy and generative AI to intelligent agents and AI-enabled engineering, we help turn experimentation into measurable business value. The result is AI that fits how your teams actually work, not a bolt-on feature nobody uses.',
+      tags: ['AI strategy & consulting', 'Generative AI', 'AI applications', 'AI agents & automation', 'AI-enabled engineering', 'AI integration'],
+      cta: { label: 'Explore AI transformation', href: 'ai-transformation.html' }
+    },
+    {
+      title: 'Digital engineering',
+      tagline: 'Build and modernize.',
+      desc: 'Create, modernize and scale digital products, applications and platforms. We combine strong engineering practices with modern architectures to help you ship faster, integrate more easily and build systems that hold up as the business grows. Every solution is built to be maintainable, secure and ready for what comes next.',
+      tags: ['Web & application engineering', 'Mobile engineering', 'API & microservices', 'Cloud engineering', 'Application modernization', 'Quality engineering'],
+      cta: { label: 'Explore digital engineering', href: 'digital-engineering.html' }
+    },
+    {
+      title: 'Business transformation',
+      tagline: 'Transform how the business works.',
+      desc: 'Modernize systems and processes to create stronger, more efficient ways of working. We look across people, technology and workflows to remove friction, connect disconnected systems and give teams the tools they need to move faster. The outcome is a business that runs on processes built for today, not decisions made years ago.',
+      tags: ['Digital transformation', 'CRM', 'E-commerce', 'Business applications', 'Process modernization', 'SaaS'],
+      cta: { label: 'Explore business transformation', href: 'business-transformation.html' }
+    },
+    {
+      title: 'Digital experience',
+      tagline: 'Design better digital interactions.',
+      desc: 'Create digital experiences that work better for customers, employees and the business. From research and design to the systems that keep experiences consistent at scale, we focus on interactions that are intuitive, accessible and aligned with what people actually need. Better experience drives better outcomes on both sides of the relationship.',
+      tags: ['UX strategy', 'UI design', 'Product design', 'Customer experience', 'Employee experience', 'Design systems'],
+      cta: { label: 'Explore digital experience', href: 'digital-experience.html' }
+    },
+    {
+      title: 'Growth transformation',
+      tagline: 'Create demand that converts.',
+      desc: 'Bring AI search, SEO, digital marketing and digital channels together to create qualified demand and improve conversion. We connect strategy, content and measurement so every channel works toward the same outcome instead of pulling in different directions. The focus stays on attention that converts into real business results.',
+      tags: ['AI search & visibility', 'SEO', 'Performance marketing', 'Content & demand generation', 'Conversion optimization', 'Analytics & measurement'],
+      cta: { label: 'Explore growth transformation', href: 'growth-transformation.html' }
+    }
+  ];
+
+  var pillarsGrid = document.getElementById('pillarsGrid');
+  PILLARS.forEach(function (p, i) {
+    var row = document.createElement('div');
+    row.className = 'svc-cap-row';
+
+    var head = document.createElement('button');
+    head.type = 'button';
+    head.className = 'svc-cap-row-head';
+    head.setAttribute('aria-expanded', 'false');
+
+    var num = document.createElement('span');
+    num.className = 'svc-cap-num';
+    num.textContent = String(i + 1).padStart(2, '0');
+    head.appendChild(num);
+
+    var text = document.createElement('span');
+    text.className = 'svc-cap-text';
+    var title = document.createElement('span');
+    title.className = 'svc-cap-title';
+    title.textContent = p.title;
+    var tagline = document.createElement('span');
+    tagline.className = 'svc-cap-tagline';
+    tagline.textContent = p.tagline;
+    text.appendChild(title);
+    text.appendChild(tagline);
+    head.appendChild(text);
+
+    var toggle = document.createElement('span');
+    toggle.className = 'svc-cap-toggle';
+    toggle.setAttribute('aria-hidden', 'true');
+    toggle.textContent = '+';
+    head.appendChild(toggle);
+
+    row.appendChild(head);
+
+    var panel = document.createElement('div');
+    panel.className = 'svc-cap-panel';
+    var panelInner = document.createElement('div');
+    panelInner.className = 'svc-cap-panel-inner';
+
+    var panelSpacer = document.createElement('div');
+    panelSpacer.className = 'svc-cap-panel-spacer';
+    panelInner.appendChild(panelSpacer);
+
+    var panelContent = document.createElement('div');
+    panelContent.className = 'svc-cap-panel-content';
+
+    if (p.desc) {
+      var descEl = document.createElement('p');
+      descEl.className = 'svc-cap-desc';
+      descEl.textContent = p.desc;
+      panelContent.appendChild(descEl);
+    }
+
+    if (p.tags && p.tags.length) {
+      var tagsRow = document.createElement('div');
+      tagsRow.className = 'svc-cap-tags';
+      tagsRow.textContent = p.tags.join('  •  ');
+      panelContent.appendChild(tagsRow);
+    }
+
+    if (p.cta) {
+      var ctaRow = document.createElement('div');
+      ctaRow.className = 'svc-cap-cta-row';
+      var ctaLink = document.createElement('a');
+      ctaLink.className = 'svc-cap-cta';
+      ctaLink.href = p.cta.href;
+      ctaLink.innerHTML = 'Explore <span class="svc-cap-cta-arrow" aria-hidden="true">↗</span>';
+      ctaRow.appendChild(ctaLink);
+      panelContent.appendChild(ctaRow);
+    }
+
+    panelInner.appendChild(panelContent);
+
+    panel.appendChild(panelInner);
+    row.appendChild(panel);
+
+    head.addEventListener('click', function () {
+      var isOpen = row.classList.toggle('is-open');
+      head.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      panel.style.maxHeight = isOpen ? panelInner.scrollHeight + 'px' : '';
+    });
+
+    pillarsGrid.appendChild(row);
+  });
+
+  // ---------- Move from opportunity to impact: Accelerate / Apply / Evolve ----------
+  var OPPORTUNITY_STEPS = [
+    { n: '01', title: 'Accelerate', desc: 'Move from idea to implementation faster.' },
+    { n: '02', title: 'Apply', desc: 'Use the right technology where it creates real business value.' },
+    { n: '03', title: 'Evolve', desc: 'Continuously improve products, systems and experiences as your business changes.' }
+  ];
+  var opportunityProcess = document.getElementById('opportunityProcess');
+  OPPORTUNITY_STEPS.forEach(function (s) {
+    var item = document.createElement('div');
+    item.className = 'svc-timeline-step';
+    item.innerHTML =
+      '<div class="svc-timeline-num">' + s.n + '</div>' +
+      '<div class="svc-timeline-title">' + s.title + '</div>' +
+      '<div class="svc-timeline-desc">' + s.desc + '</div>';
+    opportunityProcess.appendChild(item);
+  });
+
+  // ---------- Insights ----------
+  var INSIGHT_COLORS = [
+    { bg: 'var(--success)', text: 'dark' },
+    { bg: 'var(--attention)', text: 'dark' },
+    { bg: 'var(--accent)', text: 'light' }
+  ];
+  var INSIGHTS = [
+    {
+      cat: 'AI / Technology', title: 'AI and the changing technology landscape',
+      readTime: '6 min read', thumb: 'url(assets/insights/ai-tech.jpg)'
+    },
+    {
+      cat: 'Business / Transformation', title: 'Business transformation without the disruption',
+      readTime: '8 min read'
+    },
+    {
+      cat: 'Growth / Digital', title: 'Turning technology into business growth',
+      readTime: '5 min read', thumb: 'url(assets/insights/growth.jpg)'
+    },
+    {
+      cat: 'Digital Experience', title: 'Designing digital experiences people actually use',
+      readTime: '6 min read'
+    },
+    {
+      cat: 'Digital Engineering', title: "Building digital products for what's next",
+      readTime: '7 min read', thumb: 'url(assets/insights/cloud.jpg)'
+    },
+    {
+      cat: 'Data / Analytics', title: 'What good data discipline looks like',
+      readTime: '5 min read'
+    }
+  ];
+  var insightsCountEl = document.getElementById('insightsCount');
+  var insightsGrid = document.getElementById('insightsGrid');
+  var colorIndex = 0;
+  INSIGHTS.forEach(function (a) {
+    var card = document.createElement('div');
+    if (a.thumb) {
+      card.className = 'sdl-insight-card';
+      card.style.backgroundImage = a.thumb;
+    } else {
+      var swatch = INSIGHT_COLORS[colorIndex % INSIGHT_COLORS.length];
+      card.className = 'sdl-insight-card sdl-insight-card--color sdl-insight-card--' + swatch.text;
+      card.style.background = swatch.bg;
+      colorIndex++;
+    }
+
+    var topRow = document.createElement('div');
+    topRow.className = 'sdl-insight-top-row';
+    var badge = document.createElement('span');
+    badge.className = 'sdl-insight-thumb-badge';
+    badge.textContent = a.cat;
+    var linkIcon = document.createElement('span');
+    linkIcon.className = 'sdl-insight-link-icon';
+    linkIcon.textContent = '↗';
+    topRow.appendChild(badge);
+    topRow.appendChild(linkIcon);
+
+    var body = document.createElement('div');
+    body.className = 'sdl-insight-body';
+    var title = document.createElement('div');
+    title.className = 'sdl-insight-title';
+    title.textContent = a.title;
+    var meta = document.createElement('div');
+    meta.className = 'sdl-insight-meta';
+    meta.innerHTML = '<span>' + a.readTime + '</span><span class="read-link">Read perspective ↗</span>';
+
+    body.appendChild(title);
+    body.appendChild(meta);
+    card.appendChild(topRow);
+    card.appendChild(body);
+    insightsGrid.appendChild(card);
+  });
+
+  function insightsStep() {
+    var firstCard = insightsGrid.firstElementChild;
+    return firstCard ? firstCard.getBoundingClientRect().width + 20 : insightsGrid.clientWidth;
+  }
+  document.getElementById('insightsPrev').addEventListener('click', function () {
+    insightsGrid.scrollBy({ left: -insightsStep(), behavior: 'smooth' });
+  });
+  document.getElementById('insightsNext').addEventListener('click', function () {
+    insightsGrid.scrollBy({ left: insightsStep(), behavior: 'smooth' });
+  });
+
+  function updateInsightsCount() {
+    var firstCard = insightsGrid.firstElementChild;
+    if (!firstCard) return;
+    var step = firstCard.getBoundingClientRect().width + 20;
+    var maxScroll = insightsGrid.scrollWidth - insightsGrid.clientWidth;
+    var scrollLeft = insightsGrid.scrollLeft;
+    var index;
+    if (maxScroll <= 0) {
+      index = 1;
+    } else if (scrollLeft >= maxScroll - 2) {
+      index = INSIGHTS.length;
+    } else {
+      index = Math.round(scrollLeft / step) + 1;
+    }
+    index = Math.max(1, Math.min(INSIGHTS.length, index));
+    insightsCountEl.textContent = String(index).padStart(2, '0') + ' / ' + String(INSIGHTS.length).padStart(2, '0') + ' Perspectives';
+  }
+  updateInsightsCount();
+  insightsGrid.addEventListener('scroll', updateInsightsCount);
+  window.addEventListener('resize', updateInsightsCount);
+
+  // ---------- Contact form ----------
+  var contactForm = document.getElementById('contactForm');
+  var formSuccess = document.getElementById('formSuccess');
+  contactForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!contactForm.checkValidity()) { contactForm.reportValidity(); return; }
+    contactForm.style.display = 'none';
+    formSuccess.classList.add('show');
+  });
+
+  // ---------- Footer ----------
+  var FOOTER_COLS = [
+    { title: 'Services', links: [
+      { label: 'AI transformation', href: 'ai-transformation.html' },
+      { label: 'Digital engineering', href: 'digital-engineering.html' },
+      { label: 'Business transformation', href: 'business-transformation.html' },
+      { label: 'Digital experience', href: 'digital-experience.html' },
+      { label: 'Growth transformation', href: 'growth-transformation.html' }
+    ]},
+    { title: 'Products & Platforms', links: [
+      { label: 'EVOQ', href: 'evoq.html' }
+    ]},
+    { title: 'Insights', links: [
+      { label: 'Blogs', href: '#' },
+      { label: 'Case studies', href: '#' },
+      { label: 'Whitepapers', href: '#' },
+      { label: 'Featured projects', href: '#' }
+    ]},
+    { title: 'Company', links: [
+      { label: 'About', href: '#' },
+      { label: 'Our approach', href: '#' },
+      { label: 'Clients', href: '#' },
+      { label: 'Careers', href: '#' }
+    ]},
+    { title: 'Connect', links: [
+      { label: "Let's talk", href: '#contact' },
+      { label: 'Contact us', href: '#contact' }
+    ]}
+  ];
+  var footerCols = document.getElementById('footerCols');
+  FOOTER_COLS.forEach(function (col) {
+    var wrap = document.createElement('div');
+    var title = document.createElement('div');
+    title.className = 'sdl-footer-col-title';
+    title.textContent = col.title;
+    var list = document.createElement('ul');
+    list.className = 'sdl-footer-links';
+    col.links.forEach(function (l) {
+      var li = document.createElement('li');
+      var a = document.createElement('a');
+      a.href = l.href;
+      a.textContent = l.label;
+      li.appendChild(a);
+      list.appendChild(li);
+    });
+    wrap.appendChild(title);
+    wrap.appendChild(list);
+    footerCols.appendChild(wrap);
+  });
+
+  document.getElementById('footerYear').textContent = '© ' + new Date().getFullYear() + ' Social DNA Labs';
+
+  // ---------- Desktop nav + mega menu ----------
+  var desktopNav = document.getElementById('desktopNav');
+  var megaPanel = document.getElementById('megaPanel');
+  var header = document.getElementById('sdlHeader');
+
+  var navButtons = [];
+
+  function closeMegaMenu() {
+    megaPanel.classList.remove('open');
+    megaPanel.innerHTML = '';
+    navButtons.forEach(function (b) { b.classList.remove('active'); });
+  }
+
+  function renderMegaMenu(menu, triggerBtn, triggerItem) {
+    if (!MEGA_MENU_ENABLED) return;
+    var inner = document.createElement('div');
+    inner.className = 'sdl-mega-panel-inner';
+    if (menu.items.length < 2) inner.style.gridTemplateColumns = '1fr';
+    menu.items.forEach(function (item) {
+      var wrap = document.createElement('div');
+      wrap.className = 'sdl-mega-item';
+      var icon = document.createElement('div');
+      icon.className = 'sdl-mega-item-icon';
+      icon.innerHTML = '<svg width="18" height="18" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">' + (ICONS[item.title] || ICON_DEFAULT) + '</svg>';
+      var textWrap = document.createElement('div');
+      var title = document.createElement('div');
+      title.className = 'sdl-mega-item-title';
+      title.textContent = item.title;
+      var desc = document.createElement('div');
+      desc.className = 'sdl-mega-item-desc';
+      desc.textContent = item.desc;
+      textWrap.appendChild(title);
+      textWrap.appendChild(desc);
+      wrap.appendChild(icon);
+      wrap.appendChild(textWrap);
+
+      if (item.href) {
+        var link = document.createElement('a');
+        link.href = item.href;
+        link.style.display = 'contents';
+        link.style.cursor = 'pointer';
+        link.style.color = 'inherit';
+        link.style.textDecoration = 'none';
+        link.appendChild(wrap);
+        inner.appendChild(link);
+      } else {
+        inner.appendChild(wrap);
+      }
+    });
+    if (menu.cta) {
+      var ctaWrap = document.createElement('div');
+      ctaWrap.className = 'sdl-mega-cta';
+      var ctaLink = document.createElement('a');
+      ctaLink.href = menu.cta.href;
+      ctaLink.textContent = menu.cta.label + ' →';
+      ctaLink.style.color = ACCENT;
+      ctaWrap.appendChild(ctaLink);
+      inner.appendChild(ctaWrap);
+    }
+    megaPanel.innerHTML = '';
+    megaPanel.appendChild(inner);
+    megaPanel.classList.add('open');
+
+    navButtons.forEach(function (b) { b.classList.toggle('active', b === triggerBtn); });
+
+    var headerRect = header.getBoundingClientRect();
+    var itemRect = triggerItem.getBoundingClientRect();
+    var panelWidth = megaPanel.offsetWidth;
+    var itemCenter = (itemRect.left - headerRect.left) + itemRect.width / 2;
+    var left = itemCenter - panelWidth / 2;
+    var maxLeft = header.offsetWidth - panelWidth - 24;
+    if (maxLeft < 24) maxLeft = 24;
+    left = Math.max(24, Math.min(left, maxLeft));
+    megaPanel.style.left = left + 'px';
+  }
+
+  MENUS.forEach(function (menu) {
+    var item = document.createElement('div');
+    item.className = 'sdl-nav-item';
+
+    if (menu.href && !menu.items.length) {
+      var link = document.createElement('a');
+      link.className = 'sdl-nav-btn';
+      link.href = menu.href;
+      link.textContent = menu.label;
+      item.appendChild(link);
+    } else {
+      var btn = document.createElement('button');
+      btn.className = 'sdl-nav-btn';
+      btn.innerHTML = menu.label + ' <span class="caret">▾</span>';
+      item.appendChild(btn);
+      item.addEventListener('mouseenter', function () { renderMegaMenu(menu, btn, item); });
+      navButtons.push(btn);
+    }
+
+    desktopNav.appendChild(item);
+  });
+
+  header.addEventListener('mouseleave', closeMegaMenu);
+
+  // ---------- Mobile nav ----------
+  var mobileToggle = document.getElementById('mobileToggle');
+  var mobilePanel = document.getElementById('mobilePanel');
+  var mobileOpenKey = null;
+
+  function renderMobilePanel() {
+    mobilePanel.innerHTML = '';
+    MENUS.forEach(function (menu) {
+      var itemEl = document.createElement('div');
+      itemEl.className = 'sdl-mobile-item';
+
+      if (menu.href && !menu.items.length) {
+        var link = document.createElement('a');
+        link.className = 'sdl-mobile-item-btn';
+        link.href = menu.href;
+        link.textContent = menu.label;
+        link.style.display = 'block';
+        link.style.cursor = 'pointer';
+        itemEl.appendChild(link);
+      } else {
+        var btn = document.createElement('button');
+        btn.className = 'sdl-mobile-item-btn';
+        btn.innerHTML = menu.label + ' <span class="caret">▾</span>';
+        btn.addEventListener('click', function () {
+          mobileOpenKey = mobileOpenKey === menu.key ? null : menu.key;
+          renderMobilePanel();
+        });
+        itemEl.appendChild(btn);
+
+        var sub = document.createElement('div');
+        sub.className = 'sdl-mobile-sub' + (mobileOpenKey === menu.key ? ' open' : '');
+        menu.items.forEach(function (subItem) {
+          var subWrap = document.createElement('div');
+          var t = document.createElement('div');
+          t.className = 'sdl-mobile-sub-title';
+          t.textContent = subItem.title;
+          var d = document.createElement('div');
+          d.className = 'sdl-mobile-sub-desc';
+          d.textContent = subItem.desc;
+          subWrap.appendChild(t);
+          subWrap.appendChild(d);
+          sub.appendChild(subWrap);
+        });
+        if (menu.cta) {
+          var ctaLink = document.createElement('a');
+          ctaLink.href = menu.cta.href;
+          ctaLink.textContent = menu.cta.label + ' →';
+          sub.appendChild(ctaLink);
+        }
+        itemEl.appendChild(sub);
+      }
+      mobilePanel.appendChild(itemEl);
+    });
+
+    var talkLink = document.createElement('a');
+    talkLink.href = '#contact';
+    talkLink.className = 'sdl-mobile-cta';
+    talkLink.textContent = "Let's talk →";
+    mobilePanel.appendChild(talkLink);
+  }
+  renderMobilePanel();
+
+  mobileToggle.addEventListener('click', function () {
+    mobilePanel.classList.toggle('open');
+  });
+
+  // ---------- Services hero: the double helix ----------
+  (function buildHelix() {
+    var NS = 'http://www.w3.org/2000/svg';
+    var backG = document.getElementById('svcDnaBack');
+    if (!backG) return;
+    var rungsG = document.getElementById('svcDnaRungs');
+    var frontG = document.getElementById('svcDnaFront');
+    var dustG = document.getElementById('svcDnaDust');
+    var callG = document.getElementById('svcDnaCallouts');
+
+    var CX = 315, CY = 250, LEN = 680, AMP = 74, TURNS = 3;
+    var RAD = 32 * Math.PI / 180, COS = Math.cos(RAD), SIN = Math.sin(RAD);
+
+    // a point on one strand, already rotated onto the page's diagonal
+    function pointAt(t, phase) {
+      var a = 2 * Math.PI * TURNS * t + phase;
+      var xl = AMP * Math.sin(a);
+      var yl = -LEN / 2 + t * LEN;
+      return {
+        x: CX + xl * COS - yl * SIN,
+        y: CY + xl * SIN + yl * COS,
+        depth: Math.cos(a)
+      };
+    }
+
+    function el(tag, attrs) {
+      var node = document.createElementNS(NS, tag);
+      for (var k in attrs) node.setAttribute(k, attrs[k]);
+      return node;
+    }
+
+    function mix(from, to, k) {
+      function parse(c) {
+        return [parseInt(c.substr(1, 2), 16), parseInt(c.substr(3, 2), 16), parseInt(c.substr(5, 2), 16)];
+      }
+      var a = parse(from), b = parse(to);
+      return 'rgb(' + Math.round(a[0] + (b[0] - a[0]) * k) + ',' +
+                      Math.round(a[1] + (b[1] - a[1]) * k) + ',' +
+                      Math.round(a[2] + (b[2] - a[2]) * k) + ')';
+    }
+
+    // split a strand into the stretches that pass in front and behind
+    function strandRuns(phase) {
+      var runs = { front: [], back: [] }, steps = 260, d = null, isFront = null;
+      for (var i = 0; i <= steps; i++) {
+        var p = pointAt(i / steps, phase);
+        var here = p.depth > 0;
+        var xy = p.x.toFixed(1) + ' ' + p.y.toFixed(1);
+        if (d === null) {
+          d = 'M' + xy; isFront = here;
+        } else if (here !== isFront) {
+          d += 'L' + xy;                       // carry the join across the swap
+          runs[isFront ? 'front' : 'back'].push(d);
+          d = 'M' + xy; isFront = here;
+        } else {
+          d += 'L' + xy;
+        }
+      }
+      if (d !== null) runs[isFront ? 'front' : 'back'].push(d);
+      return runs;
+    }
+
+    function drawStrand(group, paths, rim, core) {
+      paths.forEach(function (d) {
+        group.appendChild(el('path', { d: d, fill: 'none', stroke: rim, 'stroke-width': 24, 'stroke-linecap': 'round' }));
+        group.appendChild(el('path', { d: d, fill: 'none', stroke: core, 'stroke-width': 17, 'stroke-linecap': 'round' }));
+      });
+    }
+
+    // the base pairs, drawn between the two strands and inset so they read as
+    // meeting the inner edge of each tube rather than crossing it
+    var RUNGS = 34, INSET = 0.09;
+    for (var i = 1; i < RUNGS; i++) {
+      var t = i / RUNGS;
+      var a = pointAt(t, 0), b = pointAt(t, Math.PI);
+      var toward = (a.depth + 1) / 2;                                  // 1 = nearest the viewer
+      var spread = Math.abs(Math.sin(2 * Math.PI * TURNS * t));        // 0 where the strands cross
+      rungsG.appendChild(el('line', {
+        x1: (a.x + (b.x - a.x) * INSET).toFixed(1), y1: (a.y + (b.y - a.y) * INSET).toFixed(1),
+        x2: (b.x + (a.x - b.x) * INSET).toFixed(1), y2: (b.y + (a.y - b.y) * INSET).toFixed(1),
+        stroke: mix('#6C8CF5', '#A78BFA', Math.sin(t * Math.PI)),
+        'stroke-width': (3.4 + 4 * toward).toFixed(1),
+        'stroke-linecap': 'round',
+        opacity: (0.18 + 0.55 * toward * (0.35 + 0.65 * spread)).toFixed(2)
+      }));
+    }
+
+    var strandA = strandRuns(0), strandB = strandRuns(Math.PI);
+    drawStrand(backG, strandA.back, '#D2DDF3', '#EDF2FC');
+    drawStrand(backG, strandB.back, '#D2DDF3', '#EDF2FC');
+    drawStrand(frontG, strandA.front, '#C2D0EC', '#FFFFFF');
+    drawStrand(frontG, strandB.front, '#C2D0EC', '#FFFFFF');
+
+    // fine dust drifting off the helix
+    var seed = 7;
+    function rnd() { seed = (seed * 1103515245 + 12345) % 2147483648; return seed / 2147483648; }
+    for (var j = 0; j < 26; j++) {
+      var pt = pointAt(rnd(), rnd() < 0.5 ? 0 : Math.PI);
+      dustG.appendChild(el('circle', {
+        cx: (pt.x + (rnd() - 0.5) * 130).toFixed(1),
+        cy: (pt.y + (rnd() - 0.5) * 90).toFixed(1),
+        r: (0.9 + rnd() * 1.7).toFixed(1),
+        fill: '#7C97FF',
+        opacity: (0.15 + rnd() * 0.4).toFixed(2)
+      }));
+    }
+
+    // the shifts the work delivers — labelled off the helix
+    var CALLOUTS = [
+      { lines: ['IDEAS', 'INTO SOLUTIONS'], align: 'start', textX: 18, y1: 64, y2: 82, ruleY: 92, ruleX1: 18, ruleX2: 152, elbow: 255, t: 0.25, phase: 0 },
+      { lines: ['PEOPLE', 'INTO EXPERIENCES'], align: 'start', textX: 18, y1: 230, y2: 248, ruleY: 258, ruleX1: 18, ruleX2: 170, elbow: 200, t: 0.5833, phase: 0 },
+      { lines: ['POTENTIAL', 'INTO PROGRESS'], align: 'end', textX: 542, y1: 300, y2: 318, ruleY: 328, ruleX1: 400, ruleX2: 542, elbow: 385, t: 0.5833, phase: Math.PI },
+      { lines: ['COMPLEXITY', 'INTO CLARITY'], align: 'end', textX: 542, y1: 418, y2: 436, ruleY: 446, ruleX1: 395, ruleX2: 542, elbow: 350, t: 0.75, phase: 0 }
+    ];
+
+    CALLOUTS.forEach(function (c, idx) {
+      var node = pointAt(c.t, c.phase);
+      var anchorX = c.align === 'start' ? c.ruleX2 : c.ruleX1;
+
+      c.lines.forEach(function (line, n) {
+        var text = el('text', { class: 'svc-dna-label', x: c.textX, y: n === 0 ? c.y1 : c.y2 });
+        if (c.align === 'end') text.setAttribute('text-anchor', 'end');
+        text.textContent = line;
+        callG.appendChild(text);
+      });
+
+      callG.appendChild(el('line', { class: 'svc-dna-rule', x1: c.ruleX1, y1: c.ruleY, x2: c.ruleX2, y2: c.ruleY }));
+      callG.appendChild(el('path', {
+        class: 'svc-dna-connector',
+        d: 'M' + anchorX + ' ' + c.ruleY + 'L' + c.elbow + ' ' + c.ruleY + 'L' + node.x.toFixed(1) + ' ' + node.y.toFixed(1)
+      }));
+      callG.appendChild(el('circle', {
+        class: 'svc-dna-node-ring', cx: node.x.toFixed(1), cy: node.y.toFixed(1), r: 5,
+        fill: '#FFFFFF', stroke: '#2B49DB', 'stroke-width': 1.2,
+        style: '--node-delay:' + (idx * 0.55) + 's'
+      }));
+      callG.appendChild(el('circle', { cx: node.x.toFixed(1), cy: node.y.toFixed(1), r: 2, fill: '#2B49DB' }));
+    });
+  })();
+
+  // ---------- Scroll-reveal motion ----------
+  (function initScrollReveal() {
+    var targets = document.querySelectorAll('.reveal, .reveal-group');
+    if (!targets.length) return;
+    if (!('IntersectionObserver' in window)) {
+      targets.forEach(function (el) { el.classList.add('is-visible'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries, observer) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+    targets.forEach(function (el) { io.observe(el); });
+  })();
+
+})();
+</script>
+
+</body>
+</html>
