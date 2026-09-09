@@ -274,7 +274,7 @@
      "featured" tile, plain white tiles, one full-width dark closing tile) —
      a fourth distinct pattern alongside the other three service pages'
      stacked rows, accordion and tab selector */
-  .gt-cap-bento { margin-top: 52px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .gt-cap-bento { margin-top: 52px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
   .gt-cap-tile {
     position: relative; overflow: hidden; border-radius: 20px; padding: 32px;
     display: flex; flex-direction: column; transition: transform 0.25s ease, box-shadow 0.25s ease;
@@ -284,8 +284,6 @@
   .gt-cap-tile--white:hover { box-shadow: 0 22px 46px rgba(16,24,40,0.09); border-color: rgba(62,95,224,0.28); }
   .gt-cap-tile--tint { background: linear-gradient(155deg, #EEF1FF 0%, #E1E7FF 100%); border: 1px solid rgba(62,95,224,0.18); }
   .gt-cap-tile--dark { background: #101826; border: 1px solid rgba(255,255,255,0.08); }
-  .gt-cap-tile--span2 { grid-column: span 2; }
-  .gt-cap-tile--span4 { grid-column: span 4; }
   .gt-cap-tile-icon { flex-shrink: 0; width: 42px; height: 42px; }
   .gt-cap-tile--featured .gt-cap-tile-icon { width: 54px; height: 54px; }
   .gt-cap-tile-icon svg { display: block; width: 100%; height: 100%; }
@@ -302,10 +300,11 @@
   .gt-cap-tile--dark .gt-cap-tile-title { color: #FFFFFF; }
   .gt-cap-tile-desc { margin-top: 10px; font-size: 14.5px; line-height: 1.65; color: #46535F; }
   .gt-cap-tile--dark .gt-cap-tile-desc { color: rgba(255,255,255,0.68); }
-  .gt-cap-tile--span4 .gt-cap-tile-desc { max-width: 720px; }
   @media (max-width: 900px) {
+    .gt-cap-bento { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
     .gt-cap-bento { grid-template-columns: 1fr; }
-    .gt-cap-tile--span2, .gt-cap-tile--span4 { grid-column: span 1; }
   }
 
   /* ---------- GT page: value (dark) ---------- */
@@ -995,12 +994,12 @@
     ['#9BEFC4', '#22B368']
   ];
   var GT_BENTO_LAYOUT = [
-    { span: 2, variant: 'tint featured' },
-    { span: 2, variant: 'white' },
-    { span: 1, variant: 'tint' },
-    { span: 1, variant: 'white' },
-    { span: 2, variant: 'tint' },
-    { span: 4, variant: 'white' }
+    { variant: 'tint featured' },
+    { variant: 'white' },
+    { variant: 'tint' },
+    { variant: 'white' },
+    { variant: 'tint' },
+    { variant: 'white' }
   ];
   var gtCapabilities = document.getElementById('gtCapabilities');
   if (gtCapabilities) {
@@ -1009,7 +1008,7 @@
       var variantClasses = layout.variant.split(' ').map(function (v) { return 'gt-cap-tile--' + v; }).join(' ');
 
       var tile = document.createElement('div');
-      tile.className = 'gt-cap-tile gt-cap-tile--span' + layout.span + ' ' + variantClasses;
+      tile.className = 'gt-cap-tile ' + variantClasses;
 
       var icon = document.createElement('div');
       icon.className = 'gt-cap-tile-icon';

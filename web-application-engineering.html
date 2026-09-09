@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Web & Application Engineering — Social DNA Labs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --accent: #2B49DB; --accent-hover: #1E35B8; --heading: #162833; --body-text: #46535F;
+    --success: #28C76F; --attention: #F4C430; --critical: #E64A3C;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #F6F8FC; overflow-x: hidden; font-family: 'Inter', sans-serif; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { color: var(--accent-hover); }
+
+  /* ---------- header / nav (shared) ---------- */
+  .sdl-header { position: sticky; top: 0; z-index: 50; background: #F6F8FC; border-bottom: 1px solid rgba(16,24,40,0.07); }
+  .sdl-header-inner { max-width: 1360px; margin: 0 auto; padding: 0 48px; height: 88px; display: flex; align-items: center; }
+  .sdl-logo { height: 38px; width: auto; display: block; flex-shrink: 0; }
+
+  .sdl-header-left { display: flex; align-items: center; flex: 0 0 auto; }
+  .sdl-header-nav-wrap { flex: 1 1 auto; display: flex; align-items: center; justify-content: center; min-width: 0; }
+  .sdl-header-right { display: flex; align-items: center; gap: 32px; flex: 0 0 auto; }
+
+  .sdl-desktop-nav { display: flex; align-items: center; gap: 6px; }
+  .sdl-nav-item { position: relative; }
+  .sdl-nav-btn {
+    position: relative; display: flex; align-items: center; gap: 6px; background: none; border: none;
+    font-family: inherit; font-size: 15px; font-weight: 600; color: #162833;
+    cursor: pointer; padding: 12px 13px; border-radius: 8px; white-space: nowrap; flex-shrink: 0;
+  }
+  .sdl-nav-btn:hover { background: rgba(43,73,219,0.06); }
+  .sdl-nav-btn .caret { font-size: 10px; color: #8891A0; margin-top: 2px; transition: transform 0.15s ease; }
+  .sdl-nav-btn.active { color: var(--accent); }
+  .sdl-nav-btn.active .caret { color: var(--accent); transform: rotate(180deg); }
+  .sdl-nav-btn.active::after {
+    content: ''; position: absolute; left: 13px; right: 13px; bottom: 3px; height: 2px; border-radius: 2px;
+    background: linear-gradient(90deg, var(--accent), #6AA8FA);
+  }
+
+  .sdl-cta {
+    display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid var(--accent);
+    color: var(--accent); font-weight: 700; font-size: 14px; padding: 10px 22px;
+    border-radius: 999px; white-space: nowrap; flex-shrink: 0;
+  }
+  .sdl-cta:hover { background: rgba(43,73,219,0.06); color: var(--accent); }
+
+  .sdl-mobile-toggle {
+    display: none; align-items: center; justify-content: center; width: 40px; height: 40px;
+    background: none; border: none; cursor: pointer; flex-shrink: 0;
+  }
+
+  .sdl-mega-panel { position: absolute; top: 100%; left: 48px; padding-top: 14px; z-index: 100; display: none; }
+  .sdl-mega-panel.open { display: block; }
+  .sdl-mega-panel-inner {
+    width: max-content; max-width: min(760px, calc(100vw - 96px)); padding: 30px 32px 24px;
+    display: grid; grid-template-columns: repeat(2, minmax(240px, 1fr));
+    column-gap: 36px; row-gap: 26px;
+    background: #FFFFFF; border-radius: 20px; border: 1px solid rgba(16,24,40,0.06);
+    box-shadow: 0 30px 60px rgba(16,24,40,0.16), 0 4px 14px rgba(16,24,40,0.06);
+    overflow: hidden;
+  }
+  .sdl-mega-item { display: flex; align-items: flex-start; gap: 14px; }
+  .sdl-mega-item-icon {
+    width: 36px; height: 36px; border-radius: 9px; background: rgba(43,73,219,0.08); color: var(--accent);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .sdl-mega-item-title { font-weight: 700; color: #162833; margin-bottom: 5px; font-size: 15px; }
+  .sdl-mega-item-desc { color: #46535F; font-size: 13px; line-height: 1.55; }
+  .sdl-mega-cta { grid-column: 1 / -1; border-top: 1px solid #EEF1F6; padding-top: 18px; }
+  .sdl-mega-cta a { color: var(--accent); font-weight: 700; font-size: 14px; display: inline-flex; align-items: center; gap: 6px; }
+
+  .sdl-mobile-panel {
+    display: none; background: #FFFFFF; border-top: 1px solid rgba(16,24,40,0.07);
+    padding: 8px 24px 24px; max-height: calc(100vh - 88px); overflow-y: auto;
+  }
+  .sdl-mobile-panel.open { display: block; }
+  .sdl-mobile-item { border-bottom: 1px solid #EEF1F6; }
+  .sdl-mobile-item-btn {
+    width: 100%; display: flex; align-items: center; justify-content: space-between;
+    background: none; border: none; font-family: inherit; font-size: 16px; font-weight: 700;
+    color: #162833; padding: 16px 4px; cursor: pointer;
+  }
+  .sdl-mobile-item-btn .caret { font-size: 12px; color: #8891A0; }
+  .sdl-mobile-sub { padding: 0 4px 18px; display: none; flex-direction: column; gap: 14px; }
+  .sdl-mobile-sub.open { display: flex; }
+  .sdl-mobile-sub-title { font-weight: 700; color: #162833; font-size: 14px; }
+  .sdl-mobile-sub-desc { color: #46535F; font-size: 13px; line-height: 1.5; margin-top: 2px; }
+  .sdl-mobile-sub a { color: var(--accent); font-weight: 700; font-size: 14px; }
+  .sdl-mobile-cta {
+    display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--accent);
+    color: #FFFFFF; font-weight: 700; font-size: 15px; padding: 14px; border-radius: 999px; margin-top: 20px;
+  }
+  .sdl-mobile-cta:hover { color: #FFFFFF; }
+
+  /* ---------- shared hero / section primitives ---------- */
+  .sdl-hero {
+    max-width: 1360px; margin: 0 auto; padding: 84px 48px 56px;
+    display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px; align-items: center;
+  }
+  .sdl-hero-copy-wrap { max-width: 640px; }
+  .sdl-hero-copy {
+    font-family: 'Manrope', sans-serif;
+    font-size: clamp(36px, 3.7vw, 48px); line-height: 1.2; font-weight: 500;
+    letter-spacing: -0.01em; color: #162833;
+  }
+  .sdl-hero-copy .accent { color: #2B8FDB; }
+  .sdl-hero-sub { margin-top: 26px; font-size: 18px; line-height: 1.65; color: #46535F; max-width: 500px; }
+  .sdl-hero-actions { display: flex; align-items: center; gap: 28px; margin-top: 40px; flex-wrap: wrap; }
+  .sdl-hero-primary {
+    display: inline-flex; align-items: center; gap: 10px; background: var(--accent);
+    color: #FFFFFF; font-weight: 700; font-size: 16px; padding: 16px 30px; border-radius: 999px;
+  }
+  .sdl-hero-primary:hover { background: var(--accent-hover); color: #FFFFFF; }
+  .sdl-hero-secondary { display: inline-flex; align-items: center; gap: 8px; color: var(--accent); font-weight: 700; font-size: 16px; }
+
+  .sdl-section { padding: 96px 48px 108px; }
+  .sdl-section-inner { max-width: 1360px; margin: 0 auto; }
+  .sdl-section--alt { background: #F6F8FC; }
+  .sdl-section--white { background: #FFFFFF; }
+  .sdl-section-title {
+    font-family: 'Manrope', sans-serif;
+    font-size: clamp(30px, 3.2vw, 40px); line-height: 1.22; font-weight: 500;
+    letter-spacing: -0.01em; color: #162833; margin: 18px 0 0;
+  }
+  .sdl-section-sub { margin-top: 16px; font-size: 18px; line-height: 1.6; color: #46535F; max-width: 640px; }
+
+  .sdl-kicker-wrap { margin-bottom: 20px; }
+  .wae-kicker {
+    display: inline-flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 700;
+    letter-spacing: 0.07em; text-transform: uppercase; color: #2B8FDB;
+  }
+  .wae-kicker .kicker-line { display: inline-block; width: 22px; height: 1px; background: #2B8FDB; }
+  .wae-kicker--dark { color: rgba(255,255,255,0.72); }
+  .wae-kicker--dark .kicker-line { background: #5AB6F2; }
+
+  /* ---------- footer (shared) ---------- */
+  .sdl-footer { position: relative; background: #101826; color: #A9B2C0; padding: 56px 48px 28px; }
+  .sdl-footer-inner { max-width: 1360px; margin: 0 auto; }
+  .sdl-footer-top {
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 48px; flex-wrap: wrap;
+    padding-bottom: 32px; margin-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .sdl-footer-brand { max-width: 280px; flex-shrink: 0; }
+  .sdl-footer-logo { height: 34px; width: auto; display: block; filter: brightness(0) invert(1); }
+  .sdl-footer-tagline { margin-top: 14px; font-size: 14px; line-height: 1.6; color: #8891A0; }
+  .sdl-footer-cols { flex: 1 1 auto; display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; }
+  .sdl-footer-col-title { font-size: 12px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #FFFFFF; margin-bottom: 14px; }
+  .sdl-footer-links { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .sdl-footer-links a { color: #A9B2C0; font-size: 13.5px; transition: color 0.15s ease; }
+  .sdl-footer-links a:hover { color: #FFFFFF; }
+  .sdl-footer-social-icon {
+    width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.06); color: #A9B2C0 !important;
+    display: flex; align-items: center; justify-content: center; transition: background 0.15s ease, color 0.15s ease !important;
+  }
+  .sdl-footer-social-icon:hover { background: var(--accent); color: #FFFFFF !important; }
+  .sdl-footer-bottom {
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+    font-size: 13px; color: #7A8494;
+  }
+  .sdl-footer-bottom-right { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+
+  /* ================================================================
+     Page-specific design (Web & application engineering)
+     ================================================================ */
+
+  /* ---------- hero visual: browser-window composition ---------- */
+  .wae-hero-visual {
+    position: relative; width: 100%; aspect-ratio: 520/480;
+    container-type: inline-size; display: flex; align-items: center; justify-content: center;
+  }
+  .wae-hero-grid {
+    position: absolute; inset: 6%; border-radius: 24px; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(43,143,219,0.09) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(43,143,219,0.09) 1px, transparent 1px);
+    background-size: 28px 28px;
+    mask-image: radial-gradient(ellipse 70% 70% at 50% 45%, #000 55%, transparent 100%);
+  }
+  .wae-hero-glow {
+    position: absolute; width: 64%; aspect-ratio: 1/1; top: 6%; right: 2%; z-index: 0; pointer-events: none;
+    background: radial-gradient(circle, rgba(43,143,219,0.26) 0%, rgba(43,143,219,0) 70%);
+    filter: blur(30px);
+  }
+  .wae-hero-window {
+    position: absolute; border-radius: clamp(10px, 3.2cqw, 16px); background: #FFFFFF;
+    box-shadow: 0 30px 60px rgba(16,24,40,0.16), 0 4px 14px rgba(16,24,40,0.06);
+  }
+  .wae-hero-window--back {
+    width: 74%; height: 62%; left: 2%; top: 10%; background: #E7ECF6;
+    transform: rotate(-6deg); box-shadow: 0 20px 40px rgba(16,24,40,0.10);
+    animation: waeWindowDrift 9s ease-in-out infinite;
+  }
+  .wae-hero-window--main {
+    width: 82%; left: 12%; top: 16%; z-index: 2; overflow: hidden;
+    animation: waeWindowDrift 9s ease-in-out infinite; animation-delay: 0.3s;
+  }
+  @keyframes waeWindowDrift {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-7px); }
+  }
+  .wae-hero-window--back { animation-name: waeWindowDriftBack; }
+  @keyframes waeWindowDriftBack {
+    0%, 100% { transform: rotate(-6deg) translateY(0); }
+    50% { transform: rotate(-6deg) translateY(-5px); }
+  }
+  .wae-hero-window-bar {
+    display: flex; align-items: center; gap: clamp(5px, 1.4cqw, 7px);
+    padding: clamp(9px, 2.6cqw, 13px) clamp(12px, 3cqw, 16px); border-bottom: 1px solid #EEF1F6;
+  }
+  .wae-hero-window-bar .dot { width: clamp(6px, 1.6cqw, 8px); height: clamp(6px, 1.6cqw, 8px); border-radius: 50%; background: #DDE3EE; }
+  .wae-hero-window-bar .dot:nth-child(2) { background: #E9D98F; }
+  .wae-hero-window-bar .dot:nth-child(3) { background: #9BE0B3; }
+  .wae-hero-url { margin-left: clamp(6px, 2cqw, 10px); height: clamp(8px, 2.2cqw, 10px); flex: 1; max-width: 55%; border-radius: 999px; background: #EEF1F6; }
+  .wae-hero-window-body { display: flex; gap: clamp(8px, 2.4cqw, 12px); padding: clamp(12px, 3.2cqw, 16px); }
+  .wae-hero-window-side { display: flex; flex-direction: column; gap: clamp(6px, 1.8cqw, 9px); flex-shrink: 0; width: clamp(14px, 4cqw, 20px); }
+  .wae-hero-side-item { width: 100%; height: clamp(14px, 4cqw, 20px); border-radius: 6px; background: #EEF1F6; }
+  .wae-hero-side-item.active { background: #2B8FDB; }
+  .wae-hero-window-main-col { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: clamp(8px, 2.4cqw, 12px); }
+  .wae-hero-hero-block { height: clamp(26px, 8cqw, 38px); border-radius: 10px; background: linear-gradient(120deg, rgba(43,143,219,0.16), rgba(43,73,219,0.08)); }
+  .wae-hero-row { display: flex; gap: clamp(6px, 2cqw, 10px); }
+  .wae-hero-card { flex: 1; height: clamp(30px, 9cqw, 44px); border-radius: 9px; background: #F4F6FB; border: 1px solid #EEF1F6; }
+  .wae-hero-chart { display: flex; align-items: flex-end; gap: clamp(4px, 1.6cqw, 7px); height: clamp(28px, 9cqw, 40px); padding-top: 4px; }
+  .wae-hero-chart span { flex: 1; border-radius: 3px 3px 0 0; background: linear-gradient(180deg, #2B8FDB, #2B49DB); }
+
+  .wae-hero-float {
+    position: absolute; display: flex; align-items: center; gap: 6px;
+    background: #FFFFFF; border-radius: 999px; padding: clamp(7px, 2cqw, 10px) clamp(12px, 3.4cqw, 16px);
+    font-size: clamp(10.5px, 2.8cqw, 13px); font-weight: 700; color: #162833;
+    box-shadow: 0 16px 32px rgba(16,24,40,0.14); z-index: 3;
+    animation: waeFloatBob 6s ease-in-out infinite;
+  }
+  .wae-hero-float--api { top: 4%; right: 4%; color: #2B49DB; animation-delay: 0.8s; }
+  .wae-hero-float--live { bottom: 8%; left: 0%; animation-delay: 1.6s; }
+  @keyframes waeFloatBob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+  .wae-hero-float--live .dot-pulse {
+    width: 7px; height: 7px; border-radius: 50%; background: var(--success); flex-shrink: 0;
+    animation: waeDotPulse 2s ease-in-out infinite;
+  }
+  @keyframes waeDotPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(40,199,111,0.45); }
+    50% { box-shadow: 0 0 0 5px rgba(40,199,111,0); }
+  }
+
+  /* ---------- "why it matters" section ---------- */
+  .wae-shift-top { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 64px; align-items: start; }
+  .wae-shift-title { margin: 16px 0 0; font-family: 'Manrope', sans-serif; font-weight: 500; font-size: clamp(26px, 2.6vw, 34px); line-height: 1.28; letter-spacing: -0.01em; color: #162833; max-width: 380px; }
+  .wae-shift-body p { margin: 0 0 18px; font-size: 16.5px; line-height: 1.75; color: #46535F; }
+  .wae-shift-body p:last-child { margin-bottom: 0; }
+
+  .wae-shift-pillars { margin-top: 52px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+  .wae-shift-pillar {
+    display: flex; flex-direction: column; align-items: flex-start; gap: 12px;
+    padding: 20px 18px; border-radius: 14px; background: #F6F8FC; border: 1px solid #EEF1F6;
+  }
+  .wae-shift-pillar-icon {
+    width: 34px; height: 34px; border-radius: 9px; display: flex; align-items: center; justify-content: center;
+    background: rgba(43,143,219,0.12); color: #2B8FDB; flex-shrink: 0;
+  }
+  .wae-shift-pillar-label { font-weight: 700; font-size: 14.5px; color: #162833; }
+
+  .wae-shift-quote {
+    margin: 48px 0 0; padding: 2px 0 2px 26px; border-left: 3px solid #2B8FDB;
+    font-family: 'Manrope', sans-serif; font-weight: 500; font-size: clamp(19px, 1.9vw, 23px);
+    line-height: 1.5; letter-spacing: -0.01em; color: #162833; max-width: 820px;
+  }
+
+  /* ---------- capabilities grid ---------- */
+  .wae-cap-head { max-width: 680px; }
+  .wae-cap-grid {
+    margin-top: 48px; display: grid; grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: minmax(180px, auto); gap: 20px;
+  }
+  .wae-cap-card {
+    position: relative; background: #FFFFFF; border: 1px solid rgba(16,24,40,0.07); border-radius: 20px;
+    padding: 28px 26px 26px; overflow: hidden; container-type: inline-size;
+    display: flex; flex-direction: column;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+  }
+  .wae-cap-card::before {
+    content: ''; position: absolute; top: -34%; right: -18%; width: 62%; aspect-ratio: 1/1; z-index: 0; pointer-events: none;
+    background: radial-gradient(circle, var(--cap-glow, rgba(43,143,219,0.18)) 0%, rgba(43,143,219,0) 72%);
+  }
+  .wae-cap-card:hover {
+    transform: translateY(-4px); box-shadow: 0 22px 44px rgba(16,24,40,0.12);
+    border-color: var(--cap-border-hover, rgba(43,143,219,0.32));
+  }
+  .wae-cap-icon {
+    position: relative; z-index: 1; flex-shrink: 0;
+    width: clamp(40px, 11cqw, 50px); height: clamp(40px, 11cqw, 50px); border-radius: clamp(10px, 2.6cqw, 13px);
+    display: flex; align-items: center; justify-content: center;
+    background: var(--cap-soft, rgba(43,143,219,0.12)); color: var(--cap-color, #2B8FDB); margin-bottom: clamp(14px, 3.6cqw, 20px);
+  }
+  .wae-cap-title { position: relative; z-index: 1; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: clamp(16.5px, 4cqw, 19px); color: #162833; }
+  .wae-cap-desc { position: relative; z-index: 1; margin-top: 10px; font-size: clamp(13.5px, 3cqw, 14.5px); line-height: 1.68; color: #46535F; }
+
+  /* per-capability technology stack */
+  .wae-cap-stack {
+    position: relative; z-index: 1; margin-top: clamp(14px, 3cqw, 18px); padding-top: clamp(12px, 2.6cqw, 16px);
+    border-top: 1px solid rgba(16,24,40,0.07);
+  }
+  .wae-cap-stack-label { font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #9099A6; }
+  .wae-cap-stack-pills { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .wae-cap-stack-pill {
+    font-size: clamp(11.5px, 2.6cqw, 12.5px); font-weight: 600; color: #2E3B44; background: #F6F8FC;
+    border: 1px solid #EEF1F6; border-radius: 999px; padding: 4px 11px;
+  }
+
+  /* featured (largest) tile */
+  .wae-cap-card:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+  .wae-cap-card:nth-child(n+2) { grid-column: span 2; }
+  .wae-cap-card--feature { padding: 34px 32px 32px; justify-content: center; }
+  .wae-cap-card--feature .wae-cap-icon { width: clamp(48px, 9cqw, 58px); height: clamp(48px, 9cqw, 58px); border-radius: 15px; }
+  .wae-cap-card--feature .wae-cap-title { font-size: clamp(20px, 3.4cqw, 25px); }
+  .wae-cap-card--feature .wae-cap-desc { font-size: clamp(14.5px, 2.4cqw, 16px); max-width: 480px; }
+  .wae-cap-watermark {
+    position: absolute; right: -18px; bottom: -22px; width: 44%; aspect-ratio: 1/1; z-index: 0;
+    color: var(--cap-color, #2B8FDB); opacity: 0.07; pointer-events: none;
+  }
+  .wae-cap-watermark svg { width: 100%; height: 100%; }
+
+  /* ---------- value grid ---------- */
+  .wae-value-head { max-width: 680px; }
+  .wae-value-grid { margin-top: 48px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .wae-value-card {
+    display: flex; gap: 18px; align-items: flex-start; padding: 26px 26px; border-radius: 18px;
+    background: var(--val-tint, rgba(43,143,219,0.06)); border: 1px solid rgba(16,24,40,0.04);
+  }
+  .wae-value-icon {
+    width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    background: var(--val-color, #2B8FDB); color: #FFFFFF; flex-shrink: 0;
+  }
+  .wae-value-title { font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 16.5px; color: #162833; }
+  .wae-value-desc { margin-top: 8px; font-size: 14.5px; line-height: 1.68; color: #46535F; }
+
+  /* ---------- closing CTA ---------- */
+  .wae-cta-section { padding: 72px 48px 96px; }
+  .wae-cta-card {
+    position: relative; overflow: hidden; max-width: 1360px; margin: 0 auto;
+    background: #101826; border: 1px solid rgba(255,255,255,0.08); border-radius: 28px;
+    padding: 76px 56px 80px; text-align: center;
+  }
+  .wae-cta-grid {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 34px 34px;
+    mask-image: radial-gradient(ellipse 60% 80% at 50% 0%, #000 0%, transparent 72%);
+  }
+  .wae-cta-card::after {
+    content: ''; position: absolute; top: -160px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 380px; pointer-events: none;
+    background: radial-gradient(ellipse at center, rgba(43,143,219,0.30), rgba(43,143,219,0) 68%);
+  }
+  .wae-cta-inner { position: relative; z-index: 1; }
+  .wae-cta-title {
+    margin: 20px 0 0; font-family: 'Manrope', sans-serif; font-weight: 500;
+    font-size: clamp(28px, 3.3vw, 42px); line-height: 1.2; letter-spacing: -0.015em; color: #FFFFFF;
+  }
+  .wae-cta-sub { margin: 18px auto 0; max-width: 560px; font-size: 17px; line-height: 1.65; color: rgba(255,255,255,0.62); }
+  .wae-cta-btn {
+    display: inline-flex; align-items: center; gap: 10px; margin-top: 34px; background: var(--accent);
+    color: #FFFFFF; font-weight: 700; font-size: 16px; padding: 16px 32px; border-radius: 999px;
+    transition: background 0.15s ease, transform 0.15s ease;
+  }
+  .wae-cta-btn:hover { background: var(--accent-hover); color: #FFFFFF; transform: translateY(-1px); }
+  .wae-cta-btn .arrow { display: inline-block; transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .wae-cta-btn:hover .arrow { transform: translateX(4px); }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 1060px) {
+    .sdl-desktop-nav, .sdl-desktop-cta { display: none !important; }
+    .sdl-mobile-toggle { display: flex !important; }
+    .sdl-header-inner { padding-left: 24px !important; padding-right: 24px !important; }
+    .sdl-hero { grid-template-columns: 1fr !important; padding: 56px 24px 64px !important; }
+    .wae-hero-visual { max-width: 420px; margin: 0 auto; order: -1; }
+    .sdl-section { padding: 72px 24px 80px; }
+    .wae-shift-top { grid-template-columns: 1fr; gap: 28px; }
+    .wae-shift-title { max-width: none; }
+    .wae-shift-pillars { grid-template-columns: repeat(3, 1fr); }
+    .wae-cap-grid { grid-template-columns: repeat(2, 1fr); }
+    .wae-cap-card:nth-child(1) { grid-row: span 1; }
+    .wae-cta-section { padding: 56px 24px 72px; }
+    .wae-cta-card { padding: 56px 28px 60px; }
+    .sdl-footer { padding: 64px 24px 28px; }
+    .sdl-footer-cols { max-width: none; grid-template-columns: repeat(2, 1fr); row-gap: 32px; }
+  }
+
+  @media (max-width: 720px) {
+    .wae-shift-pillars { grid-template-columns: repeat(2, 1fr); }
+    .wae-value-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 560px) {
+    .sdl-footer-top { flex-direction: column; align-items: flex-start; }
+    .sdl-footer-cols { grid-template-columns: 1fr; }
+    .wae-cap-grid { grid-template-columns: 1fr; }
+    .wae-cap-card, .wae-cap-card:nth-child(1) { grid-column: span 1; grid-row: span 1; }
+    .wae-cap-card--feature { padding: 28px 26px 26px; justify-content: flex-start; }
+    .wae-shift-pillars { grid-template-columns: repeat(2, 1fr); }
+    .wae-value-card { flex-direction: column; }
+  }
+
+  /* ---------- scroll-reveal motion ---------- */
+  .reveal, .reveal-group > * { opacity: 0; transform: translateY(24px); }
+  .reveal.is-visible, .reveal-group.is-visible > * {
+    animation: sdlRevealIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  @keyframes sdlRevealIn { to { opacity: 1; transform: translateY(0); } }
+  .reveal-group > *:nth-child(1) { animation-delay: 0s; }
+  .reveal-group > *:nth-child(2) { animation-delay: 0.07s; }
+  .reveal-group > *:nth-child(3) { animation-delay: 0.14s; }
+  .reveal-group > *:nth-child(4) { animation-delay: 0.21s; }
+  .reveal-group > *:nth-child(5) { animation-delay: 0.28s; }
+  .reveal-group > *:nth-child(6) { animation-delay: 0.35s; }
+  .reveal-group > *:nth-child(7) { animation-delay: 0.42s; }
+
+  .sdl-hero-copy-wrap, .wae-hero-visual {
+    opacity: 0; transform: translateY(18px);
+    animation: sdlRevealIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  .wae-hero-visual { animation-delay: 0.15s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal, .reveal-group > *, .sdl-hero-copy-wrap, .wae-hero-visual,
+    .wae-hero-window, .wae-hero-float, .wae-hero-float--live .dot-pulse {
+      animation: none !important; opacity: 1 !important; transform: none !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div style="font-family:'Inter',sans-serif;background:#F6F8FC;min-height:100vh">
+
+  <header class="sdl-header" id="sdlHeader">
+    <div class="sdl-header-inner">
+      <div class="sdl-header-left">
+        <a href="index.html" style="display: flex; align-items: center; flex-shrink: 0; color: inherit; text-decoration: none;">
+          <img src="assets/sdl-logo.svg" alt="Social DNA Labs" class="sdl-logo" />
+        </a>
+      </div>
+
+      <div class="sdl-header-nav-wrap">
+        <nav class="sdl-desktop-nav" id="desktopNav"></nav>
+      </div>
+
+      <div class="sdl-header-right">
+        <a href="#contact" class="sdl-cta sdl-desktop-cta">Let's talk →</a>
+        <button class="sdl-mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+          <svg width="22" height="16" viewBox="0 0 22 16"><rect width="22" height="2" fill="#162833"></rect><rect y="7" width="22" height="2" fill="#162833"></rect><rect y="14" width="22" height="2" fill="#162833"></rect></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="sdl-mega-panel" id="megaPanel"></div>
+    <div class="sdl-mobile-panel" id="mobilePanel"></div>
+  </header>
+
+  <section class="sdl-hero">
+    <div class="sdl-hero-copy-wrap">
+      <div class="sdl-kicker-wrap">
+        <span class="wae-kicker"><span class="kicker-line"></span> Digital engineering — Web & application engineering</span>
+      </div>
+      <div class="sdl-hero-copy">
+        <div>Build web experiences that</div>
+        <div><span class="accent">work for the business.</span></div>
+      </div>
+      <p class="sdl-hero-sub">
+        Build, modernize and scale web applications and digital platforms with modern engineering, architecture and technologies.
+      </p>
+      <div class="sdl-hero-actions">
+        <a href="index.html#contact" class="sdl-hero-primary">Talk to an expert →</a>
+        <a href="#capabilities" class="sdl-hero-secondary">Explore capabilities →</a>
+      </div>
+    </div>
+
+    <div class="wae-hero-visual" aria-hidden="true">
+      <div class="wae-hero-grid"></div>
+      <div class="wae-hero-glow"></div>
+
+      <div class="wae-hero-window wae-hero-window--back"></div>
+
+      <div class="wae-hero-window wae-hero-window--main">
+        <div class="wae-hero-window-bar">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          <span class="wae-hero-url"></span>
+        </div>
+        <div class="wae-hero-window-body">
+          <div class="wae-hero-window-side">
+            <span class="wae-hero-side-item active"></span>
+            <span class="wae-hero-side-item"></span>
+            <span class="wae-hero-side-item"></span>
+            <span class="wae-hero-side-item"></span>
+          </div>
+          <div class="wae-hero-window-main-col">
+            <div class="wae-hero-hero-block"></div>
+            <div class="wae-hero-row">
+              <div class="wae-hero-card"></div>
+              <div class="wae-hero-card"></div>
+            </div>
+            <div class="wae-hero-chart">
+              <span style="height:38%"></span><span style="height:68%"></span><span style="height:52%"></span><span style="height:84%"></span><span style="height:60%"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wae-hero-float wae-hero-float--api">&lt;/&gt; API</div>
+      <div class="wae-hero-float wae-hero-float--live"><span class="dot-pulse"></span> Live</div>
+    </div>
+  </section>
+
+  <section class="sdl-section sdl-section--white">
+    <div class="sdl-section-inner">
+      <div class="wae-shift-top">
+        <div class="reveal">
+          <span class="wae-kicker"><span class="kicker-line"></span> Why it matters</span>
+          <h2 class="wae-shift-title">The web is now part of the business.</h2>
+        </div>
+
+        <div class="wae-shift-body reveal">
+          <p>Web applications are no longer just digital front doors. They support customer journeys, business processes, employee workflows and entire digital products.</p>
+          <p>They need to be fast, secure, scalable and easy to evolve. They also need to work with the applications, data and systems already running the business.</p>
+        </div>
+      </div>
+
+      <div class="wae-shift-pillars reveal-group">
+        <div class="wae-shift-pillar">
+          <span class="wae-shift-pillar-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg></span>
+          <span class="wae-shift-pillar-label">Fast</span>
+        </div>
+        <div class="wae-shift-pillar">
+          <span class="wae-shift-pillar-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/></svg></span>
+          <span class="wae-shift-pillar-label">Secure</span>
+        </div>
+        <div class="wae-shift-pillar">
+          <span class="wae-shift-pillar-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9V3h6"/><path d="M21 15v6h-6"/><path d="M3 3l7 7"/><path d="M21 21l-7-7"/></svg></span>
+          <span class="wae-shift-pillar-label">Scalable</span>
+        </div>
+        <div class="wae-shift-pillar">
+          <span class="wae-shift-pillar-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V9"/><path d="M12 9c0-3.5-2.5-6-6-6 0 3.5 2.5 6 6 6z"/><path d="M12 13c0-3 2-5 5-5 0 3-2 5-5 5z"/></svg></span>
+          <span class="wae-shift-pillar-label">Easy to evolve</span>
+        </div>
+        <div class="wae-shift-pillar">
+          <span class="wae-shift-pillar-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.2"/><circle cx="18" cy="6" r="2.2"/><circle cx="12" cy="18" r="2.2"/><path d="M7.8 7.3L10.3 16M16.2 7.3L13.7 16M8.2 6h7.6"/></svg></span>
+          <span class="wae-shift-pillar-label">Connected</span>
+        </div>
+      </div>
+
+      <blockquote class="wae-shift-quote reveal">
+        The right engineering approach brings these requirements together to create web experiences that perform today and can adapt to what comes next.
+      </blockquote>
+    </div>
+  </section>
+
+  <section class="sdl-section sdl-section--alt" id="capabilities">
+    <div class="sdl-section-inner">
+      <div class="wae-cap-head reveal">
+        <span class="wae-kicker"><span class="kicker-line"></span> Web & application capabilities</span>
+        <h2 class="sdl-section-title">Engineering for modern web applications.</h2>
+        <p class="sdl-section-sub">From customer-facing experiences to complex business applications, combine the right engineering approach and technology to build applications that are reliable, scalable and ready to evolve.</p>
+      </div>
+
+      <div class="wae-cap-grid reveal-group" id="waeCapabilities"></div>
+    </div>
+  </section>
+
+  <section class="sdl-section sdl-section--white" id="value">
+    <div class="sdl-section-inner">
+      <div class="wae-value-head reveal">
+        <span class="wae-kicker"><span class="kicker-line"></span> What you get</span>
+        <h2 class="sdl-section-title">Built for what the business needs next.</h2>
+      </div>
+
+      <div class="wae-value-grid reveal-group" id="waeValue"></div>
+    </div>
+  </section>
+
+  <section class="wae-cta-section">
+    <div class="wae-cta-card reveal">
+      <div class="wae-cta-grid" aria-hidden="true"></div>
+      <div class="wae-cta-inner">
+        <span class="wae-kicker wae-kicker--dark"><span class="kicker-line"></span> Start a conversation</span>
+        <h2 class="wae-cta-title">Building something new? Modernizing something critical?</h2>
+        <p class="wae-cta-sub">Let's talk about the web application or digital platform your business needs next.</p>
+        <a href="index.html#contact" class="wae-cta-btn">Talk to an expert <span class="arrow" aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer class="sdl-footer">
+  <div class="sdl-footer-inner">
+    <div class="sdl-footer-top">
+      <div class="sdl-footer-brand">
+        <img src="assets/sdl-logo.svg" alt="Social DNA Labs" class="sdl-footer-logo" />
+        <p class="sdl-footer-tagline">Technology, experience and AI for businesses building what comes next.</p>
+      </div>
+
+      <div class="sdl-footer-cols" id="footerCols"></div>
+    </div>
+
+    <div class="sdl-footer-bottom">
+      <div id="footerYear">© Social DNA Labs</div>
+      <div class="sdl-footer-bottom-right">
+        <div>Business impact, by design.</div>
+        <a href="#" class="sdl-footer-social-icon" aria-label="LinkedIn"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zm7 0h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.6c0-1.34-.02-3.06-1.87-3.06-1.87 0-2.16 1.46-2.16 2.96V21h-4z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var ACCENT = '#2B49DB';
+  var MEGA_MENU_ENABLED = true;
+
+  var MENUS = [
+    { key: 'services', label: 'Services', href: 'services.html', cta: { label: 'View all services', href: 'services.html' }, items: [
+      { title: 'AI transformation', desc: 'Turn AI potential into practical business value.', href: 'ai-transformation.html' },
+      { title: 'Digital engineering', desc: 'Build, modernize and scale digital products.', href: 'digital-engineering.html' },
+      { title: 'Business transformation', desc: 'Rethink systems, processes and ways of working.', href: 'business-transformation.html' },
+      { title: 'Digital experience', desc: 'Create better experiences across every touchpoint.', href: 'digital-experience.html' },
+      { title: 'Growth transformation', desc: 'Turn digital attention into qualified demand.', href: 'growth-transformation.html' }
+    ]},
+    { key: 'products', label: 'Products & Platforms', cta: { label: 'Explore EVOQ', href: 'evoq.html' }, items: [
+      { title: 'EVOQ', desc: 'The unified business suite for modern operations.', href: 'evoq.html' }
+    ]},
+    { key: 'insights', label: 'Insights', cta: { label: 'Explore insights', href: '#' }, items: [
+      { title: 'Blogs', desc: 'Ideas, perspectives and practical thinking.' },
+      { title: 'Case studies', desc: 'Real projects. Real business outcomes.' },
+      { title: 'Whitepapers', desc: 'In-depth research and perspectives.' },
+      { title: 'Featured projects', desc: 'Selected work and digital experiences.' }
+    ]},
+    { key: 'company', label: 'Company', cta: null, items: [
+      { title: 'About', desc: 'The people and experience behind SDL.' },
+      { title: 'Our approach', desc: 'How SDL thinks, builds and works.' },
+      { title: 'Clients', desc: 'The businesses SDL works with.' },
+      { title: 'Careers', desc: "Build what's next with SDL." }
+    ]}
+  ];
+
+  var ICONS = {
+    'AI transformation': '<path d="M24 6l4.2 9.4L38 20l-9.8 4.6L24 34l-4.2-9.4L10 20l9.8-4.6L24 6z"/><circle cx="24" cy="20" r="3.4"/>',
+    'Digital engineering': '<path d="M17 15l-8 8 8 8M31 15l8 8-8 8M27 12l-6 24"/>',
+    'Business transformation': '<circle cx="24" cy="24" r="7"/><path d="M24 8v5M24 39v5M8 24h5M39 24h5M12.9 12.9l3.5 3.5M31.6 31.6l3.5 3.5M35.1 12.9l-3.5 3.5M16.4 31.6l-3.5 3.5"/>',
+    'Digital experience': '<rect x="10" y="12" width="28" height="20" rx="2.5"/><path d="M18 40h12M24 32v8"/>',
+    'Growth transformation': '<path d="M9 33l9-11 7 7 14-17"/><path d="M31 12h8v8"/>',
+    'Products & platforms': '<rect x="9" y="9" width="13" height="13" rx="2"/><rect x="26" y="9" width="13" height="13" rx="2"/><rect x="9" y="26" width="13" height="13" rx="2"/><rect x="26" y="26" width="13" height="13" rx="2"/>',
+    'EVOQ': '<rect x="9" y="9" width="13" height="13" rx="2"/><rect x="26" y="9" width="13" height="13" rx="2"/><rect x="9" y="26" width="13" height="13" rx="2"/><rect x="26" y="26" width="13" height="13" rx="2"/>',
+    'Blogs': '<path d="M14 8h14l6 6v22a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2z"/><path d="M28 8v6h6M17 24h14M17 30h14"/>',
+    'Case studies': '<path d="M14 8h14l6 6v22a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2z"/><path d="M28 8v6h6M18 26l4 4 8-9"/>',
+    'Whitepapers': '<path d="M14 8h14l6 6v22a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2z"/><path d="M28 8v6h6M17 22h14M17 28h9"/>',
+    'Featured projects': '<path d="M24 6l4.6 12.6L42 21l-9 9 2.3 13-11.3-6.5L12.7 43 15 30l-9-9 13.4-2.4L24 6z"/>',
+    'About': '<rect x="12" y="10" width="24" height="28" rx="2"/><path d="M18 18h4M26 18h4M18 26h4M26 26h4M20 38v-6h8v6"/>',
+    'Our approach': '<circle cx="24" cy="24" r="13"/><circle cx="24" cy="24" r="7"/><circle cx="24" cy="24" r="1.6" fill="currentColor" stroke="none"/>',
+    'Clients': '<circle cx="18" cy="18" r="5"/><circle cx="32" cy="20" r="4"/><path d="M9 38c1-6 5-10 9-10s8 4 9 10M27 38c1-5 4-9 8-9 3 0 6 2 7 6"/>',
+    'Careers': '<rect x="8" y="16" width="32" height="20" rx="3"/><path d="M17 16v-4a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v4"/><path d="M8 25h32"/>'
+  };
+  var ICON_DEFAULT = '<circle cx="24" cy="24" r="4" fill="currentColor" stroke="none"/>';
+
+  // ---------- Footer ----------
+  var FOOTER_COLS = [
+    { title: 'Services', links: [
+      { label: 'AI transformation', href: 'ai-transformation.html' },
+      { label: 'Digital engineering', href: 'digital-engineering.html' },
+      { label: 'Business transformation', href: 'business-transformation.html' },
+      { label: 'Digital experience', href: 'digital-experience.html' },
+      { label: 'Growth transformation', href: 'growth-transformation.html' }
+    ]},
+    { title: 'Products & Platforms', links: [
+      { label: 'EVOQ', href: 'evoq.html' }
+    ]},
+    { title: 'Insights', links: [
+      { label: 'Blogs', href: '#' },
+      { label: 'Case studies', href: '#' },
+      { label: 'Whitepapers', href: '#' },
+      { label: 'Featured projects', href: '#' }
+    ]},
+    { title: 'Company', links: [
+      { label: 'About', href: '#' },
+      { label: 'Our approach', href: '#' },
+      { label: 'Clients', href: '#' },
+      { label: 'Careers', href: '#' }
+    ]},
+    { title: 'Connect', links: [
+      { label: "Let's talk", href: '#contact' },
+      { label: 'Contact us', href: '#contact' }
+    ]}
+  ];
+  var footerCols = document.getElementById('footerCols');
+  FOOTER_COLS.forEach(function (col) {
+    var wrap = document.createElement('div');
+    var title = document.createElement('div');
+    title.className = 'sdl-footer-col-title';
+    title.textContent = col.title;
+    var list = document.createElement('ul');
+    list.className = 'sdl-footer-links';
+    col.links.forEach(function (l) {
+      var li = document.createElement('li');
+      var a = document.createElement('a');
+      a.href = l.href;
+      a.textContent = l.label;
+      li.appendChild(a);
+      list.appendChild(li);
+    });
+    wrap.appendChild(title);
+    wrap.appendChild(list);
+    footerCols.appendChild(wrap);
+  });
+
+  document.getElementById('footerYear').textContent = '© ' + new Date().getFullYear() + ' Social DNA Labs';
+
+  // ---------- Desktop nav + mega menu ----------
+  var desktopNav = document.getElementById('desktopNav');
+  var megaPanel = document.getElementById('megaPanel');
+  var header = document.getElementById('sdlHeader');
+
+  var navButtons = [];
+
+  function closeMegaMenu() {
+    megaPanel.classList.remove('open');
+    megaPanel.innerHTML = '';
+    navButtons.forEach(function (b) { b.classList.remove('active'); });
+  }
+
+  function renderMegaMenu(menu, triggerBtn, triggerItem) {
+    if (!MEGA_MENU_ENABLED) return;
+    var inner = document.createElement('div');
+    inner.className = 'sdl-mega-panel-inner';
+    if (menu.items.length < 2) inner.style.gridTemplateColumns = '1fr';
+    menu.items.forEach(function (item) {
+      var wrap = document.createElement('div');
+      wrap.className = 'sdl-mega-item';
+      var icon = document.createElement('div');
+      icon.className = 'sdl-mega-item-icon';
+      icon.innerHTML = '<svg width="18" height="18" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">' + (ICONS[item.title] || ICON_DEFAULT) + '</svg>';
+      var textWrap = document.createElement('div');
+      var title = document.createElement('div');
+      title.className = 'sdl-mega-item-title';
+      title.textContent = item.title;
+      var desc = document.createElement('div');
+      desc.className = 'sdl-mega-item-desc';
+      desc.textContent = item.desc;
+      textWrap.appendChild(title);
+      textWrap.appendChild(desc);
+      wrap.appendChild(icon);
+      wrap.appendChild(textWrap);
+
+      if (item.href) {
+        var link = document.createElement('a');
+        link.href = item.href;
+        link.style.display = 'contents';
+        link.style.cursor = 'pointer';
+        link.style.color = 'inherit';
+        link.style.textDecoration = 'none';
+        link.appendChild(wrap);
+        inner.appendChild(link);
+      } else {
+        inner.appendChild(wrap);
+      }
+    });
+    if (menu.cta) {
+      var ctaWrap = document.createElement('div');
+      ctaWrap.className = 'sdl-mega-cta';
+      var ctaLink = document.createElement('a');
+      ctaLink.href = menu.cta.href;
+      ctaLink.textContent = menu.cta.label + ' →';
+      ctaLink.style.color = ACCENT;
+      ctaWrap.appendChild(ctaLink);
+      inner.appendChild(ctaWrap);
+    }
+    megaPanel.innerHTML = '';
+    megaPanel.appendChild(inner);
+    megaPanel.classList.add('open');
+
+    navButtons.forEach(function (b) { b.classList.toggle('active', b === triggerBtn); });
+
+    var headerRect = header.getBoundingClientRect();
+    var itemRect = triggerItem.getBoundingClientRect();
+    var panelWidth = megaPanel.offsetWidth;
+    var itemCenter = (itemRect.left - headerRect.left) + itemRect.width / 2;
+    var left = itemCenter - panelWidth / 2;
+    var maxLeft = header.offsetWidth - panelWidth - 24;
+    if (maxLeft < 24) maxLeft = 24;
+    left = Math.max(24, Math.min(left, maxLeft));
+    megaPanel.style.left = left + 'px';
+  }
+
+  MENUS.forEach(function (menu) {
+    var item = document.createElement('div');
+    item.className = 'sdl-nav-item';
+
+    if (menu.href && !menu.items.length) {
+      var link = document.createElement('a');
+      link.className = 'sdl-nav-btn';
+      link.href = menu.href;
+      link.textContent = menu.label;
+      item.appendChild(link);
+    } else {
+      var btn = document.createElement('button');
+      btn.className = 'sdl-nav-btn';
+      btn.innerHTML = menu.label + ' <span class="caret">▾</span>';
+      item.appendChild(btn);
+      item.addEventListener('mouseenter', function () { renderMegaMenu(menu, btn, item); });
+      navButtons.push(btn);
+    }
+
+    desktopNav.appendChild(item);
+  });
+
+  header.addEventListener('mouseleave', closeMegaMenu);
+
+  // ---------- Mobile nav ----------
+  var mobileToggle = document.getElementById('mobileToggle');
+  var mobilePanel = document.getElementById('mobilePanel');
+  var mobileOpenKey = null;
+
+  function renderMobilePanel() {
+    mobilePanel.innerHTML = '';
+    MENUS.forEach(function (menu) {
+      var itemEl = document.createElement('div');
+      itemEl.className = 'sdl-mobile-item';
+
+      if (menu.href && !menu.items.length) {
+        var link = document.createElement('a');
+        link.className = 'sdl-mobile-item-btn';
+        link.href = menu.href;
+        link.textContent = menu.label;
+        link.style.display = 'block';
+        link.style.cursor = 'pointer';
+        itemEl.appendChild(link);
+      } else {
+        var btn = document.createElement('button');
+        btn.className = 'sdl-mobile-item-btn';
+        btn.innerHTML = menu.label + ' <span class="caret">▾</span>';
+        btn.addEventListener('click', function () {
+          mobileOpenKey = mobileOpenKey === menu.key ? null : menu.key;
+          renderMobilePanel();
+        });
+        itemEl.appendChild(btn);
+
+        var sub = document.createElement('div');
+        sub.className = 'sdl-mobile-sub' + (mobileOpenKey === menu.key ? ' open' : '');
+        menu.items.forEach(function (subItem) {
+          var subWrap = document.createElement('div');
+          var t = document.createElement('div');
+          t.className = 'sdl-mobile-sub-title';
+          t.textContent = subItem.title;
+          var d = document.createElement('div');
+          d.className = 'sdl-mobile-sub-desc';
+          d.textContent = subItem.desc;
+          subWrap.appendChild(t);
+          subWrap.appendChild(d);
+          sub.appendChild(subWrap);
+        });
+        if (menu.cta) {
+          var ctaLink = document.createElement('a');
+          ctaLink.href = menu.cta.href;
+          ctaLink.textContent = menu.cta.label + ' →';
+          sub.appendChild(ctaLink);
+        }
+        itemEl.appendChild(sub);
+      }
+      mobilePanel.appendChild(itemEl);
+    });
+
+    var talkLink = document.createElement('a');
+    talkLink.href = '#contact';
+    talkLink.className = 'sdl-mobile-cta';
+    talkLink.textContent = "Let's talk →";
+    mobilePanel.appendChild(talkLink);
+  }
+  renderMobilePanel();
+
+  mobileToggle.addEventListener('click', function () {
+    mobilePanel.classList.toggle('open');
+  });
+
+  // ---------- Capabilities ----------
+  var WAE_CAPABILITIES = [
+    {
+      title: 'Web application engineering',
+      desc: 'Build customer-facing applications, portals and business applications around real business requirements. From new applications to complex digital platforms, create experiences that are reliable, scalable and built for the people who use them.',
+      icon: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18"/><circle cx="6" cy="7" r="0.6" fill="currentColor" stroke="none"/>',
+      tech: ['React', 'Next.js', 'TypeScript', 'Node.js', 'Python', '.NET', 'PHP']
+    },
+    {
+      title: 'Frontend engineering',
+      desc: 'Create responsive, accessible and high-performance interfaces across web applications and digital platforms. Combine modern frontend technologies with thoughtful architecture to make experiences fast, consistent and easy to use.',
+      icon: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M9 9v11"/>',
+      tech: ['React', 'Next.js', 'TypeScript', 'Vue.js', 'Angular', 'Svelte']
+    },
+    {
+      title: 'Backend engineering',
+      desc: 'Build the application logic, services, APIs and data foundations behind reliable web applications. Design backend systems that support complex business processes, integrations and changing demands.',
+      icon: '<rect x="4" y="4" width="16" height="6" rx="1.5"/><rect x="4" y="14" width="16" height="6" rx="1.5"/><circle cx="7.5" cy="7" r="0.7" fill="currentColor" stroke="none"/><circle cx="7.5" cy="17" r="0.7" fill="currentColor" stroke="none"/>',
+      tech: ['Node.js', 'Python', 'Go', 'Rust', '.NET', 'PHP', 'Django', 'FastAPI', 'Laravel', 'NestJS']
+    },
+    {
+      title: 'CMS & content platforms',
+      desc: 'Build content-driven websites and applications using traditional, headless and composable approaches. Create flexible content architectures that give teams greater control while delivering consistent digital experiences.',
+      icon: '<path d="M6 3h9l3 3v15H6z"/><path d="M15 3v3h3"/><path d="M9 12h6M9 16h6"/>',
+      tech: ['WordPress', 'Drupal', 'Alfresco', 'Headless CMS']
+    },
+    {
+      title: 'Application modernization',
+      desc: 'Modernize legacy web applications without unnecessarily starting from scratch. Refactor aging architectures, improve performance, introduce modern technologies and preserve the business capabilities that still matter.',
+      icon: '<path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/>',
+      tech: ['React', 'Next.js', '.NET', 'PHP', 'Laravel', 'APIs', 'Microservices', 'Cloud']
+    },
+    {
+      title: 'Integration & APIs',
+      desc: 'Connect web applications with the systems and services around them. Design APIs and integration layers that allow applications to exchange data and work together across CRM, ERP, commerce, cloud and other business platforms.',
+      icon: '<path d="M9.5 14.5l5-5"/><path d="M8 16a3.5 3.5 0 0 1 0-5l2-2a3.5 3.5 0 0 1 5 0"/><path d="M16 8a3.5 3.5 0 0 1 0 5l-2 2a3.5 3.5 0 0 1-5 0"/>',
+      tech: ['APIs', 'Microservices', 'Node.js', 'Python', '.NET', 'Cloud', 'Databases']
+    },
+    {
+      title: 'Full-stack engineering',
+      desc: 'Build complete web applications across the presentation, application and data layers. Combine frontend and backend engineering into cohesive solutions that are easier to develop, maintain and evolve.',
+      icon: '<path d="M12 3 4 7l8 4 8-4z"/><path d="M4 12l8 4 8-4M4 17l8 4 8-4"/>',
+      tech: ['MERN', 'MEAN', 'LAMP']
+    }
+  ];
+  var WAE_ACCENT_COLORS = ['#2B8FDB', '#2B49DB', '#28C76F', '#F4C430', '#3E5FE0', '#22B368', '#DB2777'];
+  var waeCapabilities = document.getElementById('waeCapabilities');
+  if (waeCapabilities) {
+    WAE_CAPABILITIES.forEach(function (c, i) {
+      var color = WAE_ACCENT_COLORS[i % WAE_ACCENT_COLORS.length];
+      var card = document.createElement('div');
+      card.className = 'wae-cap-card' + (i === 0 ? ' wae-cap-card--feature' : '');
+      card.style.setProperty('--cap-color', color);
+      card.style.setProperty('--cap-soft', color + '1F');
+      card.style.setProperty('--cap-glow', color + '29');
+      card.style.setProperty('--cap-border-hover', color + '59');
+      var pills = c.tech.map(function () { return '<span class="wae-cap-stack-pill"></span>'; }).join('');
+      card.innerHTML =
+        '<div class="wae-cap-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">' + c.icon + '</svg></div>' +
+        '<div class="wae-cap-title"></div>' +
+        '<p class="wae-cap-desc"></p>' +
+        '<div class="wae-cap-stack">' +
+        '<div class="wae-cap-stack-label">Technologies</div>' +
+        '<div class="wae-cap-stack-pills">' + pills + '</div>' +
+        '</div>' +
+        (i === 0 ? '<div class="wae-cap-watermark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">' + c.icon + '</svg></div>' : '');
+      card.querySelector('.wae-cap-title').textContent = c.title;
+      card.querySelector('.wae-cap-desc').textContent = c.desc;
+      var pillEls = card.querySelectorAll('.wae-cap-stack-pill');
+      c.tech.forEach(function (t, idx) { pillEls[idx].textContent = t; });
+      waeCapabilities.appendChild(card);
+    });
+  }
+
+  // ---------- Built for what the business needs next ----------
+  var WAE_VALUE_ITEMS = [
+    { title: 'Performance that scales', desc: 'Engineer applications to handle growing users, content, transactions and workloads without compromising the experience.', icon: '<path d="M3 9V3h6"/><path d="M21 15v6h-6"/><path d="M3 3l7 7"/><path d="M21 21l-7-7"/>' },
+    { title: 'Modernization without unnecessary disruption', desc: 'Improve existing applications and architectures while protecting valuable business logic, data and investment.', icon: '<path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9.5 12l1.8 1.8L15 10"/>' },
+    { title: 'Experiences people can use', desc: 'Create interfaces that are responsive, accessible, intuitive and consistent across devices and digital touchpoints.', icon: '<circle cx="12" cy="8" r="3"/><path d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6"/>' },
+    { title: 'Technology that works together', desc: 'Connect applications, APIs, data and business platforms so information can move where it needs to go.', icon: '<circle cx="6" cy="6" r="2.2"/><circle cx="18" cy="6" r="2.2"/><circle cx="12" cy="18" r="2.2"/><path d="M7.8 7.3L10.3 16M16.2 7.3L13.7 16M8.2 6h7.6"/>' },
+    { title: 'Faster evolution', desc: 'Build flexible foundations that make it easier to introduce new capabilities, technologies and business requirements.', icon: '<path d="M12 21V9"/><path d="M12 9c0-3.5-2.5-6-6-6 0 3.5 2.5 6 6 6z"/><path d="M12 13c0-3 2-5 5-5 0 3-2 5-5 5z"/>' },
+    { title: 'Engineering quality from the start', desc: 'Build security, reliability, performance, testing and maintainability into the engineering lifecycle.', icon: '<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12l1.5 1.5L14 10"/>' }
+  ];
+  var waeValue = document.getElementById('waeValue');
+  if (waeValue) {
+    WAE_VALUE_ITEMS.forEach(function (v, i) {
+      var color = WAE_ACCENT_COLORS[i % WAE_ACCENT_COLORS.length];
+      var card = document.createElement('div');
+      card.className = 'wae-value-card';
+      card.style.setProperty('--val-color', color);
+      card.style.setProperty('--val-tint', color + '0F');
+      card.innerHTML =
+        '<div class="wae-value-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + v.icon + '</svg></div>' +
+        '<div class="wae-value-item-body">' +
+        '<div class="wae-value-title"></div>' +
+        '<p class="wae-value-desc"></p>' +
+        '</div>';
+      card.querySelector('.wae-value-title').textContent = v.title;
+      card.querySelector('.wae-value-desc').textContent = v.desc;
+      waeValue.appendChild(card);
+    });
+  }
+
+  // ---------- Scroll-reveal motion ----------
+  (function initScrollReveal() {
+    var targets = document.querySelectorAll('.reveal, .reveal-group');
+    if (!targets.length) return;
+    if (!('IntersectionObserver' in window)) {
+      targets.forEach(function (el) { el.classList.add('is-visible'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries, observer) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+    targets.forEach(function (el) { io.observe(el); });
+  })();
+
+})();
+</script>
+
+</body>
+</html>
