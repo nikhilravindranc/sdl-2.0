@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quality Engineering — Social DNA Labs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --accent: #2B49DB; --accent-hover: #1E35B8; --heading: #162833; --body-text: #46535F;
+    --success: #28C76F; --attention: #F4C430; --critical: #E64A3C;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #F6F8FC; overflow-x: hidden; font-family: 'Inter', sans-serif; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { color: var(--accent-hover); }
+
+  /* ---------- header / nav (shared) ---------- */
+  .sdl-header { position: sticky; top: 0; z-index: 50; background: #F6F8FC; border-bottom: 1px solid rgba(16,24,40,0.07); }
+  .sdl-header-inner { max-width: 1360px; margin: 0 auto; padding: 0 48px; height: 88px; display: flex; align-items: center; }
+  .sdl-logo { height: 38px; width: auto; display: block; flex-shrink: 0; }
+
+  .sdl-header-left { display: flex; align-items: center; flex: 0 0 auto; }
+  .sdl-header-nav-wrap { flex: 1 1 auto; display: flex; align-items: center; justify-content: center; min-width: 0; }
+  .sdl-header-right { display: flex; align-items: center; gap: 32px; flex: 0 0 auto; }
+
+  .sdl-desktop-nav { display: flex; align-items: center; gap: 6px; }
+  .sdl-nav-item { position: relative; }
+  .sdl-nav-btn {
+    position: relative; display: flex; align-items: center; gap: 6px; background: none; border: none;
+    font-family: inherit; font-size: 15px; font-weight: 600; color: #162833;
+    cursor: pointer; padding: 12px 13px; border-radius: 8px; white-space: nowrap; flex-shrink: 0;
+  }
+  .sdl-nav-btn:hover { background: rgba(43,73,219,0.06); }
+  .sdl-nav-btn .caret { font-size: 10px; color: #8891A0; margin-top: 2px; transition: transform 0.15s ease; }
+  .sdl-nav-btn.active { color: var(--accent); }
+  .sdl-nav-btn.active .caret { color: var(--accent); transform: rotate(180deg); }
+  .sdl-nav-btn.active::after {
+    content: ''; position: absolute; left: 13px; right: 13px; bottom: 3px; height: 2px; border-radius: 2px;
+    background: linear-gradient(90deg, var(--accent), #6AA8FA);
+  }
+
+  .sdl-cta {
+    display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid var(--accent);
+    color: var(--accent); font-weight: 700; font-size: 14px; padding: 10px 22px;
+    border-radius: 999px; white-space: nowrap; flex-shrink: 0;
+  }
+  .sdl-cta:hover { background: rgba(43,73,219,0.06); color: var(--accent); }
+
+  .sdl-mobile-toggle {
+    display: none; align-items: center; justify-content: center; width: 40px; height: 40px;
+    background: none; border: none; cursor: pointer; flex-shrink: 0;
+  }
+
+  .sdl-mega-panel { position: absolute; top: 100%; left: 48px; padding-top: 14px; z-index: 100; display: none; }
+  .sdl-mega-panel.open { display: block; }
+  .sdl-mega-panel-inner {
+    width: max-content; max-width: min(760px, calc(100vw - 96px)); padding: 30px 32px 24px;
+    display: grid; grid-template-columns: repeat(2, minmax(240px, 1fr));
+    column-gap: 36px; row-gap: 26px;
+    background: #FFFFFF; border-radius: 20px; border: 1px solid rgba(16,24,40,0.06);
+    box-shadow: 0 30px 60px rgba(16,24,40,0.16), 0 4px 14px rgba(16,24,40,0.06);
+    overflow: hidden;
+  }
+  .sdl-mega-item { display: flex; align-items: flex-start; gap: 14px; }
+  .sdl-mega-item-icon {
+    width: 36px; height: 36px; border-radius: 9px; background: rgba(43,73,219,0.08); color: var(--accent);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .sdl-mega-item-title { font-weight: 700; color: #162833; margin-bottom: 5px; font-size: 15px; }
+  .sdl-mega-item-desc { color: #46535F; font-size: 13px; line-height: 1.55; }
+  .sdl-mega-cta { grid-column: 1 / -1; border-top: 1px solid #EEF1F6; padding-top: 18px; }
+  .sdl-mega-cta a { color: var(--accent); font-weight: 700; font-size: 14px; display: inline-flex; align-items: center; gap: 6px; }
+
+  .sdl-mobile-panel {
+    display: none; background: #FFFFFF; border-top: 1px solid rgba(16,24,40,0.07);
+    padding: 8px 24px 24px; max-height: calc(100vh - 88px); overflow-y: auto;
+  }
+  .sdl-mobile-panel.open { display: block; }
+  .sdl-mobile-item { border-bottom: 1px solid #EEF1F6; }
+  .sdl-mobile-item-btn {
+    width: 100%; display: flex; align-items: center; justify-content: space-between;
+    background: none; border: none; font-family: inherit; font-size: 16px; font-weight: 700;
+    color: #162833; padding: 16px 4px; cursor: pointer;
+  }
+  .sdl-mobile-item-btn .caret { font-size: 12px; color: #8891A0; }
+  .sdl-mobile-sub { padding: 0 4px 18px; display: none; flex-direction: column; gap: 14px; }
+  .sdl-mobile-sub.open { display: flex; }
+  .sdl-mobile-sub-title { font-weight: 700; color: #162833; font-size: 14px; }
+  .sdl-mobile-sub-desc { color: #46535F; font-size: 13px; line-height: 1.5; margin-top: 2px; }
+  .sdl-mobile-sub a { color: var(--accent); font-weight: 700; font-size: 14px; }
+  .sdl-mobile-cta {
+    display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--accent);
+    color: #FFFFFF; font-weight: 700; font-size: 15px; padding: 14px; border-radius: 999px; margin-top: 20px;
+  }
+  .sdl-mobile-cta:hover { color: #FFFFFF; }
+
+  /* ---------- shared hero / section primitives ---------- */
+  .sdl-hero {
+    max-width: 1360px; margin: 0 auto; padding: 84px 48px 56px;
+    display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px; align-items: center;
+  }
+  .sdl-hero-copy-wrap { max-width: 640px; }
+  .sdl-hero-copy {
+    font-family: 'Manrope', sans-serif;
+    font-size: 48px; line-height: 1.2; font-weight: 500;
+    letter-spacing: -0.01em; color: #162833;
+  }
+  .sdl-hero-copy .accent { color: #C9941F; }
+  .sdl-hero-sub { margin-top: 26px; font-size: 18px; line-height: 1.65; color: #46535F; max-width: 500px; }
+  .sdl-hero-actions { display: flex; align-items: center; gap: 28px; margin-top: 40px; flex-wrap: wrap; }
+  .sdl-hero-primary {
+    display: inline-flex; align-items: center; gap: 10px; background: var(--accent);
+    color: #FFFFFF; font-weight: 700; font-size: 16px; padding: 16px 30px; border-radius: 999px;
+  }
+  .sdl-hero-primary:hover { background: var(--accent-hover); color: #FFFFFF; }
+  .sdl-hero-secondary { display: inline-flex; align-items: center; gap: 8px; color: var(--accent); font-weight: 700; font-size: 16px; }
+
+  .sdl-section { padding: 96px 48px 108px; }
+  .sdl-section-inner { max-width: 1360px; margin: 0 auto; }
+  .sdl-section--alt { background: #F6F8FC; }
+  .sdl-section--white { background: #FFFFFF; }
+  .sdl-section-title {
+    font-family: 'Manrope', sans-serif;
+    font-size: clamp(30px, 3.2vw, 40px); line-height: 1.22; font-weight: 500;
+    letter-spacing: -0.01em; color: #162833; margin: 18px 0 0;
+  }
+  .sdl-section-sub { margin-top: 16px; font-size: 18px; line-height: 1.6; color: #46535F; max-width: 640px; }
+  .sdl-cta-link { display: inline-flex; align-items: center; gap: 8px; color: var(--accent); font-weight: 700; font-size: 16px; }
+
+  .sdl-kicker-wrap { margin-bottom: 20px; }
+  .qe-kicker {
+    display: inline-flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 700;
+    letter-spacing: 0.07em; text-transform: uppercase; color: #C9941F;
+  }
+  .qe-kicker .kicker-line { display: inline-block; width: 22px; height: 1px; background: #C9941F; }
+  .qe-kicker--dark { color: rgba(255,255,255,0.72); }
+  .qe-kicker--dark .kicker-line { background: #F4C430; }
+  .qe-kicker--ai { color: #7C6FF0; }
+  .qe-kicker--ai .kicker-line { background: #7C6FF0; }
+
+  /* ---------- footer (shared) ---------- */
+  .sdl-footer { position: relative; background: #101826; color: #A9B2C0; padding: 56px 48px 28px; }
+  .sdl-footer-inner { max-width: 1360px; margin: 0 auto; }
+  .sdl-footer-top {
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 48px; flex-wrap: wrap;
+    padding-bottom: 32px; margin-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .sdl-footer-brand { max-width: 280px; flex-shrink: 0; }
+  .sdl-footer-logo { height: 34px; width: auto; display: block; filter: brightness(0) invert(1); }
+  .sdl-footer-tagline { margin-top: 14px; font-size: 14px; line-height: 1.6; color: #8891A0; }
+  .sdl-footer-cols { flex: 1 1 auto; display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; }
+  .sdl-footer-col-title { font-size: 12px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #FFFFFF; margin-bottom: 14px; }
+  .sdl-footer-links { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .sdl-footer-links a { color: #A9B2C0; font-size: 13.5px; transition: color 0.15s ease; }
+  .sdl-footer-links a:hover { color: #FFFFFF; }
+  .sdl-footer-social-icon {
+    width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.06); color: #A9B2C0 !important;
+    display: flex; align-items: center; justify-content: center; transition: background 0.15s ease, color 0.15s ease !important;
+  }
+  .sdl-footer-social-icon:hover { background: var(--accent); color: #FFFFFF !important; }
+  .sdl-footer-bottom {
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+    font-size: 13px; color: #7A8494;
+  }
+  .sdl-footer-bottom-right { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+
+  /* ================================================================
+     Page-specific design (Quality engineering)
+     ================================================================ */
+
+  /* ---------- hero visual: test-report / checklist composition ---------- */
+  .qe-hero-visual {
+    position: relative; width: 100%; aspect-ratio: 500/480;
+    container-type: inline-size; display: flex; align-items: center; justify-content: center;
+  }
+  .qe-hero-grid {
+    position: absolute; inset: 8%; border-radius: 24px; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(201,148,31,0.09) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201,148,31,0.09) 1px, transparent 1px);
+    background-size: 28px 28px;
+    mask-image: radial-gradient(ellipse 70% 70% at 50% 45%, #000 55%, transparent 100%);
+  }
+  .qe-hero-glow {
+    position: absolute; width: 64%; aspect-ratio: 1/1; top: 6%; right: 4%; z-index: 0; pointer-events: none;
+    background: radial-gradient(circle, rgba(201,148,31,0.22) 0%, rgba(201,148,31,0) 70%);
+    filter: blur(30px);
+  }
+  .qe-hero-panel {
+    position: absolute; z-index: 2; width: 62%; top: 4%; right: 2%; background: #FFFFFF; border-radius: 18px;
+    box-shadow: 0 30px 60px rgba(16,24,40,0.16), 0 4px 14px rgba(16,24,40,0.06);
+    padding: clamp(18px, 5cqw, 24px); animation: qePanelDrift 8s ease-in-out infinite;
+  }
+  @keyframes qePanelDrift {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  .qe-hero-panel-head { display: flex; align-items: center; justify-content: space-between; }
+  .qe-hero-panel-title { font-family: 'Manrope', sans-serif; font-weight: 700; font-size: clamp(13px, 3cqw, 15px); color: #162833; }
+  .qe-hero-panel-badge {
+    font-size: clamp(9.5px, 2.4cqw, 11px); font-weight: 700; color: #1E7A46; background: rgba(40,199,111,0.14);
+    border-radius: 999px; padding: 4px 10px;
+  }
+  /* quality-gate pipeline: the stages a release passes through, not a
+     generic progress ring — reads as an engineering process rather than a
+     stock dashboard widget */
+  .qe-hero-pipeline { position: relative; margin-top: clamp(18px, 4.6cqw, 24px); display: flex; flex-direction: column; }
+  .qe-hero-pipeline::before {
+    content: ''; position: absolute; top: clamp(10px, 2.6cqw, 12px); bottom: clamp(10px, 2.6cqw, 12px);
+    left: clamp(9px, 2.3cqw, 11px); width: 2px; background: #EEF1F6; z-index: 0;
+  }
+  .qe-hero-stage { position: relative; z-index: 1; display: flex; align-items: center; gap: clamp(11px, 2.8cqw, 14px); padding: clamp(7px, 1.8cqw, 9px) 0; }
+  .qe-hero-stage-dot {
+    flex-shrink: 0; width: clamp(20px, 5cqw, 24px); height: clamp(20px, 5cqw, 24px); border-radius: 50%;
+    background: #28C76F; color: #FFFFFF; box-shadow: 0 0 0 4px #FFFFFF;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .qe-hero-stage.is-active .qe-hero-stage-dot { background: #2B8FDB; position: relative; }
+  .qe-hero-stage.is-active .qe-hero-stage-dot::after {
+    content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 2px solid rgba(43,143,219,0.4);
+    animation: qeStagePulse 2.2s ease-in-out infinite;
+  }
+  @keyframes qeStagePulse {
+    0%, 100% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(1.15); opacity: 0; }
+  }
+  .qe-hero-stage-body { flex: 1; min-width: 0; display: flex; align-items: center; justify-content: space-between; gap: clamp(10px, 2.6cqw, 16px); }
+  .qe-hero-stage-label { font-size: clamp(11.5px, 3cqw, 13.5px); font-weight: 700; color: #162833; }
+  .qe-hero-stage.is-active .qe-hero-stage-label { color: #1E6FB8; }
+  .qe-hero-stage-sub { margin-top: 1px; font-size: clamp(9.5px, 2.4cqw, 11px); color: #8891A0; }
+  .qe-hero-stage-time {
+    flex-shrink: 0; font-size: clamp(9.5px, 2.4cqw, 11px); font-weight: 600; color: #8891A0;
+    font-variant-numeric: tabular-nums;
+  }
+  .qe-hero-stage.is-active .qe-hero-stage-time { color: #1E6FB8; font-weight: 700; }
+
+  .qe-hero-float {
+    position: absolute; display: flex; align-items: center; gap: clamp(7px, 2cqw, 9px);
+    background: #FFFFFF; border-radius: 16px; padding: clamp(8px, 2.2cqw, 11px) clamp(11px, 3cqw, 14px);
+    box-shadow: 0 16px 32px rgba(16,24,40,0.14); z-index: 3;
+    animation: qeFloatBob 6s ease-in-out infinite;
+  }
+  .qe-hero-float-icon { flex-shrink: 0; width: clamp(24px, 6.5cqw, 30px); height: clamp(24px, 6.5cqw, 30px); border-radius: 9px; display: flex; align-items: center; justify-content: center; }
+  .qe-hero-float-title { font-size: clamp(10.5px, 2.8cqw, 12.5px); font-weight: 700; color: #162833; line-height: 1.2; }
+  .qe-hero-float-sub { font-size: clamp(9px, 2.4cqw, 10.5px); color: #8891A0; line-height: 1.3; margin-top: 1px; }
+  .qe-hero-float--pass { top: 2%; left: 2%; animation-delay: 0.8s; }
+  .qe-hero-float--pass .qe-hero-float-icon { background: rgba(40,199,111,0.14); color: #1E7A46; }
+  .qe-hero-float--defect { bottom: 4%; right: 1%; animation-delay: 1.6s; }
+  .qe-hero-float--defect .qe-hero-float-icon { background: rgba(201,148,31,0.14); color: #A87613; }
+
+  .qe-hero-photo-card {
+    position: absolute; left: 1%; bottom: 2%; z-index: 3; width: 26%; aspect-ratio: 3/3.6;
+    border-radius: 16px; overflow: hidden; box-shadow: 0 20px 40px rgba(16,24,40,0.20);
+    animation: qeFloatBob 7s ease-in-out infinite; animation-delay: 0.5s;
+  }
+  .qe-hero-photo-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .qe-hero-photo-card-tag {
+    position: absolute; left: 6px; right: 6px; bottom: 6px;
+    background: rgba(16,24,40,0.68); backdrop-filter: blur(4px); color: #FFFFFF;
+    font-size: clamp(8.5px, 2.4cqw, 10px); font-weight: 700; text-align: center;
+    border-radius: 999px; padding: 4px 6px;
+  }
+  @keyframes qeFloatBob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+
+  /* ---------- "why it matters" section ---------- */
+  .qe-shift-top { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 64px; align-items: start; }
+  .qe-shift-title { margin: 16px 0 0; font-family: 'Manrope', sans-serif; font-weight: 500; font-size: clamp(26px, 2.6vw, 34px); line-height: 1.28; letter-spacing: -0.01em; color: #162833; max-width: 380px; }
+  .qe-shift-body p { margin: 0 0 18px; font-size: 16.5px; line-height: 1.75; color: #46535F; }
+  .qe-shift-body p:last-child { margin-bottom: 0; }
+
+  .qe-shift-pillars { margin-top: 52px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .qe-shift-pillar {
+    display: flex; flex-direction: column; align-items: flex-start; gap: 12px;
+    padding: 20px 18px; border-radius: 14px; background: #F6F8FC; border: 1px solid #EEF1F6;
+  }
+  .qe-shift-pillar-icon {
+    width: 34px; height: 34px; border-radius: 9px; display: flex; align-items: center; justify-content: center;
+    background: rgba(201,148,31,0.12); color: #A87613; flex-shrink: 0;
+  }
+  .qe-shift-pillar-label { font-weight: 700; font-size: 14.5px; color: #162833; }
+
+  .qe-shift-quote {
+    margin: 48px 0 0; padding: 2px 0 2px 26px; border-left: 3px solid #C9941F;
+    font-family: 'Manrope', sans-serif; font-weight: 500; font-size: clamp(19px, 1.9vw, 23px);
+    line-height: 1.5; letter-spacing: -0.01em; color: #162833; max-width: 820px;
+  }
+
+  /* ---------- AI-accelerated quality engineering ---------- */
+  .qe-ai-section { position: relative; overflow: hidden; }
+  .qe-ai-section .sdl-section-inner { position: relative; z-index: 1; }
+  .qe-ai-glow-bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+  .qe-ai-glow-bg span { position: absolute; border-radius: 50%; filter: blur(70px); }
+  .qe-ai-glow-bg span:nth-child(1) {
+    width: 420px; height: 420px; top: -140px; right: -120px;
+    background: radial-gradient(circle, rgba(124,111,240,0.20) 0%, rgba(124,111,240,0) 72%);
+  }
+  .qe-ai-glow-bg span:nth-child(2) {
+    width: 300px; height: 300px; bottom: -140px; left: -90px;
+    background: radial-gradient(circle, rgba(201,148,31,0.14) 0%, rgba(201,148,31,0) 72%);
+  }
+  .qe-ai-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .qe-ai-title { margin-top: 18px; }
+  .qe-ai-copy-body { margin-top: 22px; }
+  .qe-ai-copy-body p { margin: 0; font-size: 16.5px; line-height: 1.72; color: #46535F; }
+  .qe-ai-pills { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 10px; }
+  .qe-ai-pill {
+    font-size: 13.5px; font-weight: 600; color: #5B4FD6; background: rgba(124,111,240,0.10);
+    border: 1px solid rgba(124,111,240,0.24); border-radius: 999px; padding: 8px 16px;
+  }
+
+  .qe-ai-visual { position: relative; width: 100%; aspect-ratio: 520/440; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; }
+  .qe-ai-card {
+    position: relative; z-index: 2; width: 92%; background: #FFFFFF; border-radius: 18px;
+    box-shadow: 0 30px 60px rgba(16,24,40,0.16), 0 4px 14px rgba(16,24,40,0.06);
+    padding: 20px 22px 24px; container-type: inline-size;
+  }
+  .qe-ai-card-head { display: flex; align-items: center; justify-content: space-between; }
+  .qe-ai-card-head-title { font-family: 'Manrope', sans-serif; font-weight: 700; font-size: clamp(12px, 3cqw, 14px); color: #162833; }
+  .qe-ai-card-head-dot { width: clamp(6px, 1.8cqw, 8px); height: clamp(6px, 1.8cqw, 8px); border-radius: 50%; background: #28C76F; }
+  .qe-ai-step-label {
+    margin-top: 14px; font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+    color: #7C6FF0;
+  }
+  .qe-ai-stage { margin-top: 12px; min-height: 130px; }
+
+  .qe-ai-stage-prompt {
+    display: flex; align-items: flex-start; gap: 8px; background: #F6F8FC; border-radius: 10px;
+    padding: 14px 16px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: clamp(11.5px, 3cqw, 13px); line-height: 1.6; color: #2E3B44; min-height: 100px;
+  }
+  .qe-ai-prompt-caret { flex-shrink: 0; color: #7C6FF0; font-weight: 700; }
+  .qe-ai-cursor {
+    display: inline-block; width: 7px; height: 15px; margin-left: 2px; background: #7C6FF0;
+    vertical-align: text-bottom; animation: qeAiBlink 1s steps(1, end) infinite;
+  }
+  @keyframes qeAiBlink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+
+  .qe-ai-stage-risk { display: flex; flex-direction: column; gap: 11px; justify-content: center; min-height: 100px; }
+  .qe-ai-risk-row { display: flex; align-items: center; gap: 10px; }
+  .qe-ai-risk-label { flex: 0 0 auto; width: 38%; font-size: clamp(10.5px, 2.6cqw, 12px); font-weight: 600; color: #2E3B44; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .qe-ai-risk-track { flex: 1; height: 7px; background: #EEF1F6; border-radius: 4px; overflow: hidden; }
+  .qe-ai-risk-fill { height: 100%; border-radius: 4px; }
+
+  .qe-ai-stage-defects { display: flex; flex-direction: column; min-height: 100px; justify-content: center; }
+  .qe-ai-defect-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 0; border-top: 1px solid #EEF1F6; }
+  .qe-ai-defect-row:first-child { border-top: none; padding-top: 0; }
+  .qe-ai-defect-text { font-size: clamp(10.5px, 2.6cqw, 12px); font-weight: 600; color: #2E3B44; }
+  .qe-ai-defect-chip { flex-shrink: 0; font-size: clamp(8.5px, 2.2cqw, 9.5px); font-weight: 700; border-radius: 999px; padding: 3px 9px; }
+  .qe-ai-defect-chip.high { color: #C13B2E; background: rgba(230,74,60,0.12); }
+  .qe-ai-defect-chip.medium { color: #A87613; background: rgba(201,148,31,0.14); }
+  .qe-ai-defect-chip.low { color: #1E7A46; background: rgba(40,199,111,0.12); }
+
+  .qe-ai-stage-metrics { display: flex; gap: 14px; min-height: 100px; align-items: center; }
+  .qe-ai-metric { flex: 1; text-align: center; background: #F6F8FC; border: 1px solid #EEF1F6; border-radius: 12px; padding: 16px 10px; }
+  .qe-ai-metric-value { font-family: 'Manrope', sans-serif; font-size: clamp(18px, 4.4cqw, 24px); font-weight: 800; color: #162833; line-height: 1.1; }
+  .qe-ai-metric-label { margin-top: 6px; font-size: clamp(9.5px, 2.4cqw, 11px); line-height: 1.4; color: #8891A0; }
+
+  .qe-ai-steps { position: relative; z-index: 2; display: flex; align-items: center; gap: 8px; }
+  .qe-ai-step-dot { width: 8px; height: 8px; border-radius: 999px; background: #DCE0EC; transition: width 0.3s ease, background 0.3s ease; cursor: pointer; }
+  .qe-ai-step-dot.is-active { width: 26px; background: #7C6FF0; }
+
+  .qe-ai-particles { position: absolute; inset: 0; overflow: visible; pointer-events: none; }
+  .qe-ai-particle {
+    opacity: 0; transform-origin: center; animation-name: qeAiParticleDrift;
+    animation-timing-function: ease-in-out; animation-iteration-count: infinite;
+    animation-duration: var(--dur, 8s); animation-delay: var(--delay, 0s);
+  }
+  @keyframes qeAiParticleDrift {
+    0% { opacity: 0; transform: translate(0, 0) scale(0.5); }
+    18% { opacity: 0.85; }
+    72% { opacity: 0.7; transform: translate(var(--dx, 10px), var(--dy, -8px)) scale(1); }
+    100% { opacity: 0; transform: translate(calc(var(--dx, 10px) * 1.7), calc(var(--dy, -8px) * 1.7)) scale(0.6); }
+  }
+
+  /* ---------- capabilities grid (bento) ---------- */
+  .qe-cap-head { max-width: 680px; }
+  .qe-cap-grid {
+    margin-top: 48px; display: grid; grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: minmax(180px, auto); gap: 20px;
+  }
+  .qe-cap-card {
+    position: relative; background: #FFFFFF; border: 1px solid rgba(16,24,40,0.07); border-radius: 20px;
+    padding: 28px 26px 26px; overflow: hidden; container-type: inline-size;
+    display: flex; flex-direction: column;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+  }
+  .qe-cap-card::before {
+    content: ''; position: absolute; top: -34%; right: -18%; width: 62%; aspect-ratio: 1/1; z-index: 0; pointer-events: none;
+    background: radial-gradient(circle, var(--cap-glow, rgba(201,148,31,0.18)) 0%, rgba(201,148,31,0) 72%);
+  }
+  .qe-cap-card:hover {
+    transform: translateY(-4px); box-shadow: 0 22px 44px rgba(16,24,40,0.12);
+    border-color: var(--cap-border-hover, rgba(201,148,31,0.32));
+  }
+  .qe-cap-icon {
+    position: relative; z-index: 1; flex-shrink: 0;
+    width: clamp(40px, 11cqw, 50px); height: clamp(40px, 11cqw, 50px); border-radius: clamp(10px, 2.6cqw, 13px);
+    display: flex; align-items: center; justify-content: center;
+    background: var(--cap-soft, rgba(201,148,31,0.12)); color: var(--cap-color, #A87613); margin-bottom: clamp(14px, 3.6cqw, 20px);
+  }
+  .qe-cap-title { position: relative; z-index: 1; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: clamp(16.5px, 4cqw, 19px); color: #162833; }
+  .qe-cap-desc { position: relative; z-index: 1; margin-top: 10px; font-size: clamp(13.5px, 3cqw, 14.5px); line-height: 1.68; color: #46535F; }
+
+  .qe-cap-card:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+  .qe-cap-card:nth-child(n+2) { grid-column: span 2; }
+  .qe-cap-card--feature { padding: 34px 32px 32px; justify-content: center; }
+  .qe-cap-card--feature .qe-cap-icon { width: clamp(48px, 9cqw, 58px); height: clamp(48px, 9cqw, 58px); border-radius: 15px; }
+  .qe-cap-card--feature .qe-cap-title { font-size: clamp(20px, 3.4cqw, 25px); }
+  .qe-cap-card--feature .qe-cap-desc { font-size: clamp(14.5px, 2.4cqw, 16px); max-width: 480px; }
+  .qe-cap-watermark {
+    position: absolute; right: -18px; bottom: -22px; width: 44%; aspect-ratio: 1/1; z-index: 0;
+    color: var(--cap-color, #C9941F); opacity: 0.07; pointer-events: none;
+  }
+  .qe-cap-watermark svg { width: 100%; height: 100%; }
+
+  /* ---------- value grid ---------- */
+  .qe-value-head { max-width: 680px; }
+  .qe-value-grid { margin-top: 48px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .qe-value-card {
+    display: flex; gap: 18px; align-items: flex-start; padding: 26px 26px; border-radius: 18px;
+    background: var(--val-tint, rgba(201,148,31,0.06)); border: 1px solid rgba(16,24,40,0.04);
+  }
+  .qe-value-icon {
+    width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    background: var(--val-color, #C9941F); color: #FFFFFF; flex-shrink: 0;
+  }
+  .qe-value-title { font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 16.5px; color: #162833; }
+  .qe-value-desc { margin-top: 8px; font-size: 14.5px; line-height: 1.68; color: #46535F; }
+  .qe-value-card--wide { grid-column: span 2; }
+
+  /* ---------- quality engineering in action (case study) ---------- */
+  .qe-case { margin-top: 52px; display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+  .qe-case-media {
+    position: relative; border-radius: 20px; overflow: hidden; border: 1px solid #EEF1F6;
+    aspect-ratio: 4 / 3; background: #F1F4FA; display: flex; align-items: center; justify-content: center; padding: 24px; gap: 16px;
+  }
+  .qe-case-panel {
+    flex: 1; background: #FFFFFF; border: 1px solid #EBEFF7; border-radius: 12px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 20px 12px;
+  }
+  .qe-case-stat { font-family: 'Manrope', sans-serif; font-size: 30px; font-weight: 800; color: #A87613; }
+  .qe-case-stat-label { font-size: 12px; font-weight: 600; color: #8891A0; text-align: center; line-height: 1.4; }
+  .qe-case-tag {
+    position: absolute; left: 18px; top: 18px; background: rgba(16,24,38,0.72); backdrop-filter: blur(6px);
+    color: #FFFFFF; font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 6px 12px; border-radius: 999px;
+  }
+  .qe-case-title {
+    font-family: 'Manrope', sans-serif; font-size: clamp(22px, 2.2vw, 27px); font-weight: 700;
+    line-height: 1.3; letter-spacing: -0.01em; color: #162833;
+  }
+  .qe-case-blocks { margin-top: 24px; }
+  .qe-case-block { padding: 20px 0; border-top: 1px solid #EEF1F6; }
+  .qe-case-block:first-child { border-top: none; padding-top: 0; }
+  .qe-case-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #A87613; }
+  .qe-case-text { margin-top: 8px; font-size: 15px; line-height: 1.72; color: #46535F; }
+  .qe-case-cta { margin-top: 26px; }
+
+  /* ---------- closing CTA ---------- */
+  .qe-cta-section { padding: 72px 48px 96px; }
+  .qe-cta-card {
+    position: relative; overflow: hidden; max-width: 1360px; margin: 0 auto;
+    background: #101826; border: 1px solid rgba(255,255,255,0.08); border-radius: 28px;
+    padding: 76px 56px 80px; text-align: center;
+  }
+  .qe-cta-grid {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 34px 34px;
+    mask-image: radial-gradient(ellipse 60% 80% at 50% 0%, #000 0%, transparent 72%);
+  }
+  .qe-cta-card::after {
+    content: ''; position: absolute; top: -160px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 380px; pointer-events: none;
+    background: radial-gradient(ellipse at center, rgba(201,148,31,0.30), rgba(201,148,31,0) 68%);
+  }
+  .qe-cta-inner { position: relative; z-index: 1; }
+  .qe-cta-title {
+    margin: 20px 0 0; font-family: 'Manrope', sans-serif; font-weight: 500;
+    font-size: clamp(28px, 3.3vw, 42px); line-height: 1.2; letter-spacing: -0.015em; color: #FFFFFF;
+  }
+  .qe-cta-sub { margin: 18px auto 0; max-width: 560px; font-size: 17px; line-height: 1.65; color: rgba(255,255,255,0.62); }
+  .qe-cta-btn {
+    display: inline-flex; align-items: center; gap: 10px; margin-top: 34px; background: var(--accent);
+    color: #FFFFFF; font-weight: 700; font-size: 16px; padding: 16px 32px; border-radius: 999px;
+    transition: background 0.15s ease, transform 0.15s ease;
+  }
+  .qe-cta-btn:hover { background: var(--accent-hover); color: #FFFFFF; transform: translateY(-1px); }
+  .qe-cta-btn .arrow { display: inline-block; transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .qe-cta-btn:hover .arrow { transform: translateX(4px); }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 1060px) {
+    .sdl-desktop-nav, .sdl-desktop-cta { display: none !important; }
+    .sdl-mobile-toggle { display: flex !important; }
+    .sdl-header-inner { padding-left: 24px !important; padding-right: 24px !important; }
+    .sdl-hero { grid-template-columns: 1fr !important; padding: 56px 24px 64px !important; }
+    .sdl-hero-copy { font-size: 38px !important; }
+    .qe-hero-visual { max-width: 380px; margin: 0 auto; order: -1; }
+    .sdl-section { padding: 72px 24px 80px; }
+    .qe-shift-top { grid-template-columns: 1fr; gap: 28px; }
+    .qe-shift-title { max-width: none; }
+    .qe-shift-pillars { grid-template-columns: repeat(2, 1fr); }
+    .qe-ai-grid { grid-template-columns: 1fr; gap: 32px; }
+    .qe-ai-visual { max-width: 420px; margin: 0 auto; order: -1; }
+    .qe-cap-grid { grid-template-columns: repeat(2, 1fr); }
+    .qe-cap-card:nth-child(1) { grid-row: span 1; }
+    .qe-case { grid-template-columns: 1fr; gap: 32px; }
+    .qe-cta-section { padding: 56px 24px 72px; }
+    .qe-cta-card { padding: 56px 28px 60px; }
+    .sdl-footer { padding: 64px 24px 28px; }
+    .sdl-footer-cols { max-width: none; grid-template-columns: repeat(2, 1fr); row-gap: 32px; }
+  }
+
+  @media (max-width: 720px) {
+    .qe-shift-pillars { grid-template-columns: repeat(2, 1fr); }
+    .qe-value-grid { grid-template-columns: 1fr; }
+    .qe-value-card--wide { grid-column: span 1; }
+  }
+
+  @media (max-width: 560px) {
+    .sdl-footer-top { flex-direction: column; align-items: flex-start; }
+    .sdl-footer-cols { grid-template-columns: 1fr; }
+    .qe-cap-grid { grid-template-columns: 1fr; }
+    .qe-cap-card, .qe-cap-card:nth-child(1) { grid-column: span 1; grid-row: span 1; }
+    .qe-cap-card--feature { padding: 28px 26px 26px; justify-content: flex-start; }
+    .qe-shift-pillars { grid-template-columns: 1fr; }
+    .qe-value-card { flex-direction: column; }
+    .qe-ai-stage-metrics { flex-direction: column; }
+  }
+
+  /* ---------- scroll-reveal motion ---------- */
+  .reveal, .reveal-group > * { opacity: 0; transform: translateY(24px); }
+  .reveal.is-visible, .reveal-group.is-visible > * {
+    animation: sdlRevealIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  @keyframes sdlRevealIn { to { opacity: 1; transform: translateY(0); } }
+  .reveal-group > *:nth-child(1) { animation-delay: 0s; }
+  .reveal-group > *:nth-child(2) { animation-delay: 0.07s; }
+  .reveal-group > *:nth-child(3) { animation-delay: 0.14s; }
+  .reveal-group > *:nth-child(4) { animation-delay: 0.21s; }
+  .reveal-group > *:nth-child(5) { animation-delay: 0.28s; }
+  .reveal-group > *:nth-child(6) { animation-delay: 0.35s; }
+  .reveal-group > *:nth-child(7) { animation-delay: 0.42s; }
+
+  .sdl-hero-copy-wrap, .qe-hero-visual {
+    opacity: 0; transform: translateY(18px);
+    animation: sdlRevealIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  .qe-hero-visual { animation-delay: 0.15s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal, .reveal-group > *, .sdl-hero-copy-wrap, .qe-hero-visual,
+    .qe-hero-panel, .qe-hero-float, .qe-hero-photo-card, .qe-hero-stage.is-active .qe-hero-stage-dot::after {
+      animation: none !important; opacity: 1 !important; transform: none !important;
+    }
+    .qe-ai-particle { animation: none !important; opacity: 0 !important; }
+    .qe-ai-cursor { animation: none !important; opacity: 1 !important; }
+  }
+</style>
+</head>
+<body>
+
+<div style="font-family:'Inter',sans-serif;background:#F6F8FC;min-height:100vh">
+
+  <header class="sdl-header" id="sdlHeader">
+    <div class="sdl-header-inner">
+      <div class="sdl-header-left">
+        <a href="index.html" style="display: flex; align-items: center; flex-shrink: 0; color: inherit; text-decoration: none;">
+          <img src="assets/sdl-logo.svg" alt="Social DNA Labs" class="sdl-logo" />
+        </a>
+      </div>
+
+      <div class="sdl-header-nav-wrap">
+        <nav class="sdl-desktop-nav" id="desktopNav"></nav>
+      </div>
+
+      <div class="sdl-header-right">
+        <a href="#contact" class="sdl-cta sdl-desktop-cta">Let's talk →</a>
+        <button class="sdl-mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+          <svg width="22" height="16" viewBox="0 0 22 16"><rect width="22" height="2" fill="#162833"></rect><rect y="7" width="22" height="2" fill="#162833"></rect><rect y="14" width="22" height="2" fill="#162833"></rect></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="sdl-mega-panel" id="megaPanel"></div>
+    <div class="sdl-mobile-panel" id="mobilePanel"></div>
+  </header>
+
+  <section class="sdl-hero">
+    <div class="sdl-hero-copy-wrap">
+      <div class="sdl-kicker-wrap">
+        <span class="qe-kicker"><span class="kicker-line"></span> Quality Engineering</span>
+      </div>
+      <div class="sdl-hero-copy">
+        <div>Release faster.</div>
+        <div><span class="accent">Break less.</span></div>
+      </div>
+      <p class="sdl-hero-sub">
+        Build quality into every stage of engineering with automation, continuous testing and performance engineering that improve reliability without slowing delivery.
+      </p>
+      <div class="sdl-hero-actions">
+        <a href="index.html#contact" class="sdl-hero-primary">Talk to a quality engineering expert →</a>
+        <a href="#capabilities" class="sdl-hero-secondary">Explore capabilities →</a>
+      </div>
+    </div>
+
+    <div class="qe-hero-visual" aria-hidden="true">
+      <div class="qe-hero-grid"></div>
+      <div class="qe-hero-glow"></div>
+
+      <div class="qe-hero-panel">
+        <div class="qe-hero-panel-head">
+          <span class="qe-hero-panel-title">Release #482</span>
+          <span class="qe-hero-panel-badge">Ready to ship</span>
+        </div>
+        <div class="qe-hero-pipeline">
+          <div class="qe-hero-stage">
+            <span class="qe-hero-stage-dot"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg></span>
+            <div class="qe-hero-stage-body">
+              <div class="qe-hero-stage-label">Code committed</div>
+              <div class="qe-hero-stage-time">2d ago</div>
+            </div>
+          </div>
+          <div class="qe-hero-stage">
+            <span class="qe-hero-stage-dot"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg></span>
+            <div class="qe-hero-stage-body">
+              <div><div class="qe-hero-stage-label">1,240 tests passed</div><div class="qe-hero-stage-sub">0 failing</div></div>
+              <div class="qe-hero-stage-time">1d ago</div>
+            </div>
+          </div>
+          <div class="qe-hero-stage">
+            <span class="qe-hero-stage-dot"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg></span>
+            <div class="qe-hero-stage-body">
+              <div class="qe-hero-stage-label">Security scan clean</div>
+              <div class="qe-hero-stage-time">14m ago</div>
+            </div>
+          </div>
+          <div class="qe-hero-stage is-active">
+            <span class="qe-hero-stage-dot"></span>
+            <div class="qe-hero-stage-body">
+              <div><div class="qe-hero-stage-label">Deploying to production</div><div class="qe-hero-stage-sub">3 regions</div></div>
+              <div class="qe-hero-stage-time">Now</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="qe-hero-float qe-hero-float--pass">
+        <span class="qe-hero-float-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4.5"/></svg></span>
+        <div><div class="qe-hero-float-title">0 critical issues</div><div class="qe-hero-float-sub">Last 30 days</div></div>
+      </div>
+      <div class="qe-hero-float qe-hero-float--defect">
+        <span class="qe-hero-float-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6l8.5 8.5 5-5L22 16"/><path d="M22 10v6h-6"/></svg></span>
+        <div><div class="qe-hero-float-title">Defects trending down</div><div class="qe-hero-float-sub">-32% this sprint</div></div>
+      </div>
+
+      <div class="qe-hero-photo-card">
+        <img src="https://images.pexels.com/photos/36598855/pexels-photo-36598855.jpeg?cs=tinysrgb&w=220&h=270&fit=crop" alt="Engineer reviewing code during a quality review" loading="lazy">
+        <span class="qe-hero-photo-card-tag">Reviewed line by line</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="sdl-section sdl-section--white">
+    <div class="sdl-section-inner">
+      <div class="qe-shift-top">
+        <div class="reveal">
+          <span class="qe-kicker"><span class="kicker-line"></span> Why it matters</span>
+          <h2 class="qe-shift-title">Quality starts before testing.</h2>
+        </div>
+
+        <div class="qe-shift-body reveal">
+          <p>Quality cannot be added at the end of the development cycle.</p>
+          <p>Modern applications require quality to be considered across architecture, development, integration, testing and release. This means finding defects earlier, automating repeatable validation and continuously measuring how applications perform.</p>
+        </div>
+      </div>
+
+      <div class="qe-shift-pillars reveal-group">
+        <div class="qe-shift-pillar">
+          <span class="qe-shift-pillar-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span>
+          <span class="qe-shift-pillar-label">Earlier detection</span>
+        </div>
+        <div class="qe-shift-pillar">
+          <span class="qe-shift-pillar-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg></span>
+          <span class="qe-shift-pillar-label">Automated</span>
+        </div>
+        <div class="qe-shift-pillar">
+          <span class="qe-shift-pillar-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg></span>
+          <span class="qe-shift-pillar-label">Measured</span>
+        </div>
+        <div class="qe-shift-pillar">
+          <span class="qe-shift-pillar-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4.5"/></svg></span>
+          <span class="qe-shift-pillar-label">Reliable</span>
+        </div>
+      </div>
+
+      <blockquote class="qe-shift-quote reveal">
+        Quality engineering brings these practices together to make software more reliable without slowing down delivery.
+      </blockquote>
+    </div>
+  </section>
+
+  <section class="sdl-section sdl-section--alt qe-ai-section" id="ai-engineering">
+    <div class="qe-ai-glow-bg" aria-hidden="true"><span></span><span></span></div>
+    <div class="sdl-section-inner">
+      <div class="qe-ai-grid">
+        <div class="reveal">
+          <span class="qe-kicker qe-kicker--ai"><span class="kicker-line"></span> AI-accelerated quality engineering</span>
+          <h2 class="sdl-section-title qe-ai-title">Test smarter. Release with confidence.</h2>
+          <div class="qe-ai-copy-body">
+            <p>Use AI to accelerate test creation, identify potential defects, analyze application behavior and improve test coverage while keeping quality decisions under engineering control.</p>
+          </div>
+          <div class="qe-ai-pills" id="qeAiPills"></div>
+        </div>
+
+        <div class="qe-ai-visual reveal" aria-hidden="true">
+          <div class="qe-ai-card">
+            <div class="qe-ai-card-head">
+              <span class="qe-ai-card-head-title">Test Run #482</span>
+              <span class="qe-ai-card-head-dot"></span>
+            </div>
+            <div class="qe-ai-step-label" id="qeAiStepLabel"></div>
+            <div class="qe-ai-stage" id="qeAiStage"></div>
+          </div>
+          <div class="qe-ai-steps" id="qeAiSteps"></div>
+          <svg class="qe-ai-particles" viewBox="0 0 520 440" aria-hidden="true">
+            <circle class="qe-ai-particle" cx="60"  cy="110" r="2.6" fill="#7C6FF0" style="--dx:10px;--dy:-8px;--dur:8.4s;--delay:0.2s" />
+            <circle class="qe-ai-particle" cx="40"  cy="200" r="2"   fill="#8FD6FF" style="--dx:12px;--dy:-4px;--dur:9.1s;--delay:1.1s" />
+            <circle class="qe-ai-particle" cx="470" cy="330" r="2.4" fill="#7C6FF0" style="--dx:-10px;--dy:8px;--dur:8.9s;--delay:1.9s" />
+            <circle class="qe-ai-particle" cx="490" cy="90"  r="2"   fill="#8FD6FF" style="--dx:-8px;--dy:10px;--dur:7.8s;--delay:2.6s" />
+            <circle class="qe-ai-particle" cx="30"  cy="330" r="2.2" fill="#7C6FF0" style="--dx:11px;--dy:6px;--dur:9.4s;--delay:3.3s" />
+            <circle class="qe-ai-particle" cx="480" cy="230" r="1.8" fill="#8FD6FF" style="--dx:-9px;--dy:-7px;--dur:8.2s;--delay:4s" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sdl-section sdl-section--white" id="capabilities">
+    <div class="sdl-section-inner">
+      <div class="qe-cap-head reveal">
+        <span class="qe-kicker"><span class="kicker-line"></span> Quality engineering capabilities</span>
+        <h2 class="sdl-section-title">Engineering confidence into every release.</h2>
+      </div>
+
+      <div class="qe-cap-grid reveal-group" id="qeCapabilities"></div>
+    </div>
+  </section>
+
+  <section class="sdl-section sdl-section--alt" id="value">
+    <div class="sdl-section-inner">
+      <div class="qe-value-head reveal">
+        <span class="qe-kicker"><span class="kicker-line"></span> What you get</span>
+        <h2 class="sdl-section-title">What good quality engineering should deliver.</h2>
+      </div>
+
+      <div class="qe-value-grid reveal-group" id="qeValue"></div>
+    </div>
+  </section>
+
+  <section class="sdl-section sdl-section--white" id="case-study">
+    <div class="sdl-section-inner">
+      <div class="reveal">
+        <span class="qe-kicker"><span class="kicker-line"></span> Quality engineering in action</span>
+        <h2 class="sdl-section-title">Confidence from development to release.</h2>
+        <p class="sdl-section-sub">Explore applications where automation, testing and performance engineering helped improve software quality and release reliability.</p>
+      </div>
+
+      <div class="qe-case">
+        <div class="qe-case-media reveal">
+          <div class="qe-case-panel">
+            <div class="qe-case-stat">89%</div>
+            <div class="qe-case-stat-label">Test coverage</div>
+          </div>
+          <div class="qe-case-panel">
+            <div class="qe-case-stat">70%</div>
+            <div class="qe-case-stat-label">Fewer production defects</div>
+          </div>
+          <span class="qe-case-tag">Sample case study</span>
+        </div>
+
+        <div class="reveal">
+          <div class="qe-case-title">Automated regression testing built for confident releases</div>
+
+          <div class="qe-case-blocks">
+            <div class="qe-case-block">
+              <div class="qe-case-label">Challenge</div>
+              <p class="qe-case-text">Manual regression testing before every release was slow and inconsistent, letting defects reach production and delaying launches.</p>
+            </div>
+            <div class="qe-case-block">
+              <div class="qe-case-label">What we engineered</div>
+              <p class="qe-case-text">An AI-assisted automated testing framework covering functional, API and regression tests, integrated directly into the CI/CD pipeline.</p>
+            </div>
+            <div class="qe-case-block">
+              <div class="qe-case-label">Impact</div>
+              <p class="qe-case-text">Higher test coverage, faster release cycles, and fewer production defects reaching customers.</p>
+            </div>
+          </div>
+
+          <div class="qe-case-cta">
+            <a class="sdl-cta-link" href="#">View case study →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="qe-cta-section">
+    <div class="qe-cta-card reveal">
+      <div class="qe-cta-grid" aria-hidden="true"></div>
+      <div class="qe-cta-inner">
+        <span class="qe-kicker qe-kicker--dark"><span class="kicker-line"></span> Start a conversation</span>
+        <h2 class="qe-cta-title">Need more confidence in every release?</h2>
+        <p class="qe-cta-sub">Let's talk about the quality challenges across your applications and engineering lifecycle.</p>
+        <a href="index.html#contact" class="qe-cta-btn">Talk to a quality engineering expert <span class="arrow" aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer class="sdl-footer">
+  <div class="sdl-footer-inner">
+    <div class="sdl-footer-top">
+      <div class="sdl-footer-brand">
+        <img src="assets/sdl-logo.svg" alt="Social DNA Labs" class="sdl-footer-logo" />
+        <p class="sdl-footer-tagline">Technology, experience and AI for businesses building what comes next.</p>
+      </div>
+
+      <div class="sdl-footer-cols" id="footerCols"></div>
+    </div>
+
+    <div class="sdl-footer-bottom">
+      <div id="footerYear">© Social DNA Labs</div>
+      <div class="sdl-footer-bottom-right">
+        <div>Business impact, by design.</div>
+        <a href="#" class="sdl-footer-social-icon" aria-label="LinkedIn"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zm7 0h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.6c0-1.34-.02-3.06-1.87-3.06-1.87 0-2.16 1.46-2.16 2.96V21h-4z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var ACCENT = '#2B49DB';
+  var MEGA_MENU_ENABLED = true;
+
+  var MENUS = [
+    { key: 'services', label: 'Services', href: 'services.html', cta: { label: 'View all services', href: 'services.html' }, items: [
+      { title: 'AI transformation', desc: 'Turn AI potential into practical business value.', href: 'ai-transformation.html' },
+      { title: 'Digital engineering', desc: 'Build, modernize and scale digital products.', href: 'digital-engineering.html' },
+      { title: 'Business transformation', desc: 'Rethink systems, processes and ways of working.', href: 'business-transformation.html' },
+      { title: 'Digital experience', desc: 'Create better experiences across every touchpoint.', href: 'digital-experience.html' },
+      { title: 'Growth transformation', desc: 'Turn digital attention into qualified demand.', href: 'growth-transformation.html' }
+    ]},
+    { key: 'products', label: 'Products & Platforms', cta: { label: 'Explore EVOQ', href: 'evoq.html' }, items: [
+      { title: 'EVOQ', desc: 'The unified business suite for modern operations.', href: 'evoq.html' }
+    ]},
+    { key: 'insights', label: 'Insights', cta: { label: 'Explore insights', href: '#' }, items: [
+      { title: 'Blogs', desc: 'Ideas, perspectives and practical thinking.' },
+      { title: 'Case studies', desc: 'Real projects. Real business outcomes.' },
+      { title: 'Whitepapers', desc: 'In-depth research and perspectives.' },
+      { title: 'Featured projects', desc: 'Selected work and digital experiences.' }
+    ]},
+    { key: 'company', label: 'Company', cta: null, items: [
+      { title: 'About', desc: 'The people and experience behind SDL.' },
+      { title: 'Our approach', desc: 'How SDL thinks, builds and works.' },
+      { title: 'Clients', desc: 'The businesses SDL works with.' },
+      { title: 'Careers', desc: "Build what's next with SDL." }
+    ]}
+  ];
+
+  var ICONS = {
+    'AI transformation': '<path d="M24 6l4.2 9.4L38 20l-9.8 4.6L24 34l-4.2-9.4L10 20l9.8-4.6L24 6z"/><circle cx="24" cy="20" r="3.4"/>',
+    'Digital engineering': '<path d="M17 15l-8 8 8 8M31 15l8 8-8 8M27 12l-6 24"/>',
+    'Business transformation': '<circle cx="24" cy="24" r="7"/><path d="M24 8v5M24 39v5M8 24h5M39 24h5M12.9 12.9l3.5 3.5M31.6 31.6l3.5 3.5M35.1 12.9l-3.5 3.5M16.4 31.6l-3.5 3.5"/>',
+    'Digital experience': '<rect x="10" y="12" width="28" height="20" rx="2.5"/><path d="M18 40h12M24 32v8"/>',
+    'Growth transformation': '<path d="M9 33l9-11 7 7 14-17"/><path d="M31 12h8v8"/>',
+    'Products & platforms': '<rect x="9" y="9" width="13" height="13" rx="2"/><rect x="26" y="9" width="13" height="13" rx="2"/><rect x="9" y="26" width="13" height="13" rx="2"/><rect x="26" y="26" width="13" height="13" rx="2"/>',
+    'EVOQ': '<rect x="9" y="9" width="13" height="13" rx="2"/><rect x="26" y="9" width="13" height="13" rx="2"/><rect x="9" y="26" width="13" height="13" rx="2"/><rect x="26" y="26" width="13" height="13" rx="2"/>',
+    'Blogs': '<path d="M14 8h14l6 6v22a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2z"/><path d="M28 8v6h6M17 24h14M17 30h14"/>',
+    'Case studies': '<path d="M14 8h14l6 6v22a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2z"/><path d="M28 8v6h6M18 26l4 4 8-9"/>',
+    'Whitepapers': '<path d="M14 8h14l6 6v22a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2z"/><path d="M28 8v6h6M17 22h14M17 28h9"/>',
+    'Featured projects': '<path d="M24 6l4.6 12.6L42 21l-9 9 2.3 13-11.3-6.5L12.7 43 15 30l-9-9 13.4-2.4L24 6z"/>',
+    'About': '<rect x="12" y="10" width="24" height="28" rx="2"/><path d="M18 18h4M26 18h4M18 26h4M26 26h4M20 38v-6h8v6"/>',
+    'Our approach': '<circle cx="24" cy="24" r="13"/><circle cx="24" cy="24" r="7"/><circle cx="24" cy="24" r="1.6" fill="currentColor" stroke="none"/>',
+    'Clients': '<circle cx="18" cy="18" r="5"/><circle cx="32" cy="20" r="4"/><path d="M9 38c1-6 5-10 9-10s8 4 9 10M27 38c1-5 4-9 8-9 3 0 6 2 7 6"/>',
+    'Careers': '<rect x="8" y="16" width="32" height="20" rx="3"/><path d="M17 16v-4a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v4"/><path d="M8 25h32"/>'
+  };
+  var ICON_DEFAULT = '<circle cx="24" cy="24" r="4" fill="currentColor" stroke="none"/>';
+
+  // ---------- Footer ----------
+  var FOOTER_COLS = [
+    { title: 'Services', links: [
+      { label: 'AI transformation', href: 'ai-transformation.html' },
+      { label: 'Digital engineering', href: 'digital-engineering.html' },
+      { label: 'Business transformation', href: 'business-transformation.html' },
+      { label: 'Digital experience', href: 'digital-experience.html' },
+      { label: 'Growth transformation', href: 'growth-transformation.html' }
+    ]},
+    { title: 'Products & Platforms', links: [
+      { label: 'EVOQ', href: 'evoq.html' }
+    ]},
+    { title: 'Insights', links: [
+      { label: 'Blogs', href: '#' },
+      { label: 'Case studies', href: '#' },
+      { label: 'Whitepapers', href: '#' },
+      { label: 'Featured projects', href: '#' }
+    ]},
+    { title: 'Company', links: [
+      { label: 'About', href: '#' },
+      { label: 'Our approach', href: '#' },
+      { label: 'Clients', href: '#' },
+      { label: 'Careers', href: '#' }
+    ]},
+    { title: 'Connect', links: [
+      { label: "Let's talk", href: '#contact' },
+      { label: 'Contact us', href: '#contact' }
+    ]}
+  ];
+  var footerCols = document.getElementById('footerCols');
+  FOOTER_COLS.forEach(function (col) {
+    var wrap = document.createElement('div');
+    var title = document.createElement('div');
+    title.className = 'sdl-footer-col-title';
+    title.textContent = col.title;
+    var list = document.createElement('ul');
+    list.className = 'sdl-footer-links';
+    col.links.forEach(function (l) {
+      var li = document.createElement('li');
+      var a = document.createElement('a');
+      a.href = l.href;
+      a.textContent = l.label;
+      li.appendChild(a);
+      list.appendChild(li);
+    });
+    wrap.appendChild(title);
+    wrap.appendChild(list);
+    footerCols.appendChild(wrap);
+  });
+
+  document.getElementById('footerYear').textContent = '© ' + new Date().getFullYear() + ' Social DNA Labs';
+
+  // ---------- Desktop nav + mega menu ----------
+  var desktopNav = document.getElementById('desktopNav');
+  var megaPanel = document.getElementById('megaPanel');
+  var header = document.getElementById('sdlHeader');
+
+  var navButtons = [];
+
+  function closeMegaMenu() {
+    megaPanel.classList.remove('open');
+    megaPanel.innerHTML = '';
+    navButtons.forEach(function (b) { b.classList.remove('active'); });
+  }
+
+  function renderMegaMenu(menu, triggerBtn, triggerItem) {
+    if (!MEGA_MENU_ENABLED) return;
+    var inner = document.createElement('div');
+    inner.className = 'sdl-mega-panel-inner';
+    if (menu.items.length < 2) inner.style.gridTemplateColumns = '1fr';
+    menu.items.forEach(function (item) {
+      var wrap = document.createElement('div');
+      wrap.className = 'sdl-mega-item';
+      var icon = document.createElement('div');
+      icon.className = 'sdl-mega-item-icon';
+      icon.innerHTML = '<svg width="18" height="18" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">' + (ICONS[item.title] || ICON_DEFAULT) + '</svg>';
+      var textWrap = document.createElement('div');
+      var title = document.createElement('div');
+      title.className = 'sdl-mega-item-title';
+      title.textContent = item.title;
+      var desc = document.createElement('div');
+      desc.className = 'sdl-mega-item-desc';
+      desc.textContent = item.desc;
+      textWrap.appendChild(title);
+      textWrap.appendChild(desc);
+      wrap.appendChild(icon);
+      wrap.appendChild(textWrap);
+
+      if (item.href) {
+        var link = document.createElement('a');
+        link.href = item.href;
+        link.style.display = 'contents';
+        link.style.cursor = 'pointer';
+        link.style.color = 'inherit';
+        link.style.textDecoration = 'none';
+        link.appendChild(wrap);
+        inner.appendChild(link);
+      } else {
+        inner.appendChild(wrap);
+      }
+    });
+    if (menu.cta) {
+      var ctaWrap = document.createElement('div');
+      ctaWrap.className = 'sdl-mega-cta';
+      var ctaLink = document.createElement('a');
+      ctaLink.href = menu.cta.href;
+      ctaLink.textContent = menu.cta.label + ' →';
+      ctaLink.style.color = ACCENT;
+      ctaWrap.appendChild(ctaLink);
+      inner.appendChild(ctaWrap);
+    }
+    megaPanel.innerHTML = '';
+    megaPanel.appendChild(inner);
+    megaPanel.classList.add('open');
+
+    navButtons.forEach(function (b) { b.classList.toggle('active', b === triggerBtn); });
+
+    var headerRect = header.getBoundingClientRect();
+    var itemRect = triggerItem.getBoundingClientRect();
+    var panelWidth = megaPanel.offsetWidth;
+    var itemCenter = (itemRect.left - headerRect.left) + itemRect.width / 2;
+    var left = itemCenter - panelWidth / 2;
+    var maxLeft = header.offsetWidth - panelWidth - 24;
+    if (maxLeft < 24) maxLeft = 24;
+    left = Math.max(24, Math.min(left, maxLeft));
+    megaPanel.style.left = left + 'px';
+  }
+
+  MENUS.forEach(function (menu) {
+    var item = document.createElement('div');
+    item.className = 'sdl-nav-item';
+
+    if (menu.href && !menu.items.length) {
+      var link = document.createElement('a');
+      link.className = 'sdl-nav-btn';
+      link.href = menu.href;
+      link.textContent = menu.label;
+      item.appendChild(link);
+    } else {
+      var btn = document.createElement('button');
+      btn.className = 'sdl-nav-btn';
+      btn.innerHTML = menu.label + ' <span class="caret">▾</span>';
+      item.appendChild(btn);
+      item.addEventListener('mouseenter', function () { renderMegaMenu(menu, btn, item); });
+      navButtons.push(btn);
+    }
+
+    desktopNav.appendChild(item);
+  });
+
+  header.addEventListener('mouseleave', closeMegaMenu);
+
+  // ---------- Mobile nav ----------
+  var mobileToggle = document.getElementById('mobileToggle');
+  var mobilePanel = document.getElementById('mobilePanel');
+  var mobileOpenKey = null;
+
+  function renderMobilePanel() {
+    mobilePanel.innerHTML = '';
+    MENUS.forEach(function (menu) {
+      var itemEl = document.createElement('div');
+      itemEl.className = 'sdl-mobile-item';
+
+      if (menu.href && !menu.items.length) {
+        var link = document.createElement('a');
+        link.className = 'sdl-mobile-item-btn';
+        link.href = menu.href;
+        link.textContent = menu.label;
+        link.style.display = 'block';
+        link.style.cursor = 'pointer';
+        itemEl.appendChild(link);
+      } else {
+        var btn = document.createElement('button');
+        btn.className = 'sdl-mobile-item-btn';
+        btn.innerHTML = menu.label + ' <span class="caret">▾</span>';
+        btn.addEventListener('click', function () {
+          mobileOpenKey = mobileOpenKey === menu.key ? null : menu.key;
+          renderMobilePanel();
+        });
+        itemEl.appendChild(btn);
+
+        var sub = document.createElement('div');
+        sub.className = 'sdl-mobile-sub' + (mobileOpenKey === menu.key ? ' open' : '');
+        menu.items.forEach(function (subItem) {
+          var subWrap = document.createElement('div');
+          var t = document.createElement('div');
+          t.className = 'sdl-mobile-sub-title';
+          t.textContent = subItem.title;
+          var d = document.createElement('div');
+          d.className = 'sdl-mobile-sub-desc';
+          d.textContent = subItem.desc;
+          subWrap.appendChild(t);
+          subWrap.appendChild(d);
+          sub.appendChild(subWrap);
+        });
+        if (menu.cta) {
+          var ctaLink = document.createElement('a');
+          ctaLink.href = menu.cta.href;
+          ctaLink.textContent = menu.cta.label + ' →';
+          sub.appendChild(ctaLink);
+        }
+        itemEl.appendChild(sub);
+      }
+      mobilePanel.appendChild(itemEl);
+    });
+
+    var talkLink = document.createElement('a');
+    talkLink.href = '#contact';
+    talkLink.className = 'sdl-mobile-cta';
+    talkLink.textContent = "Let's talk →";
+    mobilePanel.appendChild(talkLink);
+  }
+  renderMobilePanel();
+
+  mobileToggle.addEventListener('click', function () {
+    mobilePanel.classList.toggle('open');
+  });
+
+  // ---------- AI-accelerated quality engineering ----------
+  var QE_AI_TAGS = ['AI-assisted test generation', 'Intelligent test analysis', 'Defect detection', 'Automated regression testing'];
+  var qeAiPills = document.getElementById('qeAiPills');
+  if (qeAiPills) {
+    QE_AI_TAGS.forEach(function (label) {
+      var pill = document.createElement('span');
+      pill.className = 'qe-ai-pill';
+      pill.textContent = label;
+      qeAiPills.appendChild(pill);
+    });
+  }
+
+  // A single test-run session: a plain-language test request, the risk
+  // analysis AI runs against the change, the defects it surfaces, and the
+  // regression results that follow — mapped 1:1 to the four tags above,
+  // inside one test-report card rather than a chat log.
+  var QE_AI_STEPS = [
+    {
+      label: 'AI-assisted test generation',
+      html: '<div class="qe-ai-stage-prompt"><span class="qe-ai-prompt-caret">&gt;</span>' +
+        '<span>Generate regression tests for the checkout flow<span class="qe-ai-cursor"></span></span></div>'
+    },
+    {
+      label: 'Intelligent test analysis',
+      html: '<div class="qe-ai-stage-risk">' +
+        '<div class="qe-ai-risk-row"><span class="qe-ai-risk-label">Payment validation</span><div class="qe-ai-risk-track"><div class="qe-ai-risk-fill" style="width:82%;background:#E64A3C"></div></div></div>' +
+        '<div class="qe-ai-risk-row"><span class="qe-ai-risk-label">Checkout flow</span><div class="qe-ai-risk-track"><div class="qe-ai-risk-fill" style="width:54%;background:#C9941F"></div></div></div>' +
+        '<div class="qe-ai-risk-row"><span class="qe-ai-risk-label">Cart sync</span><div class="qe-ai-risk-track"><div class="qe-ai-risk-fill" style="width:22%;background:#28C76F"></div></div></div>' +
+        '</div>'
+    },
+    {
+      label: 'Defect detection',
+      html: '<div class="qe-ai-stage-defects">' +
+        '<div class="qe-ai-defect-row"><span class="qe-ai-defect-text">Null check missing — checkout.js</span><span class="qe-ai-defect-chip high">High</span></div>' +
+        '<div class="qe-ai-defect-row"><span class="qe-ai-defect-text">Timeout on retry — payment API</span><span class="qe-ai-defect-chip medium">Medium</span></div>' +
+        '<div class="qe-ai-defect-row"><span class="qe-ai-defect-text">Unused import — cart.js</span><span class="qe-ai-defect-chip low">Low</span></div>' +
+        '</div>'
+    },
+    {
+      label: 'Automated regression testing',
+      html: '<div class="qe-ai-stage-metrics">' +
+        '<div class="qe-ai-metric"><div class="qe-ai-metric-value">89%</div><div class="qe-ai-metric-label">Coverage<br>(was 62%)</div></div>' +
+        '<div class="qe-ai-metric"><div class="qe-ai-metric-value">25m</div><div class="qe-ai-metric-label">Regression run<br>(was 4h)</div></div>' +
+        '</div>'
+    }
+  ];
+  var qeAiStepLabel = document.getElementById('qeAiStepLabel');
+  var qeAiStage = document.getElementById('qeAiStage');
+  var qeAiSteps = document.getElementById('qeAiSteps');
+  if (qeAiStepLabel && qeAiStage && qeAiSteps) {
+    var qeAiActive = 0;
+    var qeAiTimer = null;
+    var QE_AI_INTERVAL = 3600;
+    var qeAiReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    QE_AI_STEPS.forEach(function (s, i) {
+      var dot = document.createElement('span');
+      dot.className = 'qe-ai-step-dot';
+      dot.addEventListener('click', function () { selectQeAiStep(i, true); });
+      qeAiSteps.appendChild(dot);
+    });
+
+    function selectQeAiStep(i, userInitiated) {
+      qeAiActive = i;
+      var step = QE_AI_STEPS[i];
+      qeAiStepLabel.textContent = 'Step ' + (i + 1) + ' of ' + QE_AI_STEPS.length + ' — ' + step.label;
+      qeAiStage.innerHTML = step.html;
+      qeAiSteps.querySelectorAll('.qe-ai-step-dot').forEach(function (dot, idx) {
+        dot.classList.toggle('is-active', idx === i);
+      });
+      if (userInitiated) restartQeAiTimer();
+    }
+
+    function restartQeAiTimer() {
+      if (qeAiTimer) clearInterval(qeAiTimer);
+      if (qeAiReducedMotion) return;
+      qeAiTimer = setInterval(function () {
+        selectQeAiStep((qeAiActive + 1) % QE_AI_STEPS.length, false);
+      }, QE_AI_INTERVAL);
+    }
+
+    selectQeAiStep(0, false);
+    restartQeAiTimer();
+  }
+
+  // ---------- Quality engineering capabilities ----------
+  var QE_CAPABILITIES = [
+    {
+      title: 'Test automation',
+      desc: 'Automate functional, regression and integration testing to improve coverage, consistency and release confidence.',
+      icon: '<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12l1.5 1.5L14 10"/>'
+    },
+    {
+      title: 'API & integration testing',
+      desc: 'Validate APIs, services and system integrations to ensure applications exchange data and behave correctly across connected environments.',
+      icon: '<path d="M9.5 14.5l5-5"/><path d="M8 16a3.5 3.5 0 0 1 0-5l2-2a3.5 3.5 0 0 1 5 0"/><path d="M16 8a3.5 3.5 0 0 1 0 5l-2 2a3.5 3.5 0 0 1-5 0"/>'
+    },
+    {
+      title: 'Performance engineering',
+      desc: 'Identify performance constraints and optimize applications for speed, responsiveness, scalability and stability under real workloads.',
+      icon: '<path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/>'
+    },
+    {
+      title: 'Continuous testing',
+      desc: 'Integrate testing into development and CI/CD pipelines so quality checks happen continuously rather than only before release.',
+      icon: '<path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/>'
+    },
+    {
+      title: 'Application quality assessment',
+      desc: 'Evaluate existing applications to identify defects, technical risks, performance issues and opportunities for improvement.',
+      icon: '<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>'
+    },
+    {
+      title: 'Security testing',
+      desc: 'Identify application-level security weaknesses and validate security controls as part of the engineering lifecycle.',
+      icon: '<path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4.5"/>'
+    },
+    {
+      title: 'AI-assisted quality engineering',
+      desc: 'Use AI-assisted test generation, test analysis, defect analysis and code review to accelerate quality activities while keeping engineering judgment in control.',
+      icon: '<path d="M12 2l1.8 5.6L19 9l-5.2 1.4L12 16l-1.8-5.6L5 9l5.2-1.4z"/>'
+    }
+  ];
+  var QE_ACCENT_COLORS = ['#C9941F', '#2B49DB', '#28C76F', '#2B8FDB', '#3E5FE0', '#22B368', '#7C6FF0'];
+  var qeCapabilities = document.getElementById('qeCapabilities');
+  if (qeCapabilities) {
+    QE_CAPABILITIES.forEach(function (c, i) {
+      var color = QE_ACCENT_COLORS[i % QE_ACCENT_COLORS.length];
+      var card = document.createElement('div');
+      card.className = 'qe-cap-card' + (i === 0 ? ' qe-cap-card--feature' : '');
+      card.style.setProperty('--cap-color', color);
+      card.style.setProperty('--cap-soft', color + '1F');
+      card.style.setProperty('--cap-glow', color + '29');
+      card.style.setProperty('--cap-border-hover', color + '59');
+      card.innerHTML =
+        '<div class="qe-cap-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">' + c.icon + '</svg></div>' +
+        '<div class="qe-cap-title"></div>' +
+        '<p class="qe-cap-desc"></p>' +
+        (i === 0 ? '<div class="qe-cap-watermark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">' + c.icon + '</svg></div>' : '');
+      card.querySelector('.qe-cap-title').textContent = c.title;
+      card.querySelector('.qe-cap-desc').textContent = c.desc;
+      qeCapabilities.appendChild(card);
+    });
+  }
+
+  // ---------- What good quality engineering should deliver ----------
+  var QE_VALUE_ITEMS = [
+    { title: 'Earlier defect detection', desc: 'Identify issues earlier in development when they are easier and less costly to fix.', icon: '<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>' },
+    { title: 'Higher test coverage', desc: 'Automate repeatable validation across applications, APIs, integrations and critical workflows.', icon: '<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12l1.5 1.5L14 10"/>' },
+    { title: 'Reliable releases', desc: 'Give engineering teams greater confidence when releasing new features and changes.', icon: '<path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4.5"/>' },
+    { title: 'Better performance', desc: 'Measure and improve application behavior under realistic workloads and conditions.', icon: '<path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/>' },
+    { title: 'Continuous quality', desc: 'Make quality part of everyday engineering rather than a final checkpoint.', icon: '<path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/>', wide: true }
+  ];
+  var qeValue = document.getElementById('qeValue');
+  if (qeValue) {
+    QE_VALUE_ITEMS.forEach(function (v, i) {
+      var color = QE_ACCENT_COLORS[i % QE_ACCENT_COLORS.length];
+      var card = document.createElement('div');
+      card.className = 'qe-value-card' + (v.wide ? ' qe-value-card--wide' : '');
+      card.style.setProperty('--val-color', color);
+      card.style.setProperty('--val-tint', color + '0F');
+      card.innerHTML =
+        '<div class="qe-value-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + v.icon + '</svg></div>' +
+        '<div class="qe-value-item-body">' +
+        '<div class="qe-value-title"></div>' +
+        '<p class="qe-value-desc"></p>' +
+        '</div>';
+      card.querySelector('.qe-value-title').textContent = v.title;
+      card.querySelector('.qe-value-desc').textContent = v.desc;
+      qeValue.appendChild(card);
+    });
+  }
+
+  // ---------- Scroll-reveal motion ----------
+  (function initScrollReveal() {
+    var targets = document.querySelectorAll('.reveal, .reveal-group');
+    if (!targets.length) return;
+    if (!('IntersectionObserver' in window)) {
+      targets.forEach(function (el) { el.classList.add('is-visible'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries, observer) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+    targets.forEach(function (el) { io.observe(el); });
+  })();
+
+})();
+</script>
+
+</body>
+</html>
