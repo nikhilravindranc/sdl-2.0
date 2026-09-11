@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Business transformation — Social DNA Labs</title>
+<title>Salesforce implementation — Social DNA Labs</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -110,7 +110,7 @@
   }
   .sdl-hero-copy .accent { color: var(--accent); }
   .sdl-hero-sub { margin-top: 28px; font-size: 19px; line-height: 1.65; color: #46535F; max-width: 460px; }
-  .sdl-hero-actions { display: flex; align-items: center; column-gap: 28px; row-gap: 12px; margin-top: 44px; flex-wrap: wrap; }
+  .sdl-hero-actions { display: flex; align-items: center; gap: 28px; margin-top: 44px; flex-wrap: wrap; }
   .sdl-hero-primary {
     display: inline-flex; align-items: center; gap: 10px; background: var(--accent);
     color: #FFFFFF; font-weight: 700; font-size: 16px; padding: 16px 30px; border-radius: 999px;
@@ -176,46 +176,51 @@
   .sdl-footer-bottom-right { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
 
   /* ---------- BT page: shared accents ---------- */
-  .bt-kicker {
+  .sf-kicker {
     display: inline-flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 700;
-    letter-spacing: 0.08em; text-transform: uppercase; color: #C9941F;
+    letter-spacing: 0.08em; text-transform: uppercase; color: #00A1E0;
   }
-  .bt-kicker .kicker-line { display: inline-block; width: 22px; height: 1px; background: #C9941F; }
-  .bt-kicker--dark { color: rgba(255,255,255,0.7); }
-  .bt-kicker--dark .kicker-line { background: var(--success); }
+  .sf-kicker .kicker-line { display: inline-block; width: 22px; height: 1px; background: #00A1E0; }
+  .sf-kicker--dark { color: rgba(255,255,255,0.7); }
+  .sf-kicker--dark .kicker-line { background: var(--success); }
 
   /* ---------- BT page: hero ---------- */
-  .sdl-hero--bt { grid-template-columns: 1.5fr 1fr; }
-  .sdl-hero--bt .sdl-hero-copy-wrap { max-width: 680px; }
-  .sdl-hero--bt .sdl-hero-copy { font-size: 48px; line-height: 1.2; font-weight: 500; }
-  .sdl-hero--bt .sdl-hero-copy .accent { color: #C9941F; }
-  .sdl-hero--bt .sdl-kicker-wrap { margin-bottom: 20px; }
-  .sdl-hero--bt .sdl-hero-sub { max-width: 500px; }
+  .sdl-hero--sf .sdl-hero-copy { font-size: 48px; line-height: 1.2; font-weight: 500; }
+  .sdl-hero--sf .sdl-hero-copy .accent { color: #00A1E0; }
+  .sdl-hero--sf .sdl-kicker-wrap { margin-bottom: 20px; }
+  .sdl-hero--sf .sdl-hero-sub { max-width: 500px; }
 
-  /* Hero motif: the same circular-arrow glyph used for the "Business
-     transformation" pillar card on the homepage (Where technology can make
-     a difference), at hero scale, in that card's own gold tokens. */
-  .bt-hero-visual { position: relative; width: 100%; aspect-ratio: 520/480; display: flex; align-items: center; justify-content: center; }
-  .bt-arc-glow {
+  /* Hero motif: the Salesforce cloud mark set in a floating brand card —
+     no partner badge here, positioned purely on implementation experience. */
+  .sf-hero-visual { position: relative; width: 100%; aspect-ratio: 520/480; display: flex; align-items: center; justify-content: center; }
+  .sf-arc-glow {
     position: absolute; width: 64%; aspect-ratio: 1/1; z-index: 0; pointer-events: none; border-radius: 50%;
-    background: radial-gradient(circle, rgba(244,196,48,0.32) 0%, rgba(244,196,48,0) 68%);
+    background: radial-gradient(circle, rgba(0,161,224,0.32) 0%, rgba(0,161,224,0) 68%);
     filter: blur(36px);
   }
-  .bt-arc {
-    position: relative; width: 58%; aspect-ratio: 1/1; z-index: 1;
-    filter: drop-shadow(0 28px 52px rgba(180,130,10,0.30));
-    animation: btArcTurn 10s ease-in-out infinite;
+  .sf-logo-card {
+    position: relative; z-index: 1; width: 56%; aspect-ratio: 1/0.82; background: #FFFFFF;
+    border-radius: 24px; box-shadow: 0 30px 60px rgba(16,24,40,0.14), 0 4px 14px rgba(16,24,40,0.06);
+    display: flex; align-items: center; justify-content: center;
+    animation: sfCardFloat 7s ease-in-out infinite;
   }
-  .bt-arc svg { display: block; width: 100%; height: 100%; }
-  @keyframes btArcTurn {
-    0%, 100% { transform: rotate(0deg); }
-    50% { transform: rotate(10deg); }
+  .sf-logo-card-img { width: 62%; height: auto; display: block; }
+  @keyframes sfCardFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
   }
+  .sf-hero-chip {
+    position: absolute; z-index: 2; background: rgba(16,24,40,0.9); backdrop-filter: blur(6px);
+    color: #FFFFFF; font-size: 12.5px; font-weight: 700; padding: 10px 16px; border-radius: 999px;
+    white-space: nowrap; box-shadow: 0 14px 30px rgba(16,24,40,0.18);
+  }
+  .sf-hero-chip--a { top: 10%; left: 2%; }
+  .sf-hero-chip--b { bottom: 12%; right: 0%; }
 
-  /* Fine particles gathering around the arc — same technique as the other
-     service pages' hero, recoloured to this page's gold family */
-  .bt-particles { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
-  .bt-particle {
+  /* Fine particles drifting around the card — same technique as the other
+     service pages' hero, recoloured to this page's brand family */
+  .sf-particles { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+  .sf-particle {
     opacity: 0; transform-origin: center;
     animation-name: btParticleDrift; animation-duration: var(--dur, 8s);
     animation-delay: var(--delay, 0s); animation-timing-function: ease-in-out; animation-iteration-count: infinite;
@@ -228,211 +233,191 @@
   }
 
   /* ---------- BT page: narrative (reused for both narrative-style sections) ---------- */
-  .bt-narrative { display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 72px; align-items: start; }
-  .bt-narrative-lead {
+  .sf-narrative { display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 72px; align-items: start; }
+  .sf-narrative-lead {
     margin-top: 22px; font-family: 'Manrope', sans-serif; font-weight: 500;
     font-size: clamp(23px, 2.3vw, 30px); line-height: 1.4; letter-spacing: -0.015em; color: #162833;
   }
-  .bt-narrative-body { padding-top: 6px; }
-  .bt-narrative-body p {
+  .sf-narrative-body { padding-top: 6px; }
+  .sf-narrative-body p {
     margin: 0; padding: 22px 0; border-top: 1px solid #EEF1F6;
     font-size: 16.5px; line-height: 1.75; color: #46535F;
   }
-  .bt-narrative-body p:first-child { border-top: none; padding-top: 0; }
-  .bt-narrative-body p:last-child { padding-bottom: 0; }
-  .bt-narrative-body .bt-narrative-cta { margin-top: 22px; padding-top: 22px; border-top: 1px solid #EEF1F6; }
+  .sf-narrative-body p:first-child { border-top: none; padding-top: 0; }
+  .sf-narrative-body p:last-child { padding-bottom: 0; }
+  .sf-narrative-body .sf-narrative-cta { margin-top: 22px; padding-top: 22px; border-top: 1px solid #EEF1F6; }
 
   /* ---------- BT page: capabilities ---------- */
-  .bt-cap-section { position: relative; overflow: hidden; }
-  .bt-cap-section .sdl-section-inner { position: relative; z-index: 1; }
-  .bt-cap-mesh { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
-  .bt-cap-mesh span { position: absolute; border-radius: 50%; filter: blur(70px); }
-  .bt-cap-mesh span:nth-child(1) {
+  .sf-cap-section { position: relative; overflow: hidden; }
+  .sf-cap-section .sdl-section-inner { position: relative; z-index: 1; }
+  .sf-cap-mesh { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+  .sf-cap-mesh span { position: absolute; border-radius: 50%; filter: blur(70px); }
+  .sf-cap-mesh span:nth-child(1) {
     width: 440px; height: 440px; top: -160px; left: -100px;
-    background: radial-gradient(circle, rgba(244,196,48,0.28) 0%, rgba(244,196,48,0) 72%);
+    background: radial-gradient(circle, rgba(0,161,224,0.28) 0%, rgba(0,161,224,0) 72%);
   }
-  .bt-cap-mesh span:nth-child(2) {
+  .sf-cap-mesh span:nth-child(2) {
     width: 400px; height: 400px; top: -60px; right: -140px;
-    background: radial-gradient(circle, rgba(255,227,138,0.30) 0%, rgba(255,227,138,0) 72%);
+    background: radial-gradient(circle, rgba(143,214,245,0.30) 0%, rgba(143,214,245,0) 72%);
   }
-  .bt-cap-mesh span:nth-child(3) {
+  .sf-cap-mesh span:nth-child(3) {
     width: 360px; height: 360px; bottom: -180px; left: 28%;
     background: radial-gradient(circle, rgba(40,199,111,0.16) 0%, rgba(40,199,111,0) 72%);
   }
-  .bt-cap-mesh span:nth-child(4) {
+  .sf-cap-mesh span:nth-child(4) {
     width: 260px; height: 260px; bottom: -80px; right: 8%;
     background: radial-gradient(circle, rgba(43,73,219,0.14) 0%, rgba(43,73,219,0) 72%);
   }
   @media (max-width: 900px) {
-    .bt-cap-mesh span { filter: blur(50px); }
-    .bt-cap-mesh span:nth-child(1) { width: 300px; height: 300px; }
-    .bt-cap-mesh span:nth-child(2) { width: 260px; height: 260px; }
-    .bt-cap-mesh span:nth-child(3), .bt-cap-mesh span:nth-child(4) { display: none; }
+    .sf-cap-mesh span { filter: blur(50px); }
+    .sf-cap-mesh span:nth-child(1) { width: 300px; height: 300px; }
+    .sf-cap-mesh span:nth-child(2) { width: 260px; height: 260px; }
+    .sf-cap-mesh span:nth-child(3), .sf-cap-mesh span:nth-child(4) { display: none; }
   }
-  .bt-cap-head { max-width: 720px; }
-  .bt-cap-intro { margin-top: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-  .bt-cap-intro p { margin: 0; font-size: 16px; line-height: 1.75; color: #46535F; }
+  .sf-cap-head { max-width: 720px; }
 
   /* expandable accordion rows: collapsed to name + one-line tagline, click to
      reveal the full description — a different reading pattern from digital
      engineering's always-open stacked rows */
-  .bt-cap-list { margin-top: 48px; border-top: 1px solid #EEF1F6; }
-  .bt-cap-row { border-bottom: 1px solid #EEF1F6; }
-  .bt-cap-row-head {
+  .sf-cap-list { margin-top: 48px; border-top: 1px solid #EEF1F6; }
+  .sf-cap-row { border-bottom: 1px solid #EEF1F6; }
+  .sf-cap-row-head {
     width: 100%; display: flex; align-items: center; gap: 24px; padding: 26px 4px;
     background: none; border: none; font-family: inherit; text-align: left; cursor: pointer;
   }
-  .bt-cap-icon { flex-shrink: 0; width: 36px; height: 36px; }
-  .bt-cap-icon svg { display: block; width: 100%; height: 100%; }
-  .bt-cap-num { flex-shrink: 0; width: 24px; font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 700; color: #C9941F; }
-  .bt-cap-text { flex: 1 1 auto; min-width: 0; display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 28px; }
-  .bt-cap-title { flex: 0 0 auto; max-width: 340px; font-family: 'Manrope', sans-serif; font-size: 24px; font-weight: 600; color: #162833; letter-spacing: -0.01em; }
-  .bt-cap-tagline { flex: 1 1 220px; font-size: 15px; color: #46535F; }
-  .bt-cap-toggle {
+  .sf-cap-icon { flex-shrink: 0; width: 36px; height: 36px; }
+  .sf-cap-icon svg { display: block; width: 100%; height: 100%; }
+  .sf-cap-num { flex-shrink: 0; width: 24px; font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 700; color: #00A1E0; }
+  .sf-cap-text { flex: 1 1 auto; min-width: 0; display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 28px; }
+  .sf-cap-title { flex: 0 0 auto; max-width: 340px; font-family: 'Manrope', sans-serif; font-size: 24px; font-weight: 600; color: #162833; letter-spacing: -0.01em; }
+  .sf-cap-tagline { flex: 1 1 220px; font-size: 15px; color: #46535F; }
+  .sf-cap-toggle {
     flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%;
     border: 1px solid #E4E9F2; display: flex; align-items: center; justify-content: center;
     color: #162833; font-size: 18px; transition: border-color 0.2s ease, color 0.2s ease, transform 0.25s ease;
   }
-  .bt-cap-row:hover .bt-cap-toggle { border-color: #C9941F; color: #C9941F; }
-  .bt-cap-row.is-open .bt-cap-toggle { transform: rotate(45deg); border-color: #C9941F; color: #C9941F; }
+  .sf-cap-row:hover .sf-cap-toggle { border-color: #00A1E0; color: #00A1E0; }
+  .sf-cap-row.is-open .sf-cap-toggle { transform: rotate(45deg); border-color: #00A1E0; color: #00A1E0; }
 
-  .bt-cap-panel { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
-  .bt-cap-panel-inner { padding: 0 4px 28px 4px; display: grid; grid-template-columns: 60px 1fr; column-gap: 28px; }
-  .bt-cap-panel-spacer { flex-shrink: 0; }
-  .bt-cap-panel-content { min-width: 0; }
-  .bt-cap-panel-desc { font-size: 15px; line-height: 1.7; color: #46535F; max-width: 680px; margin: 0 0 12px; }
-  .bt-cap-panel-tech { font-size: 13px; line-height: 1.6; color: #8891A0; max-width: 680px; margin: 0; }
-  .bt-cap-panel-tech strong { color: #46535F; font-weight: 600; }
-  .bt-cap-panel-cta-row { display: flex; justify-content: flex-end; max-width: 680px; margin-top: 14px; }
-  .bt-cap-panel-cta { display: inline-flex; align-items: center; gap: 6px; color: #162833; font-weight: 700; font-size: 14px; }
-  .bt-cap-panel-cta:hover { color: #C9941F; }
-  .bt-cap-panel-cta-arrow { display: inline-block; font-size: 15px; transition: transform 0.18s ease; }
-  .bt-cap-panel-cta:hover .bt-cap-panel-cta-arrow { transform: translate(3px, -3px); }
-
-  /* ---------- BT page: SaaS & business platforms ---------- */
-  /* Row list, not boxed cards — same reading pattern as the capabilities
-     accordion below it, so a fixed brand logo lockup reads as reference
-     material rather than a generic icon+badge tile. */
-  .bt-platform-head { max-width: 760px; }
-  .bt-platform-row {
-    margin-top: 48px; display: grid; grid-template-columns: 1fr 1fr; gap: 0 56px;
-    border-top: 1px solid #EEF1F6; border-bottom: 1px solid #EEF1F6; padding: 40px 0;
-  }
-  .bt-platform-col { display: flex; flex-direction: column; align-items: flex-start; height: 100%; }
-  .bt-platform-col + .bt-platform-col { padding-left: 56px; border-left: 1px solid #EEF1F6; }
-  .bt-platform-logo-wrap { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
-  .bt-platform-logo { display: block; height: 52px; width: auto; }
-  .bt-platform-logo--sf { height: 46px; }
-  .bt-platform-badge {
-    display: inline-block; max-width: 100%; font-size: 10px; font-weight: 700; line-height: 1.4;
-    letter-spacing: 0.04em; text-transform: uppercase; color: #C9941F;
-    background: rgba(201,148,31,0.1); padding: 6px 11px; border-radius: 12px;
-  }
-  .bt-platform-title {
-    margin-top: 22px; font-family: 'Manrope', sans-serif; font-size: 20px; font-weight: 700;
-    letter-spacing: -0.01em; color: #162833;
-  }
-  .bt-platform-desc { margin-top: 10px; font-size: 15px; line-height: 1.7; color: #46535F; }
-  .bt-platform-col .sdl-cta-link { margin-top: auto; padding-top: 18px; font-size: 15px; }
+  .sf-cap-panel { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+  .sf-cap-panel-inner { padding: 0 4px 28px 4px; display: grid; grid-template-columns: 60px 1fr; column-gap: 28px; }
+  .sf-cap-panel-spacer { flex-shrink: 0; }
+  .sf-cap-panel-content { min-width: 0; }
+  .sf-cap-panel-desc { font-size: 15px; line-height: 1.7; color: #46535F; max-width: 680px; margin: 0 0 12px; }
+  .sf-cap-panel-tech { font-size: 13px; line-height: 1.6; color: #8891A0; max-width: 680px; margin: 0; }
+  .sf-cap-panel-tech strong { color: #46535F; font-weight: 600; }
+  .sf-cap-panel-cta-row { display: flex; justify-content: flex-end; max-width: 680px; margin-top: 14px; }
+  .sf-cap-panel-cta { display: inline-flex; align-items: center; gap: 6px; color: #162833; font-weight: 700; font-size: 14px; }
+  .sf-cap-panel-cta:hover { color: #00A1E0; }
+  .sf-cap-panel-cta-arrow { display: inline-block; font-size: 15px; transition: transform 0.18s ease; }
+  .sf-cap-panel-cta:hover .sf-cap-panel-cta-arrow { transform: translate(3px, -3px); }
 
   /* ---------- BT page: value (dark) ---------- */
-  .bt-value-section { position: relative; overflow: hidden; background: #101826; padding: 96px 48px 108px; }
-  .bt-value-inner { position: relative; max-width: 1360px; margin: 0 auto; }
-  .bt-value-head { max-width: 760px; }
-  .bt-value-title {
+  .sf-value-section { position: relative; overflow: hidden; background: #101826; padding: 96px 48px 108px; }
+  .sf-value-inner { position: relative; max-width: 1360px; margin: 0 auto; }
+  .sf-value-head { max-width: 760px; }
+  .sf-value-title {
     margin-top: 18px; font-family: 'Manrope', sans-serif; font-weight: 500;
     font-size: clamp(30px, 3.2vw, 40px); line-height: 1.2; letter-spacing: -0.01em; color: #FFFFFF;
   }
+
+  /* ---------- BT page: capabilities category grid ---------- */
+  .sf-apps-head { max-width: 720px; }
+  .sf-apps-grid { margin-top: 44px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #EEF1F6; border: 1px solid #EEF1F6; border-radius: 16px; overflow: hidden; }
+  .sf-apps-cat { background: #FFFFFF; padding: 28px 26px; }
+  .sf-apps-cat-title { font-family: 'Manrope', sans-serif; font-size: 15px; font-weight: 700; color: #162833; }
+  .sf-apps-cat-list { margin-top: 10px; font-size: 14.5px; line-height: 1.65; color: #46535F; }
+
   /* left-rail timeline: a connecting vertical line with numbered node
      markers — distinct from digital engineering's grid, digital
      experience's checklist and growth transformation's stat rows.
      Split into two columns so a 6-item list stays roughly half the
      height of a single tall rail. */
-  .bt-value-timeline { margin-top: 56px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 64px; }
-  .bt-value-col { position: relative; padding-left: 52px; }
-  .bt-value-col::before {
+  .sf-value-timeline { margin-top: 56px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 64px; }
+  .sf-value-col { position: relative; padding-left: 52px; }
+  .sf-value-col::before {
     content: ''; position: absolute; left: 17px; top: 4px; bottom: 4px; width: 2px;
-    background: linear-gradient(180deg, rgba(244,196,48,0.55), rgba(244,196,48,0.06));
+    background: linear-gradient(180deg, rgba(0,161,224,0.55), rgba(0,161,224,0.06));
   }
-  .bt-value-node { position: relative; padding-bottom: 34px; }
-  .bt-value-node:last-child { padding-bottom: 0; }
-  .bt-value-marker {
+  .sf-value-node { position: relative; padding-bottom: 34px; }
+  .sf-value-node:last-child { padding-bottom: 0; }
+  .sf-value-marker {
     position: absolute; left: -52px; top: 0; width: 34px; height: 34px; border-radius: 50%;
-    background: #101826; border: 2px solid #F4C430; color: #F4C430; z-index: 1;
+    background: #101826; border: 2px solid #00A1E0; color: #00A1E0; z-index: 1;
     display: flex; align-items: center; justify-content: center;
   }
-  .bt-value-node-title { font-family: 'Manrope', sans-serif; font-size: 18px; font-weight: 700; color: #FFFFFF; }
-  .bt-value-node-desc { margin-top: 8px; font-size: 14.5px; line-height: 1.65; color: rgba(255,255,255,0.6); }
+  .sf-value-node-title { font-family: 'Manrope', sans-serif; font-size: 18px; font-weight: 700; color: #FFFFFF; }
+  .sf-value-node-desc { margin-top: 8px; font-size: 14.5px; line-height: 1.65; color: rgba(255,255,255,0.6); }
   @media (max-width: 900px) {
-    .bt-value-timeline { grid-template-columns: 1fr; gap: 0; }
-    .bt-value-col { padding-left: 44px; }
-    .bt-value-col::before { left: 15px; }
-    .bt-value-marker { left: -44px; width: 30px; height: 30px; }
+    .sf-value-timeline { grid-template-columns: 1fr; gap: 0; }
+    .sf-value-col { padding-left: 44px; }
+    .sf-value-col::before { left: 15px; }
+    .sf-value-marker { left: -44px; width: 30px; height: 30px; }
   }
 
   /* ---------- BT page: selected work ---------- */
-  .bt-case { margin-top: 52px; display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
-  .bt-case-media {
+  .sf-case { margin-top: 52px; display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+  .sf-case-media {
     position: relative; border-radius: 20px; overflow: hidden; border: 1px solid #EEF1F6;
     aspect-ratio: 4 / 3; background: #F1F4FA;
   }
-  .bt-case-mock { position: absolute; inset: 0; background: #FAFBFE; display: flex; flex-direction: column; gap: 14px; padding: 20px; }
-  .bt-mock-bar { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
-  .bt-mock-bar span { width: 7px; height: 7px; border-radius: 50%; background: #DDE3EE; }
-  .bt-mock-pill { margin-left: 10px; height: 8px; width: 128px; border-radius: 999px; background: #E7ECF6; }
-  .bt-mock-network { position: relative; flex: 1; background: #FFFFFF; border: 1px solid #EBEFF7; border-radius: 12px; }
-  .bt-mock-lines { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .bt-mock-hub {
+  .sf-case-mock { position: absolute; inset: 0; background: #FAFBFE; display: flex; flex-direction: column; gap: 14px; padding: 20px; }
+  .sf-mock-bar { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  .sf-mock-bar span { width: 7px; height: 7px; border-radius: 50%; background: #DDE3EE; }
+  .sf-mock-pill { margin-left: 10px; height: 8px; width: 128px; border-radius: 999px; background: #E7ECF6; }
+  .sf-mock-network { position: relative; flex: 1; background: #FFFFFF; border: 1px solid #EBEFF7; border-radius: 12px; }
+  .sf-mock-lines { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .sf-mock-hub {
     position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    width: 92px; height: 92px; border-radius: 50%; background: rgba(244,196,48,0.14); border: 1.5px solid #F4C430;
+    width: 92px; height: 92px; border-radius: 50%; background: rgba(0,161,224,0.14); border: 1.5px solid #00A1E0;
     display: flex; align-items: center; justify-content: center; text-align: center;
-    font-size: 11px; font-weight: 700; color: #A87914; line-height: 1.3; padding: 6px;
+    font-size: 11px; font-weight: 700; color: #046A9C; line-height: 1.3; padding: 6px;
   }
-  .bt-mock-node {
+  .sf-mock-node {
     position: absolute; padding: 7px 13px; border-radius: 999px; background: #F1F4FA; border: 1px solid #E7ECF6;
     font-size: 11px; font-weight: 700; color: #46535F; white-space: nowrap;
   }
-  .bt-case-tag {
+  .sf-case-tag {
     position: absolute; left: 18px; top: 18px; background: rgba(16,24,38,0.72); backdrop-filter: blur(6px);
     color: #FFFFFF; font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
     padding: 6px 12px; border-radius: 999px;
   }
-  .bt-case-title {
+  .sf-case-title {
     font-family: 'Manrope', sans-serif; font-size: clamp(22px, 2.2vw, 27px); font-weight: 700;
     line-height: 1.3; letter-spacing: -0.01em; color: #162833;
   }
-  .bt-case-blocks { margin-top: 24px; }
-  .bt-case-block { padding: 20px 0; border-top: 1px solid #EEF1F6; }
-  .bt-case-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #C9941F; }
-  .bt-case-text { margin-top: 8px; font-size: 15px; line-height: 1.72; color: #46535F; }
-  .bt-case-cta { margin-top: 26px; }
+  .sf-case-blocks { margin-top: 24px; }
+  .sf-case-block { padding: 20px 0; border-top: 1px solid #EEF1F6; }
+  .sf-case-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #00A1E0; }
+  .sf-case-text { margin-top: 8px; font-size: 15px; line-height: 1.72; color: #46535F; }
+  .sf-case-cta { margin-top: 26px; }
 
   /* ---------- BT page: closing CTA ---------- */
-  .bt-cta-section { padding: 72px 48px 72px; }
-  .bt-cta-card {
+  .sf-cta-section { padding: 72px 48px 72px; }
+  .sf-cta-card {
     position: relative; overflow: hidden; max-width: 1360px; margin: 0 auto;
     background: #101826; border: 1px solid rgba(255,255,255,0.08); border-radius: 28px;
     padding: 78px 56px 82px; text-align: center;
   }
-  .bt-cta-card::before {
+  .sf-cta-card::before {
     content: ''; position: absolute; top: -160px; left: 50%; transform: translateX(-50%);
     width: 620px; height: 400px; pointer-events: none;
-    background: radial-gradient(ellipse at center, rgba(244,196,48,0.30), rgba(244,196,48,0) 68%);
+    background: radial-gradient(ellipse at center, rgba(0,161,224,0.30), rgba(0,161,224,0) 68%);
   }
-  .bt-cta-inner { position: relative; }
-  .bt-cta-title {
+  .sf-cta-inner { position: relative; }
+  .sf-cta-title {
     margin-top: 20px; font-family: 'Manrope', sans-serif; font-weight: 500;
     font-size: clamp(28px, 3.3vw, 42px); line-height: 1.2; letter-spacing: -0.015em; color: #FFFFFF;
   }
-  .bt-cta-sub { margin: 18px auto 0; max-width: 520px; font-size: 17px; line-height: 1.65; color: rgba(255,255,255,0.62); }
-  .bt-cta-btn {
+  .sf-cta-sub { margin: 18px auto 0; max-width: 520px; font-size: 17px; line-height: 1.65; color: rgba(255,255,255,0.62); }
+  .sf-cta-btn {
     display: inline-flex; align-items: center; gap: 10px; margin-top: 34px; background: var(--accent);
     color: #FFFFFF; font-weight: 700; font-size: 16px; padding: 16px 32px; border-radius: 999px;
     transition: background 0.15s ease, transform 0.15s ease;
   }
-  .bt-cta-btn:hover { background: var(--accent-hover); color: #FFFFFF; transform: translateY(-1px); }
-  .bt-cta-btn .arrow { display: inline-block; transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
-  .bt-cta-btn:hover .arrow { transform: translateX(4px); }
+  .sf-cta-btn:hover { background: var(--accent-hover); color: #FFFFFF; transform: translateY(-1px); }
+  .sf-cta-btn .arrow { display: inline-block; transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .sf-cta-btn:hover .arrow { transform: translateX(4px); }
 
   @media (max-width: 1060px) {
     .sdl-desktop-nav, .sdl-desktop-cta { display: none !important; }
@@ -440,25 +425,23 @@
     .sdl-header-inner { padding-left: 24px !important; padding-right: 24px !important; }
     .sdl-hero { grid-template-columns: 1fr !important; padding: 56px 24px 64px !important; }
     .sdl-hero-copy { font-size: 38px !important; }
-    .sdl-hero-visual, .bt-hero-visual { max-width: 420px; margin: 0 auto; order: -1; }
+    .sdl-hero-visual, .sf-hero-visual { max-width: 420px; margin: 0 auto; order: -1; }
     .sdl-section { padding: 72px 24px 80px; }
     .sdl-section--tight { padding-top: 48px; padding-bottom: 56px; }
-    .bt-value-section { padding: 72px 24px 80px; }
-    .bt-cta-section { padding: 56px 24px 56px; }
-    .bt-cta-card { padding: 56px 28px 60px; }
+    .sf-value-section { padding: 72px 24px 80px; }
+    .sf-cta-section { padding: 56px 24px 56px; }
+    .sf-cta-card { padding: 56px 28px 60px; }
     .sdl-footer { padding: 64px 24px 28px; }
     .sdl-footer-cols { max-width: none; grid-template-columns: repeat(2, 1fr); row-gap: 32px; }
-    .bt-narrative { grid-template-columns: 1fr; gap: 32px; }
-    .bt-cap-intro { grid-template-columns: 1fr; gap: 18px; }
-    .bt-cap-row-head { align-items: flex-start; gap: 16px; }
-    .bt-cap-text { flex-direction: column; gap: 4px; }
-    .bt-cap-title, .bt-cap-tagline { flex: 0 0 auto; }
-    .bt-cap-title { max-width: none; font-size: 20px; }
-    .bt-cap-panel-inner { grid-template-columns: 1fr; }
-    .bt-cap-panel-spacer { display: none; }
-    .bt-case { grid-template-columns: 1fr; gap: 32px; }
-    .bt-platform-row { grid-template-columns: 1fr; gap: 28px; padding: 28px 0; }
-    .bt-platform-col + .bt-platform-col { padding-left: 0; border-left: none; padding-top: 28px; border-top: 1px solid #EEF1F6; }
+    .sf-narrative { grid-template-columns: 1fr; gap: 32px; }
+    .sf-cap-row-head { align-items: flex-start; gap: 16px; }
+    .sf-cap-text { flex-direction: column; gap: 4px; }
+    .sf-cap-title, .sf-cap-tagline { flex: 0 0 auto; }
+    .sf-cap-title { max-width: none; font-size: 20px; }
+    .sf-cap-panel-inner { grid-template-columns: 1fr; }
+    .sf-cap-panel-spacer { display: none; }
+    .sf-case { grid-template-columns: 1fr; gap: 32px; }
+    .sf-apps-grid { grid-template-columns: 1fr; }
   }
 
   @media (max-width: 560px) {
@@ -479,17 +462,17 @@
   .reveal-group > *:nth-child(5) { animation-delay: 0.28s; }
   .reveal-group > *:nth-child(6) { animation-delay: 0.35s; }
 
-  .sdl-hero-copy-wrap, .bt-hero-visual {
+  .sdl-hero-copy-wrap, .sf-hero-visual {
     opacity: 0; transform: translateY(18px);
     animation: sdlRevealIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   }
-  .bt-hero-visual { animation-delay: 0.15s; }
+  .sf-hero-visual { animation-delay: 0.15s; }
 
   @media (prefers-reduced-motion: reduce) {
-    .reveal, .reveal-group > *, .sdl-hero-copy-wrap, .bt-hero-visual, .bt-arc {
+    .reveal, .reveal-group > *, .sdl-hero-copy-wrap, .sf-hero-visual, .sf-logo-card {
       animation: none !important; opacity: 1 !important; transform: none !important;
     }
-    .bt-particle { animation: none !important; opacity: 0 !important; }
+    .sf-particle { animation: none !important; opacity: 0 !important; }
   }
 </style>
 </head>
@@ -522,211 +505,157 @@
     <div class="sdl-mobile-panel" id="mobilePanel"></div>
   </header>
 
-  <section class="sdl-hero sdl-hero--bt">
+  <section class="sdl-hero sdl-hero--sf">
     <div class="sdl-hero-copy-wrap">
       <div class="sdl-kicker-wrap">
-        <span class="bt-kicker"><span class="kicker-line"></span> Business transformation</span>
+        <span class="sf-kicker"><span class="kicker-line"></span> Salesforce implementation</span>
       </div>
       <div class="sdl-hero-copy">
-        <div>Change how the</div>
-        <div><span class="accent">business works.</span></div>
+        <div>Turn Salesforce into a</div>
+        <div><span class="accent">better way to work.</span></div>
       </div>
       <p class="sdl-hero-sub">
-        Modernize processes, applications and business capabilities to remove friction, improve efficiency and create a stronger foundation for growth.
+        Configure, customize and integrate Salesforce around customer processes, sales operations and the systems that support your business.
       </p>
       <div class="sdl-hero-actions">
-        <a href="index.html#contact" class="sdl-hero-primary">Talk to a transformation expert →</a>
-        <a href="#capabilities" class="sdl-hero-secondary">Explore transformation capabilities →</a>
+        <a href="index.html#contact" class="sdl-hero-primary">Talk to a Salesforce expert →</a>
+        <a href="#services" class="sdl-hero-secondary">Explore Salesforce services →</a>
       </div>
     </div>
 
-    <div class="bt-hero-visual" aria-hidden="true">
-      <div class="bt-arc-glow"></div>
-      <div class="bt-arc">
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="btArcGrad" x1="10%" y1="0%" x2="90%" y2="100%">
-              <stop offset="0%" stop-color="#FFF6DE" />
-              <stop offset="35%" stop-color="#FFE38A" />
-              <stop offset="100%" stop-color="#F4C430" />
-            </linearGradient>
-          </defs>
-          <path d="M74 28A34 34 0 1 1 28 24" fill="none" stroke="url(#btArcGrad)" stroke-width="14" stroke-linecap="round" />
-          <path d="M18 10 L30 24 L14 30 Z" fill="url(#btArcGrad)" />
-        </svg>
+    <div class="sf-hero-visual" aria-hidden="true">
+      <div class="sf-arc-glow"></div>
+      <div class="sf-logo-card">
+        <img src="assets/salesforce-logo.png" alt="" class="sf-logo-card-img" />
       </div>
+      <div class="sf-hero-chip sf-hero-chip--a">Sales · Service · Customer data</div>
+      <div class="sf-hero-chip sf-hero-chip--b">Configuration · Integration · Automation</div>
 
-      <svg class="bt-particles" viewBox="0 0 520 480" aria-hidden="true">
-        <circle class="bt-particle" cx="140" cy="310" r="3"   fill="#F4C430" style="--dx:12px;--dy:-7px;--dur:8.2s;--delay:0s" />
-        <circle class="bt-particle" cx="110" cy="260" r="2.5" fill="#FFE38A" style="--dx:14px;--dy:-2px;--dur:9.1s;--delay:0.6s" />
-        <circle class="bt-particle" cx="95"  cy="330" r="3.5" fill="#F4C430" style="--dx:12px;--dy:-7px;--dur:7.6s;--delay:1.2s" />
-        <circle class="bt-particle" cx="160" cy="370" r="2"   fill="#28C76F" style="--dx:9px;--dy:-11px;--dur:8.7s;--delay:1.8s" />
-        <circle class="bt-particle" cx="70"  cy="290" r="2.8" fill="#FFE38A" style="--dx:14px;--dy:-4px;--dur:9.4s;--delay:2.4s" />
-        <circle class="bt-particle" cx="190" cy="400" r="3"   fill="#F4C430" style="--dx:6px;--dy:-13px;--dur:8.1s;--delay:3s" />
-        <circle class="bt-particle" cx="50"  cy="230" r="2"   fill="#F4C430" style="--dx:14px;--dy:1px;--dur:7.3s;--delay:3.6s" />
-        <circle class="bt-particle" cx="120" cy="190" r="2.5" fill="#FFE38A" style="--dx:13px;--dy:5px;--dur:8.9s;--delay:4.2s" />
-        <circle class="bt-particle" cx="220" cy="420" r="2.2" fill="#28C76F" style="--dx:3px;--dy:-14px;--dur:9.2s;--delay:4.8s" />
-        <circle class="bt-particle" cx="80"  cy="160" r="3"   fill="#F4C430" style="--dx:13px;--dy:6px;--dur:7.8s;--delay:5.4s" />
-        <circle class="bt-particle" cx="150" cy="140" r="2"   fill="#FFE38A" style="--dx:10px;--dy:9px;--dur:9.7s;--delay:0.3s" />
-        <circle class="bt-particle" cx="250" cy="430" r="2.6" fill="#F4C430" style="--dx:1px;--dy:-14px;--dur:8.4s;--delay:1.5s" />
-        <circle class="bt-particle" cx="40"  cy="340" r="2"   fill="#F4C430" style="--dx:13px;--dy:-6px;--dur:9s;--delay:2.1s" />
-        <circle class="bt-particle" cx="180" cy="115" r="2.4" fill="#FFE38A" style="--dx:8px;--dy:12px;--dur:8.5s;--delay:2.7s" />
-        <circle class="bt-particle" cx="280" cy="420" r="2"   fill="#F4C430" style="--dx:-2px;--dy:-14px;--dur:7.7s;--delay:3.9s" />
-        <circle class="bt-particle" cx="60"  cy="380" r="1.8" fill="#F4C430" style="--dx:11px;--dy:-8px;--dur:9.3s;--delay:5.1s" />
+      <svg class="sf-particles" viewBox="0 0 520 480" aria-hidden="true">
+        <circle class="sf-particle" cx="140" cy="310" r="3"   fill="#00A1E0" style="--dx:12px;--dy:-7px;--dur:8.2s;--delay:0s" />
+        <circle class="sf-particle" cx="110" cy="260" r="2.5" fill="#8FD6F5" style="--dx:14px;--dy:-2px;--dur:9.1s;--delay:0.6s" />
+        <circle class="sf-particle" cx="95"  cy="330" r="3.5" fill="#00A1E0" style="--dx:12px;--dy:-7px;--dur:7.6s;--delay:1.2s" />
+        <circle class="sf-particle" cx="160" cy="370" r="2"   fill="#28C76F" style="--dx:9px;--dy:-11px;--dur:8.7s;--delay:1.8s" />
+        <circle class="sf-particle" cx="70"  cy="290" r="2.8" fill="#8FD6F5" style="--dx:14px;--dy:-4px;--dur:9.4s;--delay:2.4s" />
+        <circle class="sf-particle" cx="190" cy="400" r="3"   fill="#00A1E0" style="--dx:6px;--dy:-13px;--dur:8.1s;--delay:3s" />
+        <circle class="sf-particle" cx="50"  cy="230" r="2"   fill="#00A1E0" style="--dx:14px;--dy:1px;--dur:7.3s;--delay:3.6s" />
+        <circle class="sf-particle" cx="120" cy="190" r="2.5" fill="#8FD6F5" style="--dx:13px;--dy:5px;--dur:8.9s;--delay:4.2s" />
+        <circle class="sf-particle" cx="220" cy="420" r="2.2" fill="#28C76F" style="--dx:3px;--dy:-14px;--dur:9.2s;--delay:4.8s" />
+        <circle class="sf-particle" cx="80"  cy="160" r="3"   fill="#00A1E0" style="--dx:13px;--dy:6px;--dur:7.8s;--delay:5.4s" />
+        <circle class="sf-particle" cx="150" cy="140" r="2"   fill="#8FD6F5" style="--dx:10px;--dy:9px;--dur:9.7s;--delay:0.3s" />
+        <circle class="sf-particle" cx="250" cy="430" r="2.6" fill="#00A1E0" style="--dx:1px;--dy:-14px;--dur:8.4s;--delay:1.5s" />
+        <circle class="sf-particle" cx="40"  cy="340" r="2"   fill="#00A1E0" style="--dx:13px;--dy:-6px;--dur:9s;--delay:2.1s" />
+        <circle class="sf-particle" cx="180" cy="115" r="2.4" fill="#8FD6F5" style="--dx:8px;--dy:12px;--dur:8.5s;--delay:2.7s" />
+        <circle class="sf-particle" cx="280" cy="420" r="2"   fill="#00A1E0" style="--dx:-2px;--dy:-14px;--dur:7.7s;--delay:3.9s" />
+        <circle class="sf-particle" cx="60"  cy="380" r="1.8" fill="#00A1E0" style="--dx:11px;--dy:-8px;--dur:9.3s;--delay:5.1s" />
       </svg>
     </div>
   </section>
 
   <section class="sdl-section sdl-section--white">
     <div class="sdl-section-inner">
-      <div class="bt-narrative">
+      <div class="sf-narrative">
         <div class="reveal">
-          <span class="bt-kicker"><span class="kicker-line"></span> Business change needs more than new technology</span>
-          <p class="bt-narrative-lead">
-            Businesses often outgrow the systems and processes that helped them get there.
+          <span class="sf-kicker"><span class="kicker-line"></span> Salesforce should fit the customer journey</span>
+          <p class="sf-narrative-lead">
+            Salesforce can provide a powerful foundation, but it needs to reflect how teams actually sell, serve and engage.
           </p>
         </div>
 
-        <div class="bt-narrative-body reveal">
-          <p>Information sits across different systems. Manual processes slow teams down. Customer journeys become fragmented. Legacy applications become harder to change. New business models demand capabilities the existing technology was never designed to support.</p>
-          <p>Business transformation brings these pieces together.</p>
-          <p>The focus is not simply on introducing new technology. It is on rethinking how the business operates and using technology to make that operation simpler, faster and more effective.</p>
+        <div class="sf-narrative-body reveal">
+          <p>Salesforce can provide a powerful foundation for customer management, but the platform needs to reflect how teams actually sell, serve and engage with customers.</p>
+          <p>The right implementation brings processes, data, workflows and integrations together so Salesforce becomes part of the way the business operates, rather than another system teams have to work around.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="sdl-section sdl-section--alt bt-cap-section" id="capabilities">
-    <div class="bt-cap-mesh" aria-hidden="true">
+  <section class="sdl-section sdl-section--alt sf-cap-section" id="services">
+    <div class="sf-cap-mesh" aria-hidden="true">
       <span></span><span></span><span></span><span></span>
     </div>
     <div class="sdl-section-inner">
-      <div class="bt-cap-head reveal">
-        <span class="bt-kicker"><span class="kicker-line"></span> Transformation capabilities</span>
-        <div class="sdl-section-title" style="margin-top:18px">Transform the way the business works.</div>
+      <div class="sf-cap-head reveal">
+        <span class="sf-kicker"><span class="kicker-line"></span> Salesforce services</span>
+        <div class="sdl-section-title" style="margin-top:18px">From CRM requirements to a working platform.</div>
       </div>
 
-      <div class="bt-cap-intro reveal">
-        <p>Business transformation can mean modernizing an existing operation, introducing a new capability or rethinking an entire process.</p>
-        <p>The right approach starts with how the business needs to work, then brings together processes, applications, data and technology to make it happen.</p>
-      </div>
-
-      <div class="bt-cap-list reveal-group" id="btCapabilities"></div>
+      <div class="sf-cap-list reveal-group" id="sfServices"></div>
     </div>
   </section>
 
-  <section class="sdl-section sdl-section--white bt-platform-section">
+  <section class="sdl-section sdl-section--white" id="capabilities">
     <div class="sdl-section-inner">
-      <div class="bt-platform-head reveal">
-        <span class="bt-kicker"><span class="kicker-line"></span> SaaS & business platforms</span>
-        <div class="sdl-section-title" style="margin-top:18px">Use the right platform. Make it work for your business.</div>
-        <p class="sdl-section-sub">Business platforms can accelerate transformation when they are configured around the way the business actually operates. Bring together implementation, customization, integration, migration and automation to make SaaS platforms part of a connected business environment.</p>
+      <div class="sf-apps-head reveal">
+        <span class="sf-kicker"><span class="kicker-line"></span> Salesforce capabilities</span>
+        <div class="sdl-section-title" style="margin-top:18px">Put customer information to work.</div>
       </div>
 
-      <div class="bt-platform-row reveal-group">
-        <div class="bt-platform-col">
-          <div class="bt-platform-logo-wrap">
-            <img class="bt-platform-logo" src="assets/zoho-logo.svg" alt="Zoho" />
-            <span class="bt-platform-badge">Official Zoho Consulting Partner</span>
-          </div>
-          <div class="bt-platform-title">Zoho consulting &amp; implementation</div>
-          <p class="bt-platform-desc">Implement, customize and integrate Zoho applications around business processes, workflows and operational requirements.</p>
-          <a class="sdl-cta-link" href="zoho-consulting-implementation.html">Explore Zoho consulting &amp; implementation →</a>
-        </div>
-
-        <div class="bt-platform-col">
-          <div class="bt-platform-logo-wrap">
-            <img class="bt-platform-logo bt-platform-logo--sf" src="assets/salesforce-logo.png" alt="Salesforce" />
-          </div>
-          <div class="bt-platform-title">Salesforce implementation</div>
-          <p class="bt-platform-desc">Configure, customize and integrate Salesforce around customer processes, business workflows and the systems already supporting the business.</p>
-          <a class="sdl-cta-link" href="salesforce-implementation.html">Explore Salesforce implementation →</a>
-        </div>
-      </div>
+      <div class="sf-apps-grid reveal-group" id="sfCapGrid"></div>
     </div>
   </section>
 
-  <section class="bt-value-section">
-    <div class="bt-value-inner">
-      <div class="bt-value-head reveal">
-        <span class="bt-kicker bt-kicker--dark"><span class="kicker-line"></span> Where transformation creates value</span>
-        <div class="bt-value-title">Better ways of working.</div>
+  <section class="sf-value-section">
+    <div class="sf-value-inner">
+      <div class="sf-value-head reveal">
+        <span class="sf-kicker sf-kicker--dark"><span class="kicker-line"></span> Where implementation creates value</span>
+        <div class="sf-value-title">What a better Salesforce implementation should deliver.</div>
       </div>
 
-      <div class="bt-value-timeline reveal-group" id="btValueGrid"></div>
-    </div>
-  </section>
-
-  <section class="sdl-section sdl-section--white">
-    <div class="sdl-section-inner">
-      <div class="bt-narrative">
-        <div class="reveal">
-          <span class="bt-kicker"><span class="kicker-line"></span> Technology that fits the business</span>
-          <p class="bt-narrative-lead">
-            Transformation does not always mean replacing everything.
-          </p>
-        </div>
-
-        <div class="bt-narrative-body reveal">
-          <p>Sometimes the right answer is to modernize an existing application. Sometimes it is introducing a new business system. Sometimes it is connecting several systems so they work better together.</p>
-          <p>The approach should fit the business, its existing technology and where it needs to go next.</p>
-          <p class="bt-narrative-cta"><a class="sdl-cta-link" href="digital-engineering.html">Explore digital engineering →</a></p>
-        </div>
-      </div>
+      <div class="sf-value-timeline reveal-group" id="sfValueGrid"></div>
     </div>
   </section>
 
   <section class="sdl-section sdl-section--alt">
     <div class="sdl-section-inner">
       <div class="reveal">
-        <span class="bt-kicker"><span class="kicker-line"></span> Selected work</span>
-        <div class="sdl-section-title" style="margin-top:18px">Transformation in action.</div>
-        <p class="sdl-section-sub">See how technology has helped businesses change the way they operate, serve customers and grow.</p>
+        <span class="sf-kicker"><span class="kicker-line"></span> Salesforce in action</span>
+        <div class="sdl-section-title" style="margin-top:18px">Experience that translates into implementation.</div>
       </div>
 
-      <div class="bt-case">
-        <div class="bt-case-media reveal">
-          <div class="bt-case-mock" role="img" aria-label="Illustration of previously disconnected sales, service, finance and operations systems connected through one unified business application">
-            <div class="bt-mock-bar">
+      <div class="sf-case">
+        <div class="sf-case-media reveal">
+          <div class="sf-case-mock" role="img" aria-label="Illustration of previously disconnected sales, service and account data connected through one Salesforce implementation">
+            <div class="sf-mock-bar">
               <span></span><span></span><span></span>
-              <div class="bt-mock-pill"></div>
+              <div class="sf-mock-pill"></div>
             </div>
-            <div class="bt-mock-network">
-              <svg class="bt-mock-lines" viewBox="0 0 300 200" preserveAspectRatio="none" aria-hidden="true">
-                <line x1="150" y1="100" x2="46" y2="36" stroke="#F4C430" stroke-width="1.5" />
-                <line x1="150" y1="100" x2="254" y2="36" stroke="#F4C430" stroke-width="1.5" />
-                <line x1="150" y1="100" x2="46" y2="164" stroke="#F4C430" stroke-width="1.5" />
-                <line x1="150" y1="100" x2="254" y2="164" stroke="#F4C430" stroke-width="1.5" />
+            <div class="sf-mock-network">
+              <svg class="sf-mock-lines" viewBox="0 0 300 200" preserveAspectRatio="none" aria-hidden="true">
+                <line x1="150" y1="100" x2="46" y2="36" stroke="#00A1E0" stroke-width="1.5" />
+                <line x1="150" y1="100" x2="254" y2="36" stroke="#00A1E0" stroke-width="1.5" />
+                <line x1="150" y1="100" x2="46" y2="164" stroke="#00A1E0" stroke-width="1.5" />
+                <line x1="150" y1="100" x2="254" y2="164" stroke="#00A1E0" stroke-width="1.5" />
               </svg>
-              <div class="bt-mock-node" style="top:8%; left:6%;">Sales</div>
-              <div class="bt-mock-node" style="top:8%; right:6%;">Service</div>
-              <div class="bt-mock-node" style="bottom:8%; left:6%;">Finance</div>
-              <div class="bt-mock-node" style="bottom:8%; right:6%;">Ops</div>
-              <div class="bt-mock-hub">Unified<br />platform</div>
+              <div class="sf-mock-node" style="top:8%; left:6%;">Sales</div>
+              <div class="sf-mock-node" style="top:8%; right:6%;">Service</div>
+              <div class="sf-mock-node" style="bottom:8%; left:6%;">Accounts</div>
+              <div class="sf-mock-node" style="bottom:8%; right:6%;">Reporting</div>
+              <div class="sf-mock-hub">Salesforce<br />platform</div>
             </div>
           </div>
-          <span class="bt-case-tag">Sample case study</span>
+          <span class="sf-case-tag">Sample case study</span>
         </div>
 
         <div class="reveal">
-          <div class="bt-case-title">Bringing together a fragmented sales and service operation</div>
+          <div class="sf-case-title">Turning a fragmented sales process into one Salesforce platform</div>
 
-          <div class="bt-case-blocks">
-            <div class="bt-case-block">
-              <div class="bt-case-label">Challenge</div>
-              <p class="bt-case-text">Customer, sales and service information lived in disconnected systems and spreadsheets, creating extra work and inconsistent customer experiences.</p>
+          <div class="sf-case-blocks">
+            <div class="sf-case-block">
+              <div class="sf-case-label">Business challenge</div>
+              <p class="sf-case-text">Customer and sales data lived across spreadsheets and disconnected tools, with inconsistent pipelines and no shared view of accounts.</p>
             </div>
-            <div class="bt-case-block">
-              <div class="bt-case-label">Transformation</div>
-              <p class="bt-case-text">A unified business application connected sales, service and operational data into a single system, with modernized workflows replacing manual handoffs between teams.</p>
+            <div class="sf-case-block">
+              <div class="sf-case-label">What was implemented</div>
+              <p class="sf-case-text">A Salesforce implementation covering accounts, sales pipelines and service cases, with automated workflows and reporting built around how the teams actually sell.</p>
             </div>
-            <div class="bt-case-block">
-              <div class="bt-case-label">Impact</div>
-              <p class="bt-case-text">Faster response times, a single view of the customer across teams, and an operating model built to scale as the business grows.</p>
+            <div class="sf-case-block">
+              <div class="sf-case-label">Outcome</div>
+              <p class="sf-case-text">A single view of the customer, less manual data entry, and clearer visibility into pipeline and performance for managers.</p>
             </div>
           </div>
 
-          <div class="bt-case-cta">
+          <div class="sf-case-cta">
             <a class="sdl-cta-link" href="#">View case study →</a>
           </div>
         </div>
@@ -734,13 +663,13 @@
     </div>
   </section>
 
-  <section class="bt-cta-section">
-    <div class="bt-cta-card reveal">
-      <div class="bt-cta-inner">
-        <span class="bt-kicker bt-kicker--dark"><span class="kicker-line"></span> Start a conversation</span>
-        <div class="bt-cta-title">Ready to change how the business works?</div>
-        <p class="bt-cta-sub">Let's talk about the processes, systems or capabilities that need to work better.</p>
-        <a href="index.html#contact" class="bt-cta-btn">Talk to a transformation expert <span class="arrow" aria-hidden="true">→</span></a>
+  <section class="sf-cta-section">
+    <div class="sf-cta-card reveal">
+      <div class="sf-cta-inner">
+        <span class="sf-kicker sf-kicker--dark"><span class="kicker-line"></span> Start a conversation</span>
+        <div class="sf-cta-title">Getting more from Salesforce?</div>
+        <p class="sf-cta-sub">Let's look at what's working, what's getting in the way and what could work better.</p>
+        <a href="index.html#contact" class="sf-cta-btn">Talk to a Salesforce expert <span class="arrow" aria-hidden="true">→</span></a>
       </div>
     </div>
   </section>
@@ -1034,53 +963,51 @@
     mobilePanel.classList.toggle('open');
   });
 
-  // ---------- Business transformation capabilities ----------
-  var BT_HEX_PATH = 'M50 4L84 25L84 75L50 96L16 75L16 25Z M50 30A20 20 0 1 0 50.01 30Z';
-  var BT_ARC_PATHS = {
+  // ---------- Salesforce services ----------
+  var SF_HEX_PATH = 'M50 4L84 25L84 75L50 96L16 75L16 25Z M50 30A20 20 0 1 0 50.01 30Z';
+  var SF_ARC_PATHS = {
     arc: 'M74 28A34 34 0 1 1 28 24',
     arrow: 'M18 10 L30 24 L14 30 Z'
   };
-  var BT_CAPABILITIES = [
+  var SF_CAPABILITIES = [
     {
-      title: 'Digital transformation',
-      tagline: 'Turn business goals into digital change.',
-      desc: 'Modernize the technology, processes and operating models that support the business. Identify opportunities for change, define the right transformation roadmap and turn priorities into practical digital capabilities.'
+      title: 'Salesforce consulting',
+      tagline: 'Turn requirements into an architecture.',
+      desc: 'Translate business and customer-management requirements into a practical Salesforce architecture, configuration and implementation approach.'
     },
     {
-      title: 'Business application modernization',
-      tagline: 'Give aging applications new life.',
-      desc: 'Modernize applications that have become difficult to maintain, change or scale while preserving the business capabilities they already provide.'
+      title: 'Salesforce implementation',
+      tagline: 'Configure Salesforce for how sales works.',
+      desc: 'Configure Salesforce around sales processes, customer data, workflows, roles and reporting requirements.'
     },
     {
-      title: 'E-commerce transformation',
-      tagline: 'Commerce platforms built to convert.',
-      desc: 'Build and modernize digital commerce capabilities that make it easier to sell, manage orders and serve customers across B2B and B2C channels.',
-      tech: 'Magento · Shopify · WooCommerce · Nextmerce · Headless commerce',
-      cta: true
+      title: 'Salesforce customization',
+      tagline: 'Extend the platform for what standard can’t cover.',
+      desc: 'Extend standard Salesforce capabilities to support business processes and requirements that need a more tailored solution.'
     },
     {
-      title: 'Process modernization',
-      tagline: 'Redesign how the work actually gets done.',
-      desc: 'Redesign inefficient or manual processes around better digital workflows, automation and more effective ways of working.'
+      title: 'Salesforce integration',
+      tagline: 'Connect Salesforce to the rest of the business.',
+      desc: 'Connect Salesforce with ERP, finance, e-commerce, marketing, service and other applications to create a more complete business ecosystem.'
     },
     {
-      title: 'SaaS & business platforms',
-      tagline: 'Turn platforms into productivity.',
-      desc: 'Implement and optimize business platforms to support core operations, improve productivity and connect processes across the organization.'
+      title: 'Data migration',
+      tagline: 'Move customer data in with confidence.',
+      desc: 'Plan and execute migration of customer, account, contact, opportunity and other business data into Salesforce.'
     },
     {
-      title: 'Integration & automation',
-      tagline: 'Make systems work together.',
-      desc: 'Connect applications, data and workflows so information moves where it is needed and repetitive work becomes easier to manage.'
+      title: 'Workflow & automation',
+      tagline: 'Automate the repetitive parts of selling.',
+      desc: 'Automate repetitive sales and customer processes through workflows, approvals, notifications and system integrations.'
     },
     {
-      title: 'Custom business applications',
-      tagline: 'Purpose-built tools, not disconnected ones.',
-      desc: 'Build applications around business requirements that cannot be addressed effectively through existing platforms or standard software.'
+      title: 'Salesforce optimization',
+      tagline: 'Keep an existing org improving.',
+      desc: 'Improve existing Salesforce environments through configuration changes, process improvements, integration enhancements and ongoing optimization.'
     }
   ];
-  var BT_CAP_SHAPE_COLORS = [
-    ['#FFE38A', '#F4C430'],
+  var SF_CAP_SHAPE_COLORS = [
+    ['#8FD6F5', '#00A1E0'],
     ['#8FD6FF', '#2B8FDB'],
     ['#6FDBA0', '#28C76F'],
     ['#7C97FF', '#2B49DB'],
@@ -1088,51 +1015,51 @@
     ['#9BEFC4', '#22B368'],
     ['#FFB199', '#E64A3C']
   ];
-  var btCapabilities = document.getElementById('btCapabilities');
-  if (btCapabilities) {
-    BT_CAPABILITIES.forEach(function (c, i) {
-      var colors = BT_CAP_SHAPE_COLORS[i % BT_CAP_SHAPE_COLORS.length];
+  var sfServices = document.getElementById('sfServices');
+  if (sfServices) {
+    SF_CAPABILITIES.forEach(function (c, i) {
+      var colors = SF_CAP_SHAPE_COLORS[i % SF_CAP_SHAPE_COLORS.length];
       var gradId = 'btCapGrad' + i;
       var iconSvg =
         '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">' +
         '<defs><linearGradient id="' + gradId + '" x1="10%" y1="0%" x2="90%" y2="100%">' +
         '<stop offset="0%" stop-color="' + colors[0] + '"/><stop offset="100%" stop-color="' + colors[1] + '"/>' +
         '</linearGradient></defs>' +
-        '<path d="' + BT_ARC_PATHS.arc + '" fill="none" stroke="url(#' + gradId + ')" stroke-width="14" stroke-linecap="round"/>' +
-        '<path d="' + BT_ARC_PATHS.arrow + '" fill="url(#' + gradId + ')"/></svg>';
+        '<path d="' + SF_ARC_PATHS.arc + '" fill="none" stroke="url(#' + gradId + ')" stroke-width="14" stroke-linecap="round"/>' +
+        '<path d="' + SF_ARC_PATHS.arrow + '" fill="url(#' + gradId + ')"/></svg>';
 
       var row = document.createElement('div');
-      row.className = 'bt-cap-row';
+      row.className = 'sf-cap-row';
 
       var head = document.createElement('button');
       head.type = 'button';
-      head.className = 'bt-cap-row-head';
+      head.className = 'sf-cap-row-head';
       head.setAttribute('aria-expanded', 'false');
 
       var icon = document.createElement('span');
-      icon.className = 'bt-cap-icon';
+      icon.className = 'sf-cap-icon';
       icon.innerHTML = iconSvg;
       head.appendChild(icon);
 
       var num = document.createElement('span');
-      num.className = 'bt-cap-num';
+      num.className = 'sf-cap-num';
       num.textContent = String(i + 1).padStart(2, '0');
       head.appendChild(num);
 
       var text = document.createElement('span');
-      text.className = 'bt-cap-text';
+      text.className = 'sf-cap-text';
       var title = document.createElement('span');
-      title.className = 'bt-cap-title';
+      title.className = 'sf-cap-title';
       title.textContent = c.title;
       var tagline = document.createElement('span');
-      tagline.className = 'bt-cap-tagline';
+      tagline.className = 'sf-cap-tagline';
       tagline.textContent = c.tagline;
       text.appendChild(title);
       text.appendChild(tagline);
       head.appendChild(text);
 
       var toggle = document.createElement('span');
-      toggle.className = 'bt-cap-toggle';
+      toggle.className = 'sf-cap-toggle';
       toggle.setAttribute('aria-hidden', 'true');
       toggle.textContent = '+';
       head.appendChild(toggle);
@@ -1140,39 +1067,21 @@
       row.appendChild(head);
 
       var panel = document.createElement('div');
-      panel.className = 'bt-cap-panel';
+      panel.className = 'sf-cap-panel';
       var panelInner = document.createElement('div');
-      panelInner.className = 'bt-cap-panel-inner';
+      panelInner.className = 'sf-cap-panel-inner';
 
       var panelSpacer = document.createElement('div');
-      panelSpacer.className = 'bt-cap-panel-spacer';
+      panelSpacer.className = 'sf-cap-panel-spacer';
       panelInner.appendChild(panelSpacer);
 
       var panelContent = document.createElement('div');
-      panelContent.className = 'bt-cap-panel-content';
+      panelContent.className = 'sf-cap-panel-content';
 
       var descEl = document.createElement('p');
-      descEl.className = 'bt-cap-panel-desc';
+      descEl.className = 'sf-cap-panel-desc';
       descEl.textContent = c.desc;
       panelContent.appendChild(descEl);
-
-      if (c.tech) {
-        var tech = document.createElement('p');
-        tech.className = 'bt-cap-panel-tech';
-        tech.innerHTML = '<strong>Commerce platforms:</strong> ' + c.tech;
-        panelContent.appendChild(tech);
-      }
-
-      if (c.cta) {
-        var ctaRow = document.createElement('div');
-        ctaRow.className = 'bt-cap-panel-cta-row';
-        var ctaLink = document.createElement('a');
-        ctaLink.className = 'bt-cap-panel-cta';
-        ctaLink.href = '#';
-        ctaLink.innerHTML = 'Explore <span class="bt-cap-panel-cta-arrow" aria-hidden="true">↗</span>';
-        ctaRow.appendChild(ctaLink);
-        panelContent.appendChild(ctaRow);
-      }
 
       panelInner.appendChild(panelContent);
       panel.appendChild(panelInner);
@@ -1184,65 +1093,85 @@
         panel.style.maxHeight = isOpen ? panelInner.scrollHeight + 'px' : '';
       });
 
-      btCapabilities.appendChild(row);
+      sfServices.appendChild(row);
     });
   }
 
-  // ---------- Where transformation creates value ----------
-  var BT_VALUE_ITEMS = [
+  // ---------- What a better implementation should deliver ----------
+  var SF_VALUE_ITEMS = [
     {
-      title: 'Simpler operations',
-      desc: 'Reduce manual effort, unnecessary steps and disconnected processes.',
-      icon: '<path d="M4 5h16l-6 8v6l-4-2v-4z"/>'
-    },
-    {
-      title: 'Better customer relationships',
-      desc: 'Give teams a clearer view of customers and create more consistent experiences.',
+      title: 'One view of the customer',
+      desc: 'Bring customer information together so teams can work from a more complete picture.',
       icon: '<circle cx="8" cy="8" r="3"/><circle cx="16.5" cy="9" r="2.4"/><path d="M2.5 19c.6-3.6 3-6 5.5-6s4.9 2.4 5.5 6"/><path d="M14.2 19c.4-2.6 1.8-4.5 3.5-4.5 1.8 0 3.3 1.7 3.8 4"/>'
     },
     {
-      title: 'Faster execution',
-      desc: 'Remove bottlenecks and give teams the systems and information they need to act faster.',
-      icon: '<path d="M13 2 4.5 13.8H10l-1 7.2 8.6-10.9H12z"/>'
+      title: 'Cleaner sales processes',
+      desc: 'Standardize workflows, approvals and processes without adding unnecessary complexity.',
+      icon: '<path d="M4 5h16l-6 8v6l-4-2v-4z"/>'
     },
     {
-      title: 'Connected business capabilities',
-      desc: 'Bring applications, data and workflows together so information can move where it is needed.',
+      title: 'Less manual work',
+      desc: 'Automate repetitive activities and reduce duplicate data entry across customer-facing teams.',
       icon: '<path d="M9.5 14.5l5-5"/><path d="M8 16a3.5 3.5 0 0 1 0-5l2-2a3.5 3.5 0 0 1 5 0"/><path d="M16 8a3.5 3.5 0 0 1 0 5l-2 2a3.5 3.5 0 0 1-5 0"/>'
     },
     {
-      title: 'Scalable operations',
-      desc: 'Build processes and systems that support growth without adding unnecessary complexity.',
-      icon: '<path d="M9 3H3v6M15 21h6v-6M3 21l7-7M21 3l-7 7"/>'
+      title: 'Better visibility',
+      desc: 'Give managers and teams clearer insight into pipelines, activities, customers and performance.',
+      icon: '<path d="M13 2 4.5 13.8H10l-1 7.2 8.6-10.9H12z"/>'
     },
     {
-      title: 'New business capabilities',
-      desc: 'Create digital products, services and operating models that open new opportunities.',
-      icon: '<circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/>'
+      title: 'A platform that can evolve',
+      desc: 'Build a Salesforce environment that can adapt as processes, teams and business requirements change.',
+      icon: '<path d="M9 3H3v6M15 21h6v-6M3 21l7-7M21 3l-7 7"/>'
     }
   ];
-  var btValueGrid = document.getElementById('btValueGrid');
-  if (btValueGrid) {
-    var btValueColLeft = document.createElement('div');
-    btValueColLeft.className = 'bt-value-col';
-    var btValueColRight = document.createElement('div');
-    btValueColRight.className = 'bt-value-col';
-    var btValueHalf = Math.ceil(BT_VALUE_ITEMS.length / 2);
-    BT_VALUE_ITEMS.forEach(function (v, i) {
+  var sfValueGrid = document.getElementById('sfValueGrid');
+  if (sfValueGrid) {
+    var sfValueColLeft = document.createElement('div');
+    sfValueColLeft.className = 'sf-value-col';
+    var sfValueColRight = document.createElement('div');
+    sfValueColRight.className = 'sf-value-col';
+    var sfValueHalf = Math.ceil(SF_VALUE_ITEMS.length / 2);
+    SF_VALUE_ITEMS.forEach(function (v, i) {
       var node = document.createElement('div');
-      node.className = 'bt-value-node';
+      node.className = 'sf-value-node';
       node.innerHTML =
-        '<span class="bt-value-marker">' +
+        '<span class="sf-value-marker">' +
         '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" ' +
         'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + v.icon + '</svg></span>' +
-        '<div class="bt-value-node-title"></div>' +
-        '<p class="bt-value-node-desc"></p>';
-      node.querySelector('.bt-value-node-title').textContent = v.title;
-      node.querySelector('.bt-value-node-desc').textContent = v.desc;
-      (i < btValueHalf ? btValueColLeft : btValueColRight).appendChild(node);
+        '<div class="sf-value-node-title"></div>' +
+        '<p class="sf-value-node-desc"></p>';
+      node.querySelector('.sf-value-node-title').textContent = v.title;
+      node.querySelector('.sf-value-node-desc').textContent = v.desc;
+      (i < sfValueHalf ? sfValueColLeft : sfValueColRight).appendChild(node);
     });
-    btValueGrid.appendChild(btValueColLeft);
-    btValueGrid.appendChild(btValueColRight);
+    sfValueGrid.appendChild(sfValueColLeft);
+    sfValueGrid.appendChild(sfValueColRight);
+  }
+
+  // ---------- Salesforce capabilities ----------
+  var SF_CAP_CATEGORIES = [
+    { title: 'Customer management', apps: 'Accounts · Contacts · Leads · Opportunities' },
+    { title: 'Sales operations', apps: 'Sales processes · Pipelines · Forecasting · Approvals' },
+    { title: 'Customer service', apps: 'Cases · Service workflows · Customer interactions' },
+    { title: 'Reporting & visibility', apps: 'Dashboards · Reports · Performance visibility' },
+    { title: 'Integration', apps: 'ERP · Finance · E-commerce · Marketing · APIs' }
+  ];
+  var sfCapGrid = document.getElementById('sfCapGrid');
+  if (sfCapGrid) {
+    SF_CAP_CATEGORIES.forEach(function (cat) {
+      var card = document.createElement('div');
+      card.className = 'sf-apps-cat';
+      var title = document.createElement('div');
+      title.className = 'sf-apps-cat-title';
+      title.textContent = cat.title;
+      var list = document.createElement('div');
+      list.className = 'sf-apps-cat-list';
+      list.textContent = cat.apps;
+      card.appendChild(title);
+      card.appendChild(list);
+      sfCapGrid.appendChild(card);
+    });
   }
 
   // ---------- Scroll-reveal motion ----------

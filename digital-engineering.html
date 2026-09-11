@@ -110,7 +110,7 @@
   }
   .sdl-hero-copy .accent { color: var(--accent); }
   .sdl-hero-sub { margin-top: 28px; font-size: 19px; line-height: 1.65; color: #46535F; max-width: 460px; }
-  .sdl-hero-actions { display: flex; align-items: center; gap: 28px; margin-top: 44px; flex-wrap: wrap; }
+  .sdl-hero-actions { display: flex; align-items: center; column-gap: 28px; row-gap: 12px; margin-top: 44px; flex-wrap: wrap; }
   .sdl-hero-primary {
     display: inline-flex; align-items: center; gap: 10px; background: var(--accent);
     color: #FFFFFF; font-weight: 700; font-size: 16px; padding: 16px 30px; border-radius: 999px;
@@ -185,6 +185,8 @@
   .de-kicker--dark .kicker-line { background: var(--success); }
 
   /* ---------- DE page: hero ---------- */
+  .sdl-hero--de { grid-template-columns: 1.3fr 1fr; }
+  .sdl-hero--de .sdl-hero-copy-wrap { max-width: 660px; }
   .sdl-hero--de .sdl-hero-copy { font-size: 48px; line-height: 1.2; font-weight: 500; }
   .sdl-hero--de .sdl-hero-copy .accent { color: #2B8FDB; }
   .sdl-hero--de .sdl-kicker-wrap { margin-bottom: 20px; }
