@@ -508,11 +508,11 @@
         <span class="dx-kicker"><span class="kicker-line"></span> Digital experience</span>
       </div>
       <div class="sdl-hero-copy">
-        <div>Design experiences</div>
-        <div><span class="accent">people want to use.</span></div>
+        <div>Make every digital</div>
+        <div><span class="accent">interaction count.</span></div>
       </div>
       <p class="sdl-hero-sub">
-        Create intuitive digital experiences across customer and employee journeys, bringing together strategy, design and technology to make every interaction simpler and more effective.
+        Design intuitive digital experiences around how people think, interact and get things done, making every journey clearer, simpler and more effective.
       </p>
       <div class="sdl-hero-actions">
         <a href="index.html#contact" class="sdl-hero-primary">Talk to an expert →</a>
@@ -720,11 +720,11 @@
 
   var MENUS = [
     { key: 'services', label: 'Services', href: 'services.html', cta: { label: 'View all services', href: 'services.html' }, items: [
-      { title: 'AI transformation', desc: 'Turn AI potential into practical business value.', href: 'ai-transformation.html' },
-      { title: 'Digital engineering', desc: 'Build, modernize and scale digital products.', href: 'digital-engineering.html' },
-      { title: 'Business transformation', desc: 'Rethink systems, processes and ways of working.', href: 'business-transformation.html' },
-      { title: 'Digital experience', desc: 'Create better experiences across every touchpoint.', href: 'digital-experience.html' },
-      { title: 'Growth transformation', desc: 'Turn digital attention into qualified demand.', href: 'growth-transformation.html' }
+      { title: 'AI transformation', desc: 'Turn intelligence into action.', href: 'ai-transformation.html' },
+      { title: 'Digital engineering', desc: 'Transform technology into digital advantage.', href: 'digital-engineering.html' },
+      { title: 'Business transformation', desc: 'Simplify complexity. Strengthen the business.', href: 'business-transformation.html' },
+      { title: 'Digital experience', desc: 'Make every digital interaction count.', href: 'digital-experience.html' },
+      { title: 'Growth transformation', desc: 'Precision. Performance. Growth.', href: 'growth-transformation.html' }
     ]},
     { key: 'products', label: 'Products & Platforms', cta: { label: 'Explore EVOQ', href: 'evoq.html' }, items: [
       { title: 'EVOQ', desc: 'The unified business suite for modern operations.', href: 'evoq.html' }
@@ -736,7 +736,7 @@
       { title: 'Featured projects', desc: 'Selected work and digital experiences.' }
     ]},
     { key: 'company', label: 'Company', cta: null, items: [
-      { title: 'About', desc: 'The people and experience behind SDL.' },
+      { title: 'About', desc: 'The people and experience behind SDL.', href: 'about-us.html' },
       { title: 'Our approach', desc: 'How SDL thinks, builds and works.' },
       { title: 'Clients', desc: 'The businesses SDL works with.' },
       { title: 'Careers', desc: "Build what's next with SDL." }
@@ -780,7 +780,7 @@
       { label: 'Featured projects', href: '#' }
     ]},
     { title: 'Company', links: [
-      { label: 'About', href: '#' },
+      { label: 'About', href: 'about-us.html' },
       { label: 'Our approach', href: '#' },
       { label: 'Clients', href: '#' },
       { label: 'Careers', href: '#' }
@@ -946,13 +946,22 @@
         sub.className = 'sdl-mobile-sub' + (mobileOpenKey === menu.key ? ' open' : '');
         menu.items.forEach(function (subItem) {
           var subWrap = document.createElement('div');
-          var t = document.createElement('div');
-          t.className = 'sdl-mobile-sub-title';
-          t.textContent = subItem.title;
+          if (subItem.href) {
+            var t = document.createElement('a');
+            t.className = 'sdl-mobile-sub-title';
+            t.href = subItem.href;
+            t.style.display = 'block';
+            t.textContent = subItem.title;
+            subWrap.appendChild(t);
+          } else {
+            var tPlain = document.createElement('div');
+            tPlain.className = 'sdl-mobile-sub-title';
+            tPlain.textContent = subItem.title;
+            subWrap.appendChild(tPlain);
+          }
           var d = document.createElement('div');
           d.className = 'sdl-mobile-sub-desc';
           d.textContent = subItem.desc;
-          subWrap.appendChild(t);
           subWrap.appendChild(d);
           sub.appendChild(subWrap);
         });
