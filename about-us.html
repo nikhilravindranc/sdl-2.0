@@ -154,214 +154,258 @@
   }
   .sdl-footer-bottom-right { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
 
-  /* ---------- About: hero ---------- */
-  .au-hero { position: relative; padding: 108px 48px 96px; overflow: hidden; }
-  .au-hero-inner {
-    position: relative; z-index: 1; max-width: 1360px; margin: 0 auto;
-    display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px; align-items: center;
+  /* ---------- About: shared ---------- */
+  .au-title {
+    margin-top: 18px; font-family: 'Manrope', sans-serif; font-weight: 500;
+    font-size: clamp(30px, 3.2vw, 42px); line-height: 1.2; letter-spacing: -0.015em; color: #162833;
   }
-  .au-hero-copy { max-width: 560px; }
-  .au-hero-title {
-    margin-top: 20px; font-family: 'Manrope', sans-serif; font-weight: 500;
-    font-size: clamp(38px, 4.6vw, 56px); line-height: 1.16; letter-spacing: -0.015em; color: #162833;
+  .au-title--light { color: #FFFFFF; }
+  .au-lead {
+    font-family: 'Manrope', sans-serif; font-weight: 600; font-size: clamp(19px, 1.7vw, 22px);
+    line-height: 1.45; letter-spacing: -0.01em; color: #162833; margin: 0;
   }
-  .au-hero-sub { margin: 24px 0 0; max-width: 480px; font-size: 18px; line-height: 1.7; color: #46535F; }
-  .au-hero-sub + .au-hero-sub { margin-top: 14px; }
-  .au-hero-actions { margin-top: 40px; }
-  .au-hero-btn {
+  .au-body p { margin: 0 0 16px; font-size: 16.5px; line-height: 1.75; color: #46535F; }
+  .au-body p:last-child { margin-bottom: 0; }
+  .au-btn {
     display: inline-flex; align-items: center; gap: 10px; background: var(--accent);
     color: #FFFFFF; font-weight: 700; font-size: 16px; padding: 16px 32px; border-radius: 999px;
     transition: background 0.15s ease, transform 0.15s ease;
   }
-  .au-hero-btn:hover { background: var(--accent-hover); color: #FFFFFF; transform: translateY(-1px); }
-  .au-hero-btn .arrow { display: inline-block; transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
-  .au-hero-btn:hover .arrow { transform: translateX(4px); }
-
-  /* ---------- About: hero visual (DNA helix) ---------- */
-  .au-hero-visual { position: relative; width: 100%; aspect-ratio: 520/480; display: flex; align-items: center; justify-content: center; }
-  .au-helix-glow {
-    position: absolute; width: 62%; aspect-ratio: 1/1; z-index: 0; pointer-events: none; border-radius: 50%;
-    background: radial-gradient(circle, rgba(43,73,219,0.30) 0%, rgba(43,73,219,0) 68%);
-    filter: blur(36px);
-  }
-  .au-helix {
-    position: relative; width: 86%; aspect-ratio: 1/1; z-index: 1;
-    filter: drop-shadow(0 30px 54px rgba(30,53,184,0.32));
-    animation: auHelixBreathe 9s ease-in-out infinite;
-  }
-  .au-helix svg { display: block; width: 100%; height: 100%; overflow: visible; }
-  @keyframes auHelixBreathe {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-8px) rotate(3deg); }
-  }
-  .au-particles { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
-  .au-particle {
-    opacity: 0; transform-origin: center;
-    animation-name: auParticleDrift; animation-duration: var(--dur, 8s);
-    animation-delay: var(--delay, 0s); animation-timing-function: ease-in-out; animation-iteration-count: infinite;
-  }
-  @keyframes auParticleDrift {
-    0% { opacity: 0; transform: translate(0, 0) scale(0.5); }
-    18% { opacity: 0.85; }
-    72% { opacity: 0.7; transform: translate(var(--dx, 10px), var(--dy, -8px)) scale(1); }
-    100% { opacity: 0; transform: translate(calc(var(--dx, 10px) * 1.7), calc(var(--dy, -8px) * 1.7)) scale(0.6); }
+  .au-btn:hover { background: var(--accent-hover); color: #FFFFFF; transform: translateY(-1px); }
+  .au-btn .arrow { display: inline-block; transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .au-btn:hover .arrow { transform: translateX(4px); }
+  .au-dot-texture {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image: radial-gradient(rgba(255,255,255,0.14) 1px, transparent 1.2px);
+    background-size: 18px 18px;
+    -webkit-mask-image: linear-gradient(115deg, transparent 35%, #000 100%);
+            mask-image: linear-gradient(115deg, transparent 35%, #000 100%);
   }
 
-  /* ---------- About: narrative ---------- */
-  .au-narrative { display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 72px; align-items: start; }
-  .au-narrative-lead {
+  /* ---------- About: hero ---------- */
+  .au-hero { padding: 80px 48px 96px; }
+  .au-hero-inner {
+    max-width: 1360px; margin: 0 auto;
+    display: grid; grid-template-columns: 1.08fr 1fr; gap: 64px; align-items: center;
+  }
+  .au-hero-copy { max-width: 640px; }
+  .au-hero-title {
+    margin-top: 20px; font-family: 'Manrope', sans-serif; font-weight: 500;
+    font-size: clamp(38px, 3.9vw, 54px); line-height: 1.12; letter-spacing: -0.02em; color: #162833;
+  }
+  .au-hero-title .accent { color: var(--accent); }
+  .au-hero-copy .au-lead { margin-top: 30px; }
+  .au-surface { list-style: none; margin: 18px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .au-surface li { display: flex; align-items: baseline; gap: 12px; font-size: 16px; line-height: 1.55; color: #46535F; }
+  .au-surface li::before { content: ''; flex-shrink: 0; width: 6px; height: 6px; border-radius: 50%; background: #A9BEFF; transform: translateY(-2px); }
+  .au-hero-note {
+    margin: 22px 0 0; padding-left: 16px; border-left: 2px solid var(--accent);
+    font-size: 16.5px; line-height: 1.6; font-weight: 600; color: #162833;
+  }
+  .au-hero-sub { margin: 18px 0 0; font-size: 16.5px; line-height: 1.75; color: #46535F; }
+  .au-hero-actions { margin-top: 34px; }
+
+  .au-decode { position: relative; width: 100%; max-width: 540px; aspect-ratio: 9/10; margin: 0 auto; }
+  .au-decode canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .au-decode-tag {
+    position: absolute; transform: translateY(-50%); display: inline-flex; align-items: center; gap: 8px;
+    background: #FFFFFF; border: 1px solid #E4E9F2; border-radius: 999px; padding: 7px 14px 7px 11px;
+    font-size: 12.5px; font-weight: 600; color: #8891A0; white-space: nowrap;
+    box-shadow: 0 8px 20px rgba(16,24,40,0.06); opacity: 0.55;
+    transition: opacity 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+  }
+  .au-decode-tag::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: #C7D1E3; transition: background 0.4s ease; }
+  .au-decode-tag.is-on { opacity: 1; color: #162833; border-color: rgba(43,73,219,0.35); box-shadow: 0 10px 24px rgba(43,73,219,0.14); }
+  .au-decode-tag.is-on::before { background: var(--accent); }
+  .au-decode-tag--l { left: 0; }
+  .au-decode-tag--r { right: 0; }
+
+  /* ---------- About: connected layers ---------- */
+  .au-layers-head { display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 72px; align-items: end; }
+  .au-layers-body { margin-top: 56px; display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 64px; align-items: center; }
+  .au-layer-list { border-top: 1px solid #EEF1F6; }
+  .au-layer-row {
+    display: grid; grid-template-columns: 48px 1fr 28px; gap: 16px; align-items: start;
+    padding: 22px 12px; border-bottom: 1px solid #EEF1F6; color: inherit; border-radius: 12px;
+    transition: background 0.25s ease;
+  }
+  .au-layer-row:hover { color: inherit; }
+  .au-layer-num { font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 700; color: #A9B4C6; padding-top: 5px; transition: color 0.25s ease; }
+  .au-layer-name { font-family: 'Manrope', sans-serif; font-size: 20px; font-weight: 600; letter-spacing: -0.01em; color: #162833; transition: color 0.25s ease; }
+  .au-layer-desc { margin-top: 6px; font-size: 15px; line-height: 1.65; color: #46535F; }
+  .au-layer-arrow { padding-top: 3px; color: #A9B4C6; font-size: 18px; transition: transform 0.25s ease, color 0.25s ease; }
+  .au-layer-row.is-active { background: rgba(43,73,219,0.045); }
+  .au-layer-row.is-active .au-layer-num, .au-layer-row.is-active .au-layer-name, .au-layer-row.is-active .au-layer-arrow { color: var(--accent); }
+  .au-layer-row.is-active .au-layer-arrow { transform: translate(3px, -3px); }
+
+  .au-stack { width: 100%; max-width: 520px; margin: 0 auto; display: block; overflow: visible; }
+  .au-slab { transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1); }
+  .au-slab .top { fill: #FFFFFF; stroke: #D6DEEE; stroke-width: 1; transition: fill 0.35s ease, stroke 0.35s ease; }
+  .au-slab .dots { opacity: 0.9; transition: opacity 0.35s ease; }
+  .au-slab .side-l { fill: #E3E9F5; transition: fill 0.35s ease; }
+  .au-slab .side-r { fill: #CBD6EE; transition: fill 0.35s ease; }
+  .au-slab .num { font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 700; fill: #A9B4C6; transition: fill 0.35s ease; }
+  .au-slab.is-active { transform: translateY(-14px); }
+  .au-slab.is-active .top { fill: var(--accent); stroke: var(--accent); }
+  .au-slab.is-active .dots { opacity: 0; }
+  .au-slab.is-active .side-l { fill: #1E35B8; }
+  .au-slab.is-active .side-r { fill: #172B96; }
+  .au-slab.is-active .num { fill: var(--accent); }
+
+  /* ---------- About: experience (dark) ---------- */
+  .au-exp-section { position: relative; overflow: hidden; background: #101826; padding: 104px 48px 112px; }
+  .au-exp-inner { position: relative; max-width: 1360px; margin: 0 auto; }
+  .au-exp-head { display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 72px; align-items: end; }
+  .au-exp-head .au-body p { color: rgba(255,255,255,0.64); }
+  .au-stats { margin-top: 72px; display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid rgba(255,255,255,0.12); }
+  .au-stat { padding: 36px 32px 0 0; }
+  .au-stat + .au-stat { padding-left: 40px; border-left: 1px solid rgba(255,255,255,0.12); }
+  .au-stat-num {
+    font-family: 'Manrope', sans-serif; font-weight: 600; font-size: clamp(56px, 6vw, 88px);
+    line-height: 1; letter-spacing: -0.04em; color: #FFFFFF; font-variant-numeric: tabular-nums;
+  }
+  .au-stat-num .plus { color: #6A8CFF; }
+  .au-stat-label { margin-top: 14px; font-size: 15px; font-weight: 500; color: rgba(255,255,255,0.6); }
+
+  /* ---------- About: mission / vision ---------- */
+  .au-mv { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .au-mv-card { position: relative; overflow: hidden; border-radius: 28px; padding: 56px 48px 60px; min-height: 380px; display: flex; flex-direction: column; }
+  .au-mv-card--light { background: #F6F8FC; border: 1px solid #EEF1F6; }
+  .au-mv-card--accent { background: var(--accent); }
+  .au-mv-card .au-kicker--onblue { color: rgba(255,255,255,0.8); }
+  .au-mv-card .au-kicker--onblue .kicker-line { background: #FFFFFF; }
+  .au-mv-title {
     margin-top: 22px; font-family: 'Manrope', sans-serif; font-weight: 500;
-    font-size: clamp(23px, 2.3vw, 30px); line-height: 1.4; letter-spacing: -0.015em; color: #162833;
+    font-size: clamp(28px, 2.8vw, 38px); line-height: 1.2; letter-spacing: -0.015em; color: #162833; max-width: 460px;
   }
-  .au-narrative-body { padding-top: 6px; }
-  .au-narrative-body p {
-    margin: 0; padding: 22px 0; border-top: 1px solid #EEF1F6;
-    font-size: 16.5px; line-height: 1.75; color: #46535F;
-  }
-  .au-narrative-body p:first-child { border-top: none; padding-top: 0; }
-  .au-narrative-body p:last-child { padding-bottom: 0; }
+  .au-mv-text { margin: auto 0 0; padding-top: 36px; font-size: 16.5px; line-height: 1.75; color: #46535F; max-width: 480px; position: relative; }
+  .au-mv-card--accent .au-mv-title { color: #FFFFFF; }
+  .au-mv-card--accent .au-mv-text { color: rgba(255,255,255,0.82); }
 
-  /* ---------- About: evolution timeline ---------- */
-  .au-evolution { position: relative; margin-top: 64px; display: flex; justify-content: space-between; }
-  .au-evolution::before {
-    content: ''; position: absolute; top: 9px; left: 9px; right: 9px; height: 2px; background: #E4E9F2; z-index: 0;
-  }
-  .au-evolution-step { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 12px; flex: 1; }
-  .au-evolution-dot { width: 20px; height: 20px; border-radius: 50%; background: #FFFFFF; border: 2px solid #C7D1E3; }
-  .au-evolution-label { font-size: 13.5px; font-weight: 600; color: #8891A0; text-align: center; }
-  .au-evolution-step--current .au-evolution-dot {
-    background: var(--accent); border-color: var(--accent);
-    box-shadow: 0 0 0 5px rgba(43,73,219,0.14);
-  }
-  .au-evolution-step--current .au-evolution-label { color: var(--accent); font-weight: 700; }
-
-  /* ---------- About: vision / mission ---------- */
-  .au-split { margin-top: 48px; display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
-  .au-split-card {
-    background: #FFFFFF; border: 1px solid #EEF1F6; border-radius: 20px; padding: 40px 36px;
-  }
-  .au-split-icon {
-    width: 44px; height: 44px; border-radius: 12px; background: rgba(43,73,219,0.08); color: var(--accent);
-    display: flex; align-items: center; justify-content: center; margin-bottom: 20px;
-  }
-  .au-split-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
-  .au-split-title {
-    margin-top: 16px; font-family: 'Manrope', sans-serif; font-size: 22px; font-weight: 700;
-    line-height: 1.35; letter-spacing: -0.01em; color: #162833;
-  }
-  .au-split-desc { margin-top: 14px; font-size: 15.5px; line-height: 1.7; color: #46535F; }
-
-  /* ---------- About: how we think (principles) ---------- */
-  .au-principles-grid { margin-top: 48px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
-  .au-principle { position: relative; padding-top: 8px; }
-  .au-principle-num {
-    position: absolute; top: -18px; right: 0; font-family: 'Manrope', sans-serif; font-weight: 800;
-    font-size: 44px; line-height: 1; color: rgba(43,73,219,0.08); letter-spacing: -0.02em; user-select: none;
-  }
-  .au-principle-icon {
-    position: relative; width: 44px; height: 44px; border-radius: 12px; background: rgba(43,73,219,0.08); color: var(--accent);
-    display: flex; align-items: center; justify-content: center;
-  }
-  .au-principle-title {
-    margin-top: 20px; font-family: 'Manrope', sans-serif; font-size: 17px; font-weight: 700;
-    color: #162833; letter-spacing: -0.01em;
-  }
-  .au-principle-desc { margin-top: 10px; font-size: 14.5px; line-height: 1.7; color: #46535F; }
-
-  /* ---------- About: collaboration ---------- */
-  .au-collab-tags {
-    margin-top: 28px; font-family: 'Manrope', sans-serif; font-size: 17px; font-weight: 700;
-    letter-spacing: 0.01em; color: var(--accent);
-  }
-  .au-collab-cta { margin-top: 28px; }
-
-  /* ---------- About: values (dark) ---------- */
-  .au-values-section { position: relative; overflow: hidden; background: #101826; padding: 96px 48px 108px; }
-  .au-values-inner { position: relative; max-width: 1360px; margin: 0 auto; }
+  /* ---------- About: values ---------- */
   .au-values-head { max-width: 760px; }
-  .au-values-title {
-    margin-top: 18px; font-family: 'Manrope', sans-serif; font-weight: 500;
-    font-size: clamp(30px, 3.2vw, 40px); line-height: 1.2; letter-spacing: -0.01em; color: #FFFFFF;
+  .au-values { position: relative; margin-top: 56px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .au-values::before {
+    content: ''; position: absolute; left: 24px; right: 24px; top: 26px; height: 2px; z-index: 0;
+    background: repeating-linear-gradient(90deg, rgba(43,73,219,0.35) 0 6px, transparent 6px 12px);
   }
-  .au-values-grid { margin-top: 56px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 1px solid rgba(255,255,255,0.1); }
-  .au-value-item { padding: 32px 28px 0; border-right: 1px solid rgba(255,255,255,0.1); }
-  .au-value-item:last-child { border-right: none; }
-  .au-value-icon {
-    width: 40px; height: 40px; border-radius: 50%; border: 1.5px solid var(--success); color: var(--success);
-    display: flex; align-items: center; justify-content: center;
+  .au-value { position: relative; z-index: 1; display: flex; flex-direction: column; }
+  .au-value-node {
+    width: 54px; height: 54px; border-radius: 50%; background: #FFFFFF; border: 1.5px solid var(--accent);
+    color: var(--accent); display: flex; align-items: center; justify-content: center; margin-left: 24px;
+    box-shadow: 0 0 0 8px #F6F8FC; transition: background 0.25s ease, color 0.25s ease;
   }
-  .au-value-title { margin-top: 20px; font-family: 'Manrope', sans-serif; font-size: 18px; font-weight: 700; color: #FFFFFF; }
-  .au-value-desc { margin-top: 10px; font-size: 14.5px; line-height: 1.65; color: rgba(255,255,255,0.6); }
+  .au-value-card {
+    margin-top: 20px; flex: 1; background: #FFFFFF; border: 1px solid #E8EDF5; border-radius: 20px; padding: 28px 24px 30px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+  .au-value:hover .au-value-node { background: var(--accent); color: #FFFFFF; }
+  .au-value:hover .au-value-card { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(16,24,40,0.08); border-color: rgba(43,73,219,0.25); }
+  .au-value-name { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+  .au-value-tag { margin-top: 12px; font-family: 'Manrope', sans-serif; font-size: 22px; font-weight: 600; letter-spacing: -0.01em; color: #162833; line-height: 1.3; }
+  .au-value-desc { margin-top: 12px; font-size: 15px; line-height: 1.7; color: #46535F; }
+
+  /* ---------- About: the name ---------- */
+  .au-name-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
+  .au-name-head .au-lead { color: #46535F; font-weight: 500; }
+  .au-name-grid { margin-top: 48px; display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid #E4E9F2; }
+  .au-name-col { padding: 40px 40px 8px 0; }
+  .au-name-col + .au-name-col { padding-left: 40px; border-left: 1px solid #E4E9F2; }
+  .au-name-word {
+    font-family: 'Manrope', sans-serif; font-weight: 600; font-size: clamp(56px, 6.4vw, 96px);
+    line-height: 1; letter-spacing: -0.045em; color: #162833;
+  }
+  .au-name-word .dot { color: var(--accent); }
+  .au-name-text { margin-top: 24px; font-size: 16px; line-height: 1.75; color: #46535F; max-width: 380px; }
+  .au-name-text strong { color: #162833; font-weight: 600; }
+  .au-name-close {
+    margin: 64px auto 0; max-width: 900px; text-align: center; font-family: 'Manrope', sans-serif; font-weight: 500;
+    font-size: clamp(21px, 2vw, 27px); line-height: 1.5; letter-spacing: -0.01em; color: #162833;
+  }
+  .au-name-close .hl { color: var(--accent); }
+
+  /* ---------- About: AI (dark) ---------- */
+  .au-ai-section { position: relative; overflow: hidden; background: #101826; padding: 104px 48px 112px; }
+  .au-ai-inner { position: relative; max-width: 1360px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; }
+  .au-ai-copy .au-lead { margin-top: 26px; color: #FFFFFF; font-weight: 500; }
+  .au-ai-copy p.au-ai-p { margin: 20px 0 0; font-size: 16.5px; line-height: 1.75; color: rgba(255,255,255,0.64); }
+  .au-ai-panel { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; padding: 30px 30px 18px; }
+  .au-ai-caption { margin: 0 0 12px; font-size: 14.5px; line-height: 1.65; color: rgba(255,255,255,0.6); }
+  .au-ai-row { display: grid; grid-template-columns: 40px 1fr 88px; gap: 16px; align-items: center; padding: 18px 0; border-top: 1px solid rgba(255,255,255,0.08); }
+  .au-ai-icon { width: 40px; height: 40px; border-radius: 11px; background: rgba(106,140,255,0.14); color: #A9BEFF; display: flex; align-items: center; justify-content: center; }
+  .au-ai-label { font-family: 'Manrope', sans-serif; font-size: 17px; font-weight: 600; color: #FFFFFF; }
+  .au-ai-meter { height: 4px; border-radius: 4px; background: rgba(255,255,255,0.08); overflow: hidden; }
+  .au-ai-meter span { display: block; height: 100%; width: 100%; border-radius: 4px; background: linear-gradient(90deg, #2B49DB, #6A8CFF); transform-origin: left; animation: auMeter 3.6s ease-in-out infinite; }
+  .au-ai-row:nth-child(3) .au-ai-meter span { animation-delay: 0.5s; }
+  .au-ai-row:nth-child(4) .au-ai-meter span { animation-delay: 1s; }
+  .au-ai-row:nth-child(5) .au-ai-meter span { animation-delay: 1.5s; }
+  @keyframes auMeter { 0% { transform: scaleX(0.15); } 55% { transform: scaleX(1); } 100% { transform: scaleX(0.15); } }
 
   /* ---------- About: people ---------- */
-  .au-people { display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 72px; align-items: center; }
-  .au-people-title {
-    margin-top: 22px; font-family: 'Manrope', sans-serif; font-weight: 500;
-    font-size: clamp(23px, 2.3vw, 30px); line-height: 1.4; letter-spacing: -0.015em; color: #162833;
-  }
-  .au-people-body p { margin: 0 0 18px; font-size: 16.5px; line-height: 1.75; color: #46535F; }
-  .au-people-body p:last-of-type { margin-bottom: 0; }
-  .au-people-cta { margin-top: 26px; }
+  .au-people { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; }
+  .au-people-copy .au-lead { margin-top: 26px; }
+  .au-people-copy .au-body { margin-top: 18px; }
+  .au-venn { width: 100%; max-width: 520px; margin: 0 auto; display: block; overflow: visible; }
+  .au-venn circle.lens { fill: rgba(43,73,219,0.05); stroke: rgba(43,73,219,0.4); stroke-width: 1.5; transform-box: fill-box; transform-origin: center; animation: auLens 7s ease-in-out infinite; }
+  .au-venn circle.lens:nth-of-type(2) { animation-delay: 1.4s; }
+  .au-venn circle.lens:nth-of-type(3) { animation-delay: 2.8s; }
+  .au-venn circle.lens:nth-of-type(4) { animation-delay: 4.2s; }
+  .au-venn circle.lens:nth-of-type(5) { animation-delay: 5.6s; }
+  @keyframes auLens { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+  .au-venn text { font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; fill: #162833; }
 
   /* ---------- About: closing CTA ---------- */
-  .au-cta-section { padding: 72px 48px 72px; }
+  .au-cta-section { padding: 80px 48px 88px; }
   .au-cta-card {
     position: relative; overflow: hidden; max-width: 1360px; margin: 0 auto;
-    background: #101826; border: 1px solid rgba(255,255,255,0.08); border-radius: 28px;
-    padding: 78px 56px 82px; text-align: center;
-  }
-  .au-cta-card::before {
-    content: ''; position: absolute; top: -160px; left: 50%; transform: translateX(-50%);
-    width: 620px; height: 400px; pointer-events: none;
-    background: radial-gradient(ellipse at center, rgba(43,73,219,0.30), rgba(43,73,219,0) 68%);
+    background: #101826; border-radius: 28px; padding: 84px 56px 88px; text-align: center;
   }
   .au-cta-inner { position: relative; }
   .au-cta-title {
     margin-top: 20px; font-family: 'Manrope', sans-serif; font-weight: 500;
-    font-size: clamp(28px, 3.3vw, 42px); line-height: 1.2; letter-spacing: -0.015em; color: #FFFFFF;
+    font-size: clamp(32px, 3.8vw, 50px); line-height: 1.15; letter-spacing: -0.02em; color: #FFFFFF;
   }
-  .au-cta-sub { margin: 18px auto 0; max-width: 520px; font-size: 17px; line-height: 1.65; color: rgba(255,255,255,0.62); }
-  .au-cta-btn {
-    display: inline-flex; align-items: center; gap: 10px; margin-top: 34px; background: var(--accent);
-    color: #FFFFFF; font-weight: 700; font-size: 16px; padding: 16px 32px; border-radius: 999px;
-    transition: background 0.15s ease, transform 0.15s ease;
-  }
-  .au-cta-btn:hover { background: var(--accent-hover); color: #FFFFFF; transform: translateY(-1px); }
-  .au-cta-btn .arrow { display: inline-block; transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
-  .au-cta-btn:hover .arrow { transform: translateX(4px); }
+  .au-cta-sub { margin: 20px auto 0; max-width: 620px; font-size: 17px; line-height: 1.7; color: rgba(255,255,255,0.62); }
+  .au-cta-ask { margin: 22px 0 0; font-family: 'Manrope', sans-serif; font-size: 19px; font-weight: 600; color: #FFFFFF; }
+  .au-cta-card .au-btn { margin-top: 32px; }
+
+  .au-hero-title, .au-title, .au-mv-title, .au-cta-title { margin-bottom: 0; }
+  .au-hero-title span.line { display: block; }
 
   @media (max-width: 1060px) {
     .sdl-desktop-nav, .sdl-desktop-cta { display: none !important; }
     .sdl-mobile-toggle { display: flex !important; }
     .sdl-header-inner { padding-left: 24px !important; padding-right: 24px !important; }
     .sdl-section { padding: 72px 24px 80px; }
-    .sdl-section--tight { padding-top: 48px; padding-bottom: 56px; }
-    .au-hero { padding: 72px 24px 64px; }
-    .au-values-section { padding: 72px 24px 80px; }
-    .au-cta-section { padding: 56px 24px 56px; }
-    .au-cta-card { padding: 56px 28px 60px; }
     .sdl-footer { padding: 64px 24px 28px; }
     .sdl-footer-cols { max-width: none; grid-template-columns: repeat(2, 1fr); row-gap: 32px; }
-    .au-hero-inner { grid-template-columns: 1fr; }
-    .au-hero-visual { max-width: 420px; margin: 0 auto; order: -1; }
-    .au-narrative { grid-template-columns: 1fr; gap: 32px; }
-    .au-evolution { flex-wrap: wrap; row-gap: 24px; }
-    .au-evolution::before { display: none; }
-    .au-evolution-step { flex: 0 0 33.333%; }
-    .au-split { grid-template-columns: 1fr; gap: 20px; }
-    .au-principles-grid { grid-template-columns: repeat(2, 1fr); gap: 40px 24px; }
-    .au-principle-num { font-size: 36px; top: -14px; }
-    .au-values-grid { grid-template-columns: repeat(2, 1fr); row-gap: 32px; }
-    .au-value-item { border-right: none; padding: 0; }
-    .au-value-item:nth-child(odd) { padding-right: 20px; }
-    .au-value-item:nth-child(even) { padding-left: 20px; }
-    .au-people { grid-template-columns: 1fr; gap: 32px; }
+    .au-hero { padding: 48px 24px 72px; }
+    .au-hero-inner { grid-template-columns: 1fr; gap: 24px; }
+    .au-decode { max-width: 440px; order: -1; }
+    .au-layers-head, .au-exp-head { grid-template-columns: 1fr; gap: 24px; }
+    .au-layers-body { grid-template-columns: 1fr; gap: 32px; margin-top: 40px; }
+    .au-stack { max-width: 400px; }
+    .au-stack-wrap { order: -1; }
+    .au-exp-section, .au-ai-section { padding: 72px 24px 80px; }
+    .au-stats { margin-top: 48px; }
+    .au-mv { grid-template-columns: 1fr; }
+    .au-mv-card { min-height: 0; padding: 44px 32px 48px; }
+    .au-values { grid-template-columns: repeat(2, 1fr); row-gap: 32px; }
+    .au-values::before { display: none; }
+    .au-ai-inner, .au-people { grid-template-columns: 1fr; gap: 40px; }
+    .au-venn { max-width: 420px; }
+    .au-cta-section { padding: 56px 24px 64px; }
+    .au-cta-card { padding: 60px 28px 64px; }
   }
 
   @media (max-width: 700px) {
-    .au-principles-grid { grid-template-columns: 1fr; }
-    .au-values-grid { grid-template-columns: 1fr; row-gap: 32px; }
-    .au-value-item { padding: 0 !important; }
+    .au-stats { grid-template-columns: 1fr; }
+    .au-stat, .au-stat + .au-stat { padding: 28px 0; border-left: none; border-bottom: 1px solid rgba(255,255,255,0.12); }
+    .au-values { grid-template-columns: 1fr; }
+    .au-name-grid { grid-template-columns: 1fr; }
+    .au-name-col, .au-name-col + .au-name-col { padding: 32px 0; border-left: none; border-bottom: 1px solid #E4E9F2; }
+    .au-name-close { margin-top: 40px; }
+    .au-decode-tag { font-size: 11.5px; padding: 6px 11px 6px 9px; }
   }
 
   @media (max-width: 560px) {
@@ -382,17 +426,18 @@
   .reveal-group > *:nth-child(5) { animation-delay: 0.28s; }
   .reveal-group > *:nth-child(6) { animation-delay: 0.35s; }
 
-  .au-hero-inner {
+  .au-hero-copy, .au-decode {
     opacity: 0; transform: translateY(18px);
     animation: sdlRevealIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   }
+  .au-decode { animation-delay: 0.15s; }
 
   @media (prefers-reduced-motion: reduce) {
-    .reveal, .reveal-group > *, .au-hero-inner {
+    .reveal, .reveal-group > *, .au-hero-copy, .au-decode {
       animation: none !important; opacity: 1 !important; transform: none !important;
     }
-    .au-helix { animation: none !important; }
-    .au-particle { animation: none !important; opacity: 0 !important; }
+    .au-ai-meter span, .au-venn circle.lens { animation: none !important; }
+    .au-slab { transition: none !important; }
   }
 </style>
 </head>
@@ -429,109 +474,158 @@
     <div class="au-hero-inner">
       <div class="au-hero-copy">
         <span class="au-kicker"><span class="kicker-line"></span> About us</span>
-        <div class="au-hero-title">Technology with purpose.</div>
-        <p class="au-hero-sub">Social DNA Labs is a technology company helping organizations turn ideas, challenges and opportunities into meaningful digital change.</p>
-        <p class="au-hero-sub">For more than 15 years, our work has been shaped by curiosity, engineering discipline and a belief that technology should create real value for the people and businesses using it.</p>
+        <h1 class="au-hero-title" style="margin-bottom:0">
+          <span class="line">Decode the business.</span>
+          <span class="line accent">Recode what's possible.</span>
+        </h1>
+        <p class="au-lead">Every business has something beneath the surface.</p>
+        <ul class="au-surface">
+          <li>The way people work.</li>
+          <li>The way customers behave.</li>
+          <li>The systems that connect everything.</li>
+          <li>The processes that have evolved over time.</li>
+          <li>The ideas waiting to become something more.</li>
+        </ul>
+        <p class="au-hero-note">Understanding those connections reveals where new possibilities exist.</p>
+        <p class="au-hero-sub">Social DNA Labs brings together AI, engineering, business transformation, digital experience and growth to understand what businesses need, build what matters and create better ways for people and technology to work together.</p>
         <div class="au-hero-actions">
-          <a href="index.html#contact" class="au-hero-btn">Talk to us <span class="arrow" aria-hidden="true">→</span></a>
+          <a href="index.html#contact" class="au-btn">Talk to us <span class="arrow" aria-hidden="true">→</span></a>
         </div>
       </div>
 
-      <div class="au-hero-visual" aria-hidden="true">
-        <div class="au-helix-glow"></div>
-        <div class="au-helix">
-          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="auHelixFront" gradientUnits="userSpaceOnUse" x1="30" y1="4" x2="70" y2="96">
-                <stop offset="0%" stop-color="#EAF0FF" />
-                <stop offset="40%" stop-color="#A9BEFF" />
-                <stop offset="100%" stop-color="#2B49DB" />
-              </linearGradient>
-              <linearGradient id="auHelixBack" gradientUnits="userSpaceOnUse" x1="70" y1="4" x2="30" y2="96">
-                <stop offset="0%" stop-color="#5B7BF0" />
-                <stop offset="100%" stop-color="#1E35B8" />
-              </linearGradient>
-              <filter id="auHelixGrain" x="0%" y="0%" width="100%" height="100%">
-                <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch" result="noise" />
-                <feColorMatrix in="noise" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.7 0" />
-              </filter>
-              <mask id="auHelixMask" maskUnits="userSpaceOnUse" x="-20" y="-20" width="140" height="140">
-                <g fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round">
-                  <path stroke-width="7" d="M72.97 17.37 L72.97 17.37 L72.87 17.73 L72.72 18.1 L72.5 18.47 L72.22 18.83 L71.87 19.2 L71.47 19.57 L71.01 19.93 L70.49 20.3 L69.92 20.67 L69.29 21.03 L68.61 21.4 L67.87 21.77 L67.09 22.13 L66.26 22.5 L65.39 22.87 L64.47 23.23 L63.52 23.6 L62.53 23.97 L61.5 24.33 L60.44 24.7 L59.35 25.07 L58.24 25.43 L57.11 25.8 L55.95 26.17 L54.78 26.53 L53.6 26.9 L52.4 27.27 L51.2 27.63 L50 28 L48.8 28.37 L47.6 28.73 L46.4 29.1 L45.22 29.47 L44.05 29.83 L42.89 30.2 L41.76 30.57 L40.65 30.93 L39.56 31.3 L38.5 31.67 L37.47 32.03 L36.48 32.4 L35.53 32.77 L34.61 33.13 L33.74 33.5 L32.91 33.87 L32.13 34.23 L31.39 34.6 L30.71 34.97 L30.08 35.33 L29.51 35.7 L28.99 36.07 L28.53 36.43 L28.13 36.8 L27.78 37.17 L27.5 37.53 L27.28 37.9 L27.13 38.27 L27.03 38.63 L27 39 L27.03 39.37 M72.97 61.37 L72.97 61.37 L72.87 61.73 L72.72 62.1 L72.5 62.47 L72.22 62.83 L71.87 63.2 L71.47 63.57 L71.01 63.93 L70.49 64.3 L69.92 64.67 L69.29 65.03 L68.61 65.4 L67.87 65.77 L67.09 66.13 L66.26 66.5 L65.39 66.87 L64.47 67.23 L63.52 67.6 L62.53 67.97 L61.5 68.33 L60.44 68.7 L59.35 69.07 L58.24 69.43 L57.11 69.8 L55.95 70.17 L54.78 70.53 L53.6 70.9 L52.4 71.27 L51.2 71.63 L50 72 L48.8 72.37 L47.6 72.73 L46.4 73.1 L45.22 73.47 L44.05 73.83 L42.89 74.2 L41.76 74.57 L40.65 74.93 L39.56 75.3 L38.5 75.67 L37.47 76.03 L36.48 76.4 L35.53 76.77 L34.61 77.13 L33.74 77.5 L32.91 77.87 L32.13 78.23 L31.39 78.6 L30.71 78.97 L30.08 79.33 L29.51 79.7 L28.99 80.07 L28.53 80.43 L28.13 80.8 L27.78 81.17 L27.5 81.53 L27.28 81.9 L27.13 82.27 L27.03 82.63 L27 83 L27.03 83.37 M50 6 L48.8 6.37 L47.6 6.73 L46.4 7.1 L45.22 7.47 L44.05 7.83 L42.89 8.2 L41.76 8.57 L40.65 8.93 L39.56 9.3 L38.5 9.67 L37.47 10.03 L36.48 10.4 L35.53 10.77 L34.61 11.13 L33.74 11.5 L32.91 11.87 L32.13 12.23 L31.39 12.6 L30.71 12.97 L30.08 13.33 L29.51 13.7 L28.99 14.07 L28.53 14.43 L28.13 14.8 L27.78 15.17 L27.5 15.53 L27.28 15.9 L27.13 16.27 L27.03 16.63 L27 17 L27.03 17.37 M72.97 39.37 L72.97 39.37 L72.87 39.73 L72.72 40.1 L72.5 40.47 L72.22 40.83 L71.87 41.2 L71.47 41.57 L71.01 41.93 L70.49 42.3 L69.92 42.67 L69.29 43.03 L68.61 43.4 L67.87 43.77 L67.09 44.13 L66.26 44.5 L65.39 44.87 L64.47 45.23 L63.52 45.6 L62.53 45.97 L61.5 46.33 L60.44 46.7 L59.35 47.07 L58.24 47.43 L57.11 47.8 L55.95 48.17 L54.78 48.53 L53.6 48.9 L52.4 49.27 L51.2 49.63 L50 50 L48.8 50.37 L47.6 50.73 L46.4 51.1 L45.22 51.47 L44.05 51.83 L42.89 52.2 L41.76 52.57 L40.65 52.93 L39.56 53.3 L38.5 53.67 L37.47 54.03 L36.48 54.4 L35.53 54.77 L34.61 55.13 L33.74 55.5 L32.91 55.87 L32.13 56.23 L31.39 56.6 L30.71 56.97 L30.08 57.33 L29.51 57.7 L28.99 58.07 L28.53 58.43 L28.13 58.8 L27.78 59.17 L27.5 59.53 L27.28 59.9 L27.13 60.27 L27.03 60.63 L27 61 L27.03 61.37 M72.97 83.37 L72.97 83.37 L72.87 83.73 L72.72 84.1 L72.5 84.47 L72.22 84.83 L71.87 85.2 L71.47 85.57 L71.01 85.93 L70.49 86.3 L69.92 86.67 L69.29 87.03 L68.61 87.4 L67.87 87.77 L67.09 88.13 L66.26 88.5 L65.39 88.87 L64.47 89.23 L63.52 89.6 L62.53 89.97 L61.5 90.33 L60.44 90.7 L59.35 91.07 L58.24 91.43 L57.11 91.8 L55.95 92.17 L54.78 92.53 L53.6 92.9 L52.4 93.27 L51.2 93.63 L50 94" />
-                  <path stroke-width="3" d="M46.13 8.44H53.87 M34.08 13.33H65.92 M31.35 18.22H68.65 M39.22 23.11H60.78 M39.22 32.89H60.78 M31.35 37.78H68.65 M34.08 42.67H65.92 M46.13 47.56H53.87 M46.13 52.44H53.87 M34.08 57.33H65.92 M31.35 62.22H68.65 M39.22 67.11H60.78 M39.22 76.89H60.78 M31.35 81.78H68.65 M34.08 86.67H65.92 M46.13 91.56H53.87" />
-                  <path stroke-width="7" d="M50 6 L51.2 6.37 L52.4 6.73 L53.6 7.1 L54.78 7.47 L55.95 7.83 L57.11 8.2 L58.24 8.57 L59.35 8.93 L60.44 9.3 L61.5 9.67 L62.53 10.03 L63.52 10.4 L64.47 10.77 L65.39 11.13 L66.26 11.5 L67.09 11.87 L67.87 12.23 L68.61 12.6 L69.29 12.97 L69.92 13.33 L70.49 13.7 L71.01 14.07 L71.47 14.43 L71.87 14.8 L72.22 15.17 L72.5 15.53 L72.72 15.9 L72.87 16.27 L72.97 16.63 L73 17 L72.97 17.37 M27.03 39.37 L27.03 39.37 L27.13 39.73 L27.28 40.1 L27.5 40.47 L27.78 40.83 L28.13 41.2 L28.53 41.57 L28.99 41.93 L29.51 42.3 L30.08 42.67 L30.71 43.03 L31.39 43.4 L32.13 43.77 L32.91 44.13 L33.74 44.5 L34.61 44.87 L35.53 45.23 L36.48 45.6 L37.47 45.97 L38.5 46.33 L39.56 46.7 L40.65 47.07 L41.76 47.43 L42.89 47.8 L44.05 48.17 L45.22 48.53 L46.4 48.9 L47.6 49.27 L48.8 49.63 L50 50 L51.2 50.37 L52.4 50.73 L53.6 51.1 L54.78 51.47 L55.95 51.83 L57.11 52.2 L58.24 52.57 L59.35 52.93 L60.44 53.3 L61.5 53.67 L62.53 54.03 L63.52 54.4 L64.47 54.77 L65.39 55.13 L66.26 55.5 L67.09 55.87 L67.87 56.23 L68.61 56.6 L69.29 56.97 L69.92 57.33 L70.49 57.7 L71.01 58.07 L71.47 58.43 L71.87 58.8 L72.22 59.17 L72.5 59.53 L72.72 59.9 L72.87 60.27 L72.97 60.63 L73 61 L72.97 61.37 M27.03 83.37 L27.03 83.37 L27.13 83.73 L27.28 84.1 L27.5 84.47 L27.78 84.83 L28.13 85.2 L28.53 85.57 L28.99 85.93 L29.51 86.3 L30.08 86.67 L30.71 87.03 L31.39 87.4 L32.13 87.77 L32.91 88.13 L33.74 88.5 L34.61 88.87 L35.53 89.23 L36.48 89.6 L37.47 89.97 L38.5 90.33 L39.56 90.7 L40.65 91.07 L41.76 91.43 L42.89 91.8 L44.05 92.17 L45.22 92.53 L46.4 92.9 L47.6 93.27 L48.8 93.63 L50 94 M27.03 17.37 L27.03 17.37 L27.13 17.73 L27.28 18.1 L27.5 18.47 L27.78 18.83 L28.13 19.2 L28.53 19.57 L28.99 19.93 L29.51 20.3 L30.08 20.67 L30.71 21.03 L31.39 21.4 L32.13 21.77 L32.91 22.13 L33.74 22.5 L34.61 22.87 L35.53 23.23 L36.48 23.6 L37.47 23.97 L38.5 24.33 L39.56 24.7 L40.65 25.07 L41.76 25.43 L42.89 25.8 L44.05 26.17 L45.22 26.53 L46.4 26.9 L47.6 27.27 L48.8 27.63 L50 28 L51.2 28.37 L52.4 28.73 L53.6 29.1 L54.78 29.47 L55.95 29.83 L57.11 30.2 L58.24 30.57 L59.35 30.93 L60.44 31.3 L61.5 31.67 L62.53 32.03 L63.52 32.4 L64.47 32.77 L65.39 33.13 L66.26 33.5 L67.09 33.87 L67.87 34.23 L68.61 34.6 L69.29 34.97 L69.92 35.33 L70.49 35.7 L71.01 36.07 L71.47 36.43 L71.87 36.8 L72.22 37.17 L72.5 37.53 L72.72 37.9 L72.87 38.27 L72.97 38.63 L73 39 L72.97 39.37 M27.03 61.37 L27.03 61.37 L27.13 61.73 L27.28 62.1 L27.5 62.47 L27.78 62.83 L28.13 63.2 L28.53 63.57 L28.99 63.93 L29.51 64.3 L30.08 64.67 L30.71 65.03 L31.39 65.4 L32.13 65.77 L32.91 66.13 L33.74 66.5 L34.61 66.87 L35.53 67.23 L36.48 67.6 L37.47 67.97 L38.5 68.33 L39.56 68.7 L40.65 69.07 L41.76 69.43 L42.89 69.8 L44.05 70.17 L45.22 70.53 L46.4 70.9 L47.6 71.27 L48.8 71.63 L50 72 L51.2 72.37 L52.4 72.73 L53.6 73.1 L54.78 73.47 L55.95 73.83 L57.11 74.2 L58.24 74.57 L59.35 74.93 L60.44 75.3 L61.5 75.67 L62.53 76.03 L63.52 76.4 L64.47 76.77 L65.39 77.13 L66.26 77.5 L67.09 77.87 L67.87 78.23 L68.61 78.6 L69.29 78.97 L69.92 79.33 L70.49 79.7 L71.01 80.07 L71.47 80.43 L71.87 80.8 L72.22 81.17 L72.5 81.53 L72.72 81.9 L72.87 82.27 L72.97 82.63 L73 83 L72.97 83.37" />
-                </g>
-              </mask>
-            </defs>
-            <g transform="rotate(-20 50 50)">
-              <g fill="none" stroke-linecap="round" stroke-linejoin="round">
-                <path stroke="url(#auHelixBack)" stroke-width="7" d="M72.97 17.37 L72.97 17.37 L72.87 17.73 L72.72 18.1 L72.5 18.47 L72.22 18.83 L71.87 19.2 L71.47 19.57 L71.01 19.93 L70.49 20.3 L69.92 20.67 L69.29 21.03 L68.61 21.4 L67.87 21.77 L67.09 22.13 L66.26 22.5 L65.39 22.87 L64.47 23.23 L63.52 23.6 L62.53 23.97 L61.5 24.33 L60.44 24.7 L59.35 25.07 L58.24 25.43 L57.11 25.8 L55.95 26.17 L54.78 26.53 L53.6 26.9 L52.4 27.27 L51.2 27.63 L50 28 L48.8 28.37 L47.6 28.73 L46.4 29.1 L45.22 29.47 L44.05 29.83 L42.89 30.2 L41.76 30.57 L40.65 30.93 L39.56 31.3 L38.5 31.67 L37.47 32.03 L36.48 32.4 L35.53 32.77 L34.61 33.13 L33.74 33.5 L32.91 33.87 L32.13 34.23 L31.39 34.6 L30.71 34.97 L30.08 35.33 L29.51 35.7 L28.99 36.07 L28.53 36.43 L28.13 36.8 L27.78 37.17 L27.5 37.53 L27.28 37.9 L27.13 38.27 L27.03 38.63 L27 39 L27.03 39.37 M72.97 61.37 L72.97 61.37 L72.87 61.73 L72.72 62.1 L72.5 62.47 L72.22 62.83 L71.87 63.2 L71.47 63.57 L71.01 63.93 L70.49 64.3 L69.92 64.67 L69.29 65.03 L68.61 65.4 L67.87 65.77 L67.09 66.13 L66.26 66.5 L65.39 66.87 L64.47 67.23 L63.52 67.6 L62.53 67.97 L61.5 68.33 L60.44 68.7 L59.35 69.07 L58.24 69.43 L57.11 69.8 L55.95 70.17 L54.78 70.53 L53.6 70.9 L52.4 71.27 L51.2 71.63 L50 72 L48.8 72.37 L47.6 72.73 L46.4 73.1 L45.22 73.47 L44.05 73.83 L42.89 74.2 L41.76 74.57 L40.65 74.93 L39.56 75.3 L38.5 75.67 L37.47 76.03 L36.48 76.4 L35.53 76.77 L34.61 77.13 L33.74 77.5 L32.91 77.87 L32.13 78.23 L31.39 78.6 L30.71 78.97 L30.08 79.33 L29.51 79.7 L28.99 80.07 L28.53 80.43 L28.13 80.8 L27.78 81.17 L27.5 81.53 L27.28 81.9 L27.13 82.27 L27.03 82.63 L27 83 L27.03 83.37 M50 6 L48.8 6.37 L47.6 6.73 L46.4 7.1 L45.22 7.47 L44.05 7.83 L42.89 8.2 L41.76 8.57 L40.65 8.93 L39.56 9.3 L38.5 9.67 L37.47 10.03 L36.48 10.4 L35.53 10.77 L34.61 11.13 L33.74 11.5 L32.91 11.87 L32.13 12.23 L31.39 12.6 L30.71 12.97 L30.08 13.33 L29.51 13.7 L28.99 14.07 L28.53 14.43 L28.13 14.8 L27.78 15.17 L27.5 15.53 L27.28 15.9 L27.13 16.27 L27.03 16.63 L27 17 L27.03 17.37 M72.97 39.37 L72.97 39.37 L72.87 39.73 L72.72 40.1 L72.5 40.47 L72.22 40.83 L71.87 41.2 L71.47 41.57 L71.01 41.93 L70.49 42.3 L69.92 42.67 L69.29 43.03 L68.61 43.4 L67.87 43.77 L67.09 44.13 L66.26 44.5 L65.39 44.87 L64.47 45.23 L63.52 45.6 L62.53 45.97 L61.5 46.33 L60.44 46.7 L59.35 47.07 L58.24 47.43 L57.11 47.8 L55.95 48.17 L54.78 48.53 L53.6 48.9 L52.4 49.27 L51.2 49.63 L50 50 L48.8 50.37 L47.6 50.73 L46.4 51.1 L45.22 51.47 L44.05 51.83 L42.89 52.2 L41.76 52.57 L40.65 52.93 L39.56 53.3 L38.5 53.67 L37.47 54.03 L36.48 54.4 L35.53 54.77 L34.61 55.13 L33.74 55.5 L32.91 55.87 L32.13 56.23 L31.39 56.6 L30.71 56.97 L30.08 57.33 L29.51 57.7 L28.99 58.07 L28.53 58.43 L28.13 58.8 L27.78 59.17 L27.5 59.53 L27.28 59.9 L27.13 60.27 L27.03 60.63 L27 61 L27.03 61.37 M72.97 83.37 L72.97 83.37 L72.87 83.73 L72.72 84.1 L72.5 84.47 L72.22 84.83 L71.87 85.2 L71.47 85.57 L71.01 85.93 L70.49 86.3 L69.92 86.67 L69.29 87.03 L68.61 87.4 L67.87 87.77 L67.09 88.13 L66.26 88.5 L65.39 88.87 L64.47 89.23 L63.52 89.6 L62.53 89.97 L61.5 90.33 L60.44 90.7 L59.35 91.07 L58.24 91.43 L57.11 91.8 L55.95 92.17 L54.78 92.53 L53.6 92.9 L52.4 93.27 L51.2 93.63 L50 94" />
-                <path stroke="#C3D1FF" stroke-width="3" d="M46.13 8.44H53.87 M34.08 13.33H65.92 M31.35 18.22H68.65 M39.22 23.11H60.78 M39.22 32.89H60.78 M31.35 37.78H68.65 M34.08 42.67H65.92 M46.13 47.56H53.87 M46.13 52.44H53.87 M34.08 57.33H65.92 M31.35 62.22H68.65 M39.22 67.11H60.78 M39.22 76.89H60.78 M31.35 81.78H68.65 M34.08 86.67H65.92 M46.13 91.56H53.87" />
-                <path stroke="url(#auHelixFront)" stroke-width="7" d="M50 6 L51.2 6.37 L52.4 6.73 L53.6 7.1 L54.78 7.47 L55.95 7.83 L57.11 8.2 L58.24 8.57 L59.35 8.93 L60.44 9.3 L61.5 9.67 L62.53 10.03 L63.52 10.4 L64.47 10.77 L65.39 11.13 L66.26 11.5 L67.09 11.87 L67.87 12.23 L68.61 12.6 L69.29 12.97 L69.92 13.33 L70.49 13.7 L71.01 14.07 L71.47 14.43 L71.87 14.8 L72.22 15.17 L72.5 15.53 L72.72 15.9 L72.87 16.27 L72.97 16.63 L73 17 L72.97 17.37 M27.03 39.37 L27.03 39.37 L27.13 39.73 L27.28 40.1 L27.5 40.47 L27.78 40.83 L28.13 41.2 L28.53 41.57 L28.99 41.93 L29.51 42.3 L30.08 42.67 L30.71 43.03 L31.39 43.4 L32.13 43.77 L32.91 44.13 L33.74 44.5 L34.61 44.87 L35.53 45.23 L36.48 45.6 L37.47 45.97 L38.5 46.33 L39.56 46.7 L40.65 47.07 L41.76 47.43 L42.89 47.8 L44.05 48.17 L45.22 48.53 L46.4 48.9 L47.6 49.27 L48.8 49.63 L50 50 L51.2 50.37 L52.4 50.73 L53.6 51.1 L54.78 51.47 L55.95 51.83 L57.11 52.2 L58.24 52.57 L59.35 52.93 L60.44 53.3 L61.5 53.67 L62.53 54.03 L63.52 54.4 L64.47 54.77 L65.39 55.13 L66.26 55.5 L67.09 55.87 L67.87 56.23 L68.61 56.6 L69.29 56.97 L69.92 57.33 L70.49 57.7 L71.01 58.07 L71.47 58.43 L71.87 58.8 L72.22 59.17 L72.5 59.53 L72.72 59.9 L72.87 60.27 L72.97 60.63 L73 61 L72.97 61.37 M27.03 83.37 L27.03 83.37 L27.13 83.73 L27.28 84.1 L27.5 84.47 L27.78 84.83 L28.13 85.2 L28.53 85.57 L28.99 85.93 L29.51 86.3 L30.08 86.67 L30.71 87.03 L31.39 87.4 L32.13 87.77 L32.91 88.13 L33.74 88.5 L34.61 88.87 L35.53 89.23 L36.48 89.6 L37.47 89.97 L38.5 90.33 L39.56 90.7 L40.65 91.07 L41.76 91.43 L42.89 91.8 L44.05 92.17 L45.22 92.53 L46.4 92.9 L47.6 93.27 L48.8 93.63 L50 94 M27.03 17.37 L27.03 17.37 L27.13 17.73 L27.28 18.1 L27.5 18.47 L27.78 18.83 L28.13 19.2 L28.53 19.57 L28.99 19.93 L29.51 20.3 L30.08 20.67 L30.71 21.03 L31.39 21.4 L32.13 21.77 L32.91 22.13 L33.74 22.5 L34.61 22.87 L35.53 23.23 L36.48 23.6 L37.47 23.97 L38.5 24.33 L39.56 24.7 L40.65 25.07 L41.76 25.43 L42.89 25.8 L44.05 26.17 L45.22 26.53 L46.4 26.9 L47.6 27.27 L48.8 27.63 L50 28 L51.2 28.37 L52.4 28.73 L53.6 29.1 L54.78 29.47 L55.95 29.83 L57.11 30.2 L58.24 30.57 L59.35 30.93 L60.44 31.3 L61.5 31.67 L62.53 32.03 L63.52 32.4 L64.47 32.77 L65.39 33.13 L66.26 33.5 L67.09 33.87 L67.87 34.23 L68.61 34.6 L69.29 34.97 L69.92 35.33 L70.49 35.7 L71.01 36.07 L71.47 36.43 L71.87 36.8 L72.22 37.17 L72.5 37.53 L72.72 37.9 L72.87 38.27 L72.97 38.63 L73 39 L72.97 39.37 M27.03 61.37 L27.03 61.37 L27.13 61.73 L27.28 62.1 L27.5 62.47 L27.78 62.83 L28.13 63.2 L28.53 63.57 L28.99 63.93 L29.51 64.3 L30.08 64.67 L30.71 65.03 L31.39 65.4 L32.13 65.77 L32.91 66.13 L33.74 66.5 L34.61 66.87 L35.53 67.23 L36.48 67.6 L37.47 67.97 L38.5 68.33 L39.56 68.7 L40.65 69.07 L41.76 69.43 L42.89 69.8 L44.05 70.17 L45.22 70.53 L46.4 70.9 L47.6 71.27 L48.8 71.63 L50 72 L51.2 72.37 L52.4 72.73 L53.6 73.1 L54.78 73.47 L55.95 73.83 L57.11 74.2 L58.24 74.57 L59.35 74.93 L60.44 75.3 L61.5 75.67 L62.53 76.03 L63.52 76.4 L64.47 76.77 L65.39 77.13 L66.26 77.5 L67.09 77.87 L67.87 78.23 L68.61 78.6 L69.29 78.97 L69.92 79.33 L70.49 79.7 L71.01 80.07 L71.47 80.43 L71.87 80.8 L72.22 81.17 L72.5 81.53 L72.72 81.9 L72.87 82.27 L72.97 82.63 L73 83 L72.97 83.37" />
-              </g>
-              <rect x="-20" y="-20" width="140" height="140" fill="#000000" filter="url(#auHelixGrain)" mask="url(#auHelixMask)" opacity="0.5" style="mix-blend-mode:overlay" />
-            </g>
-          </svg>
-        </div>
+      <div class="au-decode" id="auDecode" aria-hidden="true">
+        <canvas id="auDecodeCanvas"></canvas>
+        <span class="au-decode-tag au-decode-tag--l" data-y="0.14" style="top:14%">People</span>
+        <span class="au-decode-tag au-decode-tag--r" data-y="0.30" style="top:30%">Customers</span>
+        <span class="au-decode-tag au-decode-tag--l" data-y="0.48" style="top:48%">Systems</span>
+        <span class="au-decode-tag au-decode-tag--r" data-y="0.64" style="top:64%">Processes</span>
+        <span class="au-decode-tag au-decode-tag--l" data-y="0.82" style="top:82%">Ideas</span>
+      </div>
+    </div>
+  </section>
 
-        <svg class="au-particles" viewBox="0 0 520 480" aria-hidden="true">
-        <circle class="au-particle" cx="140" cy="310" r="3" fill="#2B49DB" style="--dx:12px;--dy:-7px;--dur:8.2s;--delay:0s" />
-        <circle class="au-particle" cx="110" cy="260" r="2.5" fill="#6A8CFF" style="--dx:14px;--dy:-2px;--dur:9.1s;--delay:0.6s" />
-        <circle class="au-particle" cx="95" cy="330" r="3.5" fill="#2B49DB" style="--dx:12px;--dy:-7px;--dur:7.6s;--delay:1.2s" />
-        <circle class="au-particle" cx="160" cy="370" r="2" fill="#28C76F" style="--dx:9px;--dy:-11px;--dur:8.7s;--delay:1.8s" />
-        <circle class="au-particle" cx="70" cy="290" r="2.8" fill="#A9BEFF" style="--dx:14px;--dy:-4px;--dur:9.4s;--delay:2.4s" />
-        <circle class="au-particle" cx="190" cy="400" r="3" fill="#2B49DB" style="--dx:6px;--dy:-13px;--dur:8.1s;--delay:3s" />
-        <circle class="au-particle" cx="50" cy="230" r="2" fill="#6A8CFF" style="--dx:14px;--dy:1px;--dur:7.3s;--delay:3.6s" />
-        <circle class="au-particle" cx="120" cy="190" r="2.5" fill="#A9BEFF" style="--dx:13px;--dy:5px;--dur:8.9s;--delay:4.2s" />
-        <circle class="au-particle" cx="380" cy="120" r="2.4" fill="#28C76F" style="--dx:-6px;--dy:10px;--dur:9.2s;--delay:4.8s" />
-        <circle class="au-particle" cx="420" cy="160" r="3" fill="#2B49DB" style="--dx:-12px;--dy:8px;--dur:7.8s;--delay:5.4s" />
-        <circle class="au-particle" cx="400" cy="340" r="2" fill="#6A8CFF" style="--dx:-10px;--dy:-9px;--dur:9.7s;--delay:0.3s" />
-        <circle class="au-particle" cx="440" cy="280" r="2.6" fill="#2B49DB" style="--dx:-13px;--dy:-4px;--dur:8.4s;--delay:1.5s" />
-        <circle class="au-particle" cx="360" cy="420" r="2" fill="#A9BEFF" style="--dx:-4px;--dy:-14px;--dur:9s;--delay:2.1s" />
-        <circle class="au-particle" cx="460" cy="210" r="2.2" fill="#6A8CFF" style="--dx:-14px;--dy:2px;--dur:8.5s;--delay:2.7s" />
-        </svg>
+  <section class="sdl-section sdl-section--white" id="layers">
+    <div class="sdl-section-inner">
+      <div class="au-layers-head">
+        <div class="reveal">
+          <span class="au-kicker"><span class="kicker-line"></span> How we see a business</span>
+          <h2 class="au-title">One business. Many connected layers.</h2>
+        </div>
+        <div class="au-body reveal">
+          <p><strong style="color:#162833;font-weight:600">The way a business works is rarely simple.</strong> People, processes, technology, experiences and growth are closely connected. Understanding those relationships gives SDL the context to bring AI, engineering, business operations, experience and growth together.</p>
+          <p>We look across these connections to understand the business as a whole, then bring together the right combination of intelligence, engineering, transformation, experience and growth.</p>
+        </div>
+      </div>
+
+      <div class="au-layers-body">
+        <div class="au-layer-list reveal-group" id="auLayerList">
+          <a class="au-layer-row is-active" data-i="0" href="ai-transformation.html">
+            <span class="au-layer-num">01</span>
+            <span><span class="au-layer-name">AI transformation</span><span class="au-layer-desc" style="display:block">Bring intelligence into business decisions, processes and applications.</span></span>
+            <span class="au-layer-arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="au-layer-row" data-i="1" href="digital-engineering.html">
+            <span class="au-layer-num">02</span>
+            <span><span class="au-layer-name">Digital engineering</span><span class="au-layer-desc" style="display:block">Build the applications, platforms and technology foundations businesses rely on.</span></span>
+            <span class="au-layer-arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="au-layer-row" data-i="2" href="business-transformation.html">
+            <span class="au-layer-num">03</span>
+            <span><span class="au-layer-name">Business transformation</span><span class="au-layer-desc" style="display:block">Modernize processes, applications and business capabilities around the way the business operates.</span></span>
+            <span class="au-layer-arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="au-layer-row" data-i="3" href="digital-experience.html">
+            <span class="au-layer-num">04</span>
+            <span><span class="au-layer-name">Digital experience</span><span class="au-layer-desc" style="display:block">Create simpler, more intuitive experiences for customers, employees and users.</span></span>
+            <span class="au-layer-arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="au-layer-row" data-i="4" href="growth-transformation.html">
+            <span class="au-layer-num">05</span>
+            <span><span class="au-layer-name">Growth transformation</span><span class="au-layer-desc" style="display:block">Connect digital presence, content, search, campaigns and conversion to create demand.</span></span>
+            <span class="au-layer-arrow" aria-hidden="true">↗</span>
+          </a>
+        </div>
+        <div class="reveal au-stack-wrap" aria-hidden="true">
+          <svg class="au-stack" id="auStack" viewBox="0 0 520 490" role="img" aria-label="Five connected layers of a business">
+            <defs>
+              <pattern id="auSlabDots" width="12" height="12" patternUnits="userSpaceOnUse">
+                <circle cx="6" cy="6" r="1.1" fill="#C3D1FF" />
+              </pattern>
+            </defs>
+          <g class="au-slab" data-i="4">
+            <polygon class="side-l" points="70,392 260,458 260,468 70,402" />
+            <polygon class="side-r" points="260,458 450,392 450,402 260,468" />
+            <polygon class="top" points="260,326 450,392 260,458 70,392" />
+            <polygon class="dots" points="260,326 450,392 260,458 70,392" fill="url(#auSlabDots)" />
+            <text class="num" x="466" y="397">05</text>
+          </g>
+          <g class="au-slab" data-i="3">
+            <polygon class="side-l" points="70,318 260,384 260,394 70,328" />
+            <polygon class="side-r" points="260,384 450,318 450,328 260,394" />
+            <polygon class="top" points="260,252 450,318 260,384 70,318" />
+            <polygon class="dots" points="260,252 450,318 260,384 70,318" fill="url(#auSlabDots)" />
+            <text class="num" x="466" y="323">04</text>
+          </g>
+          <g class="au-slab" data-i="2">
+            <polygon class="side-l" points="70,244 260,310 260,320 70,254" />
+            <polygon class="side-r" points="260,310 450,244 450,254 260,320" />
+            <polygon class="top" points="260,178 450,244 260,310 70,244" />
+            <polygon class="dots" points="260,178 450,244 260,310 70,244" fill="url(#auSlabDots)" />
+            <text class="num" x="466" y="249">03</text>
+          </g>
+          <g class="au-slab" data-i="1">
+            <polygon class="side-l" points="70,170 260,236 260,246 70,180" />
+            <polygon class="side-r" points="260,236 450,170 450,180 260,246" />
+            <polygon class="top" points="260,104 450,170 260,236 70,170" />
+            <polygon class="dots" points="260,104 450,170 260,236 70,170" fill="url(#auSlabDots)" />
+            <text class="num" x="466" y="175">02</text>
+          </g>
+          <g class="au-slab" data-i="0">
+            <polygon class="side-l" points="70,96 260,162 260,172 70,106" />
+            <polygon class="side-r" points="260,162 450,96 450,106 260,172" />
+            <polygon class="top" points="260,30 450,96 260,162 70,96" />
+            <polygon class="dots" points="260,30 450,96 260,162 70,96" fill="url(#auSlabDots)" />
+            <text class="num" x="466" y="101">01</text>
+          </g>
+          </svg></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="au-exp-section">
+    <div class="au-dot-texture" aria-hidden="true"></div>
+    <div class="au-exp-inner">
+      <div class="au-exp-head">
+        <div class="reveal">
+          <span class="au-kicker au-kicker--dark"><span class="kicker-line"></span> 16+ years of building with technology</span>
+          <h2 class="au-title au-title--light">Experience shapes how we work.</h2>
+        </div>
+        <div class="au-body reveal">
+          <p>For more than 16 years, Social DNA Labs has worked across digital products, applications, business systems, customer experiences and emerging technologies.</p>
+          <p>That experience spans industries, technologies and business environments, bringing practical understanding to every engagement.</p>
+        </div>
+      </div>
+      <div class="au-stats reveal-group">
+        <div class="au-stat"><div class="au-stat-num"><span data-count="16">16</span><span class="plus">+</span></div><div class="au-stat-label">Years of technology delivery</div></div>
+        <div class="au-stat"><div class="au-stat-num"><span data-count="700">700</span><span class="plus">+</span></div><div class="au-stat-label">Projects delivered</div></div>
+        <div class="au-stat"><div class="au-stat-num"><span data-count="200">200</span><span class="plus">+</span></div><div class="au-stat-label">Businesses served</div></div>
       </div>
     </div>
   </section>
 
   <section class="sdl-section sdl-section--white">
     <div class="sdl-section-inner">
-      <div class="au-narrative">
-        <div class="reveal">
-          <span class="au-kicker"><span class="kicker-line"></span> Built around change</span>
-          <p class="au-narrative-lead">Technology has changed dramatically since Social DNA Labs began. So has the way businesses use it.</p>
+      <div class="au-mv reveal-group">
+        <div class="au-mv-card au-mv-card--light">
+          <span class="au-kicker"><span class="kicker-line"></span> Our mission</span>
+          <h2 class="au-mv-title">Understand deeply. Build with purpose.</h2>
+          <p class="au-mv-text">Understand the problems behind the request, bring together the right perspectives and create intelligent, useful and well-built solutions.</p>
         </div>
-
-        <div class="au-narrative-body reveal">
-          <p>What started with digital technology has evolved alongside cloud, mobile, connected systems, modern applications and now AI. Through that change, our focus has remained consistent: understand what matters, solve the right problem and build technology that can keep evolving.</p>
-          <p>Today, Social DNA Labs brings together people with different perspectives across technology, design and business to work on problems that do not always have straightforward answers.</p>
-        </div>
-      </div>
-
-      <div class="au-evolution reveal-group">
-        <div class="au-evolution-step"><span class="au-evolution-dot"></span><span class="au-evolution-label">Digital</span></div>
-        <div class="au-evolution-step"><span class="au-evolution-dot"></span><span class="au-evolution-label">Cloud</span></div>
-        <div class="au-evolution-step"><span class="au-evolution-dot"></span><span class="au-evolution-label">Mobile</span></div>
-        <div class="au-evolution-step"><span class="au-evolution-dot"></span><span class="au-evolution-label">Connected systems</span></div>
-        <div class="au-evolution-step au-evolution-step--current"><span class="au-evolution-dot"></span><span class="au-evolution-label">AI</span></div>
-      </div>
-
-      <div class="au-split reveal-group">
-        <div class="au-split-card">
-          <div class="au-split-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg>
-          </div>
-          <span class="au-split-eyebrow">Vision</span>
-          <div class="au-split-title">Build a future where technology creates meaningful progress.</div>
-          <p class="au-split-desc">A future where businesses can adapt faster, people can work better and technology continuously opens new possibilities.</p>
-        </div>
-        <div class="au-split-card">
-          <div class="au-split-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/></svg>
-          </div>
-          <span class="au-split-eyebrow">Mission</span>
-          <div class="au-split-title">Turn technology into meaningful outcomes.</div>
-          <p class="au-split-desc">Understand the challenges businesses face, bring together the right people and ideas, and create technology that makes a measurable difference.</p>
+        <div class="au-mv-card au-mv-card--accent">
+          <div class="au-dot-texture" aria-hidden="true"></div>
+          <span class="au-kicker au-kicker--onblue" style="position:relative"><span class="kicker-line"></span> Our vision</span>
+          <h2 class="au-mv-title" style="position:relative">A world where businesses can rewrite their possibilities.</h2>
+          <p class="au-mv-text">A world where businesses understand themselves more deeply, use intelligence more naturally, build without unnecessary constraints and create experiences that keep pace with the people they serve.</p>
         </div>
       </div>
     </div>
@@ -539,43 +633,42 @@
 
   <section class="sdl-section sdl-section--alt">
     <div class="sdl-section-inner">
-      <div class="reveal">
-        <span class="au-kicker"><span class="kicker-line"></span> How we think about technology</span>
-        <div class="sdl-section-title" style="margin-top:18px">Four ideas that shape every engagement.</div>
+      <div class="au-values-head reveal">
+        <span class="au-kicker"><span class="kicker-line"></span> Our values</span>
+        <h2 class="au-title">What stays in the DNA.</h2>
       </div>
-
-      <div class="au-principles-grid reveal-group">
-        <div class="au-principle">
-          <span class="au-principle-num">01</span>
-          <div class="au-principle-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+      <div class="au-values reveal-group">
+        <div class="au-value">
+          <div class="au-value-node"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20.5c.9-4.2 3.8-6.8 7.5-6.8s6.6 2.6 7.5 6.8"/></svg></div>
+          <div class="au-value-card">
+            <div class="au-value-name">Humane</div>
+            <div class="au-value-tag">Start with people.</div>
+            <p class="au-value-desc">Understand the people behind the problem, the context around them and what actually matters to them.</p>
           </div>
-          <div class="au-principle-title">Start with the problem.</div>
-          <p class="au-principle-desc">Technology is a means, not the starting point. Understanding the business problem, the people affected and the outcome that matters comes first.</p>
         </div>
-        <div class="au-principle">
-          <span class="au-principle-num">02</span>
-          <div class="au-principle-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4.5 13.8H10l-1 7.2 8.6-10.9H12z"/></svg>
+        <div class="au-value">
+          <div class="au-value-node"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+          <div class="au-value-card">
+            <div class="au-value-name">Integrity</div>
+            <div class="au-value-tag">Say what we mean.</div>
+            <p class="au-value-desc">Be honest in our thinking, transparent in our decisions and accountable for what we deliver.</p>
           </div>
-          <div class="au-principle-title">Make it useful.</div>
-          <p class="au-principle-desc">Good technology should improve something: a process, an experience, a decision, a product or the way people work.</p>
         </div>
-        <div class="au-principle">
-          <span class="au-principle-num">03</span>
-          <div class="au-principle-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v6M15 21h6v-6M3 21l7-7M21 3l-7 7"/></svg>
+        <div class="au-value">
+          <div class="au-value-node"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.4 1 1.1 1 1.8V16h5v-.3c0-.7.4-1.4 1-1.8A6 6 0 0 0 12 3z"/></svg></div>
+          <div class="au-value-card">
+            <div class="au-value-name">Ingenuity</div>
+            <div class="au-value-tag">Look beyond the obvious.</div>
+            <p class="au-value-desc">Question assumptions, explore possibilities and find smarter ways to solve difficult problems.</p>
           </div>
-          <div class="au-principle-title">Build for change.</div>
-          <p class="au-principle-desc">The technology that works today should not become the constraint tomorrow. Architecture and engineering should leave room to evolve.</p>
         </div>
-        <div class="au-principle">
-          <span class="au-principle-num">04</span>
-          <div class="au-principle-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5M3 8v6M21 8v6"/></svg>
+        <div class="au-value">
+          <div class="au-value-node"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="12" r="5.5"/><circle cx="15" cy="12" r="5.5"/></svg></div>
+          <div class="au-value-card">
+            <div class="au-value-name">Harmony</div>
+            <div class="au-value-tag">Bring perspectives together.</div>
+            <p class="au-value-desc">Different disciplines, experiences and ways of thinking create stronger ideas when they work together.</p>
           </div>
-          <div class="au-principle-title">Keep learning.</div>
-          <p class="au-principle-desc">Technology never stands still. Neither should the people working with it.</p>
         </div>
       </div>
     </div>
@@ -583,87 +676,104 @@
 
   <section class="sdl-section sdl-section--white">
     <div class="sdl-section-inner">
-      <div class="au-narrative">
-        <div class="reveal">
-          <span class="au-kicker"><span class="kicker-line"></span> How we work together</span>
-          <p class="au-narrative-lead">Different perspectives. One way of working.</p>
+      <div class="au-name-head reveal">
+        <div>
+          <span class="au-kicker"><span class="kicker-line"></span> What the name means</span>
+          <h2 class="au-title">Three ideas sit behind the name.</h2>
         </div>
+      </div>
+      <div class="au-name-grid reveal-group">
+        <div class="au-name-col">
+          <div class="au-name-word">Social<span class="dot">.</span></div>
+          <p class="au-name-text"><strong>Social is about people, relationships and behavior.</strong> Technology exists in a human world.</p>
+        </div>
+        <div class="au-name-col">
+          <div class="au-name-word">DNA<span class="dot">.</span></div>
+          <p class="au-name-text"><strong>DNA represents the underlying patterns that make every business distinct.</strong> The processes, systems, people, ideas and principles that shape how it works.</p>
+        </div>
+        <div class="au-name-col">
+          <div class="au-name-word">Labs<span class="dot">.</span></div>
+          <p class="au-name-text"><strong>Labs represents curiosity.</strong> A place to explore, experiment, test ideas and discover what is possible.</p>
+        </div>
+      </div>
+      <p class="au-name-close reveal">Together, they reflect how Social DNA Labs approaches its work: <span class="hl">understand what is underneath</span>, <span class="hl">explore what could be different</span> and <span class="hl">build what has value</span>.</p>
+    </div>
+  </section>
 
-        <div class="au-narrative-body reveal">
-          <p>Complex problems rarely belong to one discipline.</p>
-          <p>Engineers, designers, strategists and specialists bring different perspectives to the same challenge. Collaboration across those perspectives helps turn an initial idea into something that works in the real world.</p>
-          <p class="au-collab-tags">Understand · Think · Create · Evolve</p>
-          <div class="au-collab-cta"><a class="sdl-cta-link" href="services.html">Explore our approach →</a></div>
+  <section class="au-ai-section">
+    <div class="au-dot-texture" aria-hidden="true"></div>
+    <div class="au-ai-inner">
+      <div class="au-ai-copy reveal">
+        <span class="au-kicker au-kicker--dark"><span class="kicker-line"></span> AI and the business</span>
+        <h2 class="au-title au-title--light">AI is redefining the business.</h2>
+        <p class="au-lead">AI is moving beyond a technology layer. It is becoming part of how businesses operate, build, decide and engage.</p>
+        <p class="au-ai-p">SDL brings AI together with engineering, transformation, experience and growth to turn those possibilities into something useful.</p>
+      </div>
+      <div class="au-ai-panel reveal">
+        <p class="au-ai-caption">From intelligent applications and automated processes to adaptive experiences and new digital capabilities, the possibilities are expanding quickly.</p>
+        <div class="au-ai-row">
+          <span class="au-ai-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9h18M8 14l2 2-2 2"/></svg></span>
+          <span class="au-ai-label">Intelligent applications</span>
+          <span class="au-ai-meter"><span></span></span>
+        </div>
+        <div class="au-ai-row">
+          <span class="au-ai-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 0 1 14-5M20 4v4h-4"/><path d="M20 12a8 8 0 0 1-14 5M4 20v-4h4"/></svg></span>
+          <span class="au-ai-label">Automated processes</span>
+          <span class="au-ai-meter"><span></span></span>
+        </div>
+        <div class="au-ai-row">
+          <span class="au-ai-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg></span>
+          <span class="au-ai-label">Adaptive experiences</span>
+          <span class="au-ai-meter"><span></span></span>
+        </div>
+        <div class="au-ai-row">
+          <span class="au-ai-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.4 6.1L20.5 11l-6.1 2.4L12 19.5l-2.4-6.1L3.5 11l6.1-1.9z"/></svg></span>
+          <span class="au-ai-label">New digital capabilities</span>
+          <span class="au-ai-meter"><span></span></span>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="au-values-section">
-    <div class="au-values-inner">
-      <div class="au-values-head reveal">
-        <span class="au-kicker au-kicker--dark"><span class="kicker-line"></span> What matters to us</span>
-        <div class="au-values-title">The principles behind the work.</div>
-      </div>
-
-      <div class="au-values-grid reveal-group">
-        <div class="au-value-item">
-          <div class="au-value-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4.5 4-7 8-7s7 2.5 8 7"/></svg>
-          </div>
-          <div class="au-value-title">Humane</div>
-          <p class="au-value-desc">Put people at the center of technology and the work.</p>
-        </div>
-        <div class="au-value-item">
-          <div class="au-value-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6z"/></svg>
-          </div>
-          <div class="au-value-title">Integrity</div>
-          <p class="au-value-desc">Do the right thing, take responsibility and build trust.</p>
-        </div>
-        <div class="au-value-item">
-          <div class="au-value-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/><circle cx="12" cy="12" r="4"/></svg>
-          </div>
-          <div class="au-value-title">Ingenuity</div>
-          <p class="au-value-desc">Stay curious, challenge assumptions and find better ways forward.</p>
-        </div>
-        <div class="au-value-item">
-          <div class="au-value-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="9" r="3.2"/><circle cx="17" cy="10.5" r="2.6"/><path d="M2.6 20c.5-3.8 2.8-6.4 5.4-6.4s4.9 2.6 5.4 6.4"/><path d="M14.2 20c.4-2.7 1.9-4.6 3.6-4.6 1.9 0 3.4 1.8 3.9 4.2"/></svg>
-          </div>
-          <div class="au-value-title">Harmony</div>
-          <p class="au-value-desc">Create an environment where people, ideas and work can thrive together.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="sdl-section sdl-section--white">
+  <section class="sdl-section sdl-section--alt">
     <div class="sdl-section-inner">
       <div class="au-people">
-        <div class="reveal">
-          <span class="au-kicker"><span class="kicker-line"></span> Our people</span>
-          <p class="au-people-title">People make the difference.</p>
+        <div class="au-people-copy reveal">
+          <span class="au-kicker"><span class="kicker-line"></span> The people behind the work</span>
+          <h2 class="au-title">Different minds. One shared curiosity.</h2>
+          <p class="au-lead">Great work comes from people who see problems differently.</p>
+          <div class="au-body">
+            <p>Engineers, designers, strategists, technology specialists and business thinkers bring different perspectives to the same challenge. That diversity of thinking helps SDL look beyond the obvious and build with greater clarity and purpose.</p>
+          </div>
         </div>
-
-        <div class="au-people-body reveal">
-          <p>Technology changes constantly. The people behind it are what give it meaning.</p>
-          <p>Social DNA Labs brings together people who enjoy solving difficult problems, learning new things and working with others to create something better.</p>
-          <p>Different backgrounds, different perspectives and different areas of expertise make the organization stronger.</p>
-          <div class="au-people-cta"><a class="sdl-cta-link" href="index.html#contact">Join us →</a></div>
-        </div>
+        <div class="reveal au-venn-wrap" aria-hidden="true">
+          <svg class="au-venn" viewBox="-70 20 660 450" role="img" aria-label="Engineers, designers, strategists, technology specialists and business thinkers overlapping">
+            <circle class="lens" cx="260.0" cy="178.0" r="102" />
+            <circle class="lens" cx="319.0" cy="220.8" r="102" />
+            <circle class="lens" cx="296.4" cy="290.2" r="102" />
+            <circle class="lens" cx="223.6" cy="290.2" r="102" />
+            <circle class="lens" cx="201.0" cy="220.8" r="102" />
+            <circle cx="260" cy="240" r="30" fill="#2B49DB" />
+            <path d="M260 226l3.6 9 9 3.6-9 3.6-3.6 9-3.6-9-9-3.6 9-3.6z" fill="#FFFFFF" />
+            <text x="260.0" y="59.0" text-anchor="middle">Engineers</text>
+            <text x="436.9" y="187.5" text-anchor="start">Designers</text>
+            <text x="369.3" y="395.5" text-anchor="start">Strategists</text>
+            <text x="150.7" y="395.5" text-anchor="end">Technology specialists</text>
+            <text x="83.1" y="187.5" text-anchor="end">Business thinkers</text>
+          </svg></div>
       </div>
     </div>
   </section>
 
   <section class="au-cta-section">
     <div class="au-cta-card reveal">
+      <div class="au-dot-texture" aria-hidden="true"></div>
       <div class="au-cta-inner">
         <span class="au-kicker au-kicker--dark"><span class="kicker-line"></span> Start a conversation</span>
-        <div class="au-cta-title">Let's build what comes next.</div>
-        <p class="au-cta-sub">Whether it's an idea taking shape, a problem that needs solving or technology that needs to evolve, start the conversation.</p>
-        <a href="index.html#contact" class="au-cta-btn">Talk to us <span class="arrow" aria-hidden="true">→</span></a>
+        <h2 class="au-cta-title">Make what's possible real.</h2>
+        <p class="au-cta-sub">Some ideas need a new perspective. Some problems need a different answer. Some opportunities are waiting for the right combination of thinking and technology.</p>
+        <p class="au-cta-ask">Tell us what you're trying to solve.</p>
+        <a href="index.html#contact" class="au-btn">Talk to us <span class="arrow" aria-hidden="true">→</span></a>
       </div>
     </div>
   </section>
@@ -966,6 +1076,134 @@
   mobileToggle.addEventListener('click', function () {
     mobilePanel.classList.toggle('open');
   });
+
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ---------- Hero: decoding helix ----------
+  (function initDecode() {
+    var wrap = document.getElementById('auDecode');
+    var canvas = document.getElementById('auDecodeCanvas');
+    if (!wrap || !canvas || !canvas.getContext) return;
+    var ctx = canvas.getContext('2d');
+    var tags = wrap.querySelectorAll('.au-decode-tag');
+    var w = 0, h = 0, dpr = 1;
+
+    function resize() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = wrap.clientWidth; h = wrap.clientHeight;
+      canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    var CYCLE = 7.5, HOLD = 1.6;
+    var start = performance.now();
+
+    function draw(now) {
+      var t = (now - start) / 1000;
+      var cyc = t % (CYCLE + HOLD);
+      var progress = reduceMotion ? 1 : Math.min(cyc / CYCLE, 1);
+      var scanY = progress * h;
+      var phase = reduceMotion ? 0 : t * 0.45;
+
+      ctx.clearRect(0, 0, w, h);
+      var gap = 12, cx = w / 2, amp = w * 0.2, turns = 2.2;
+      var cols = Math.floor(w / gap), rows = Math.floor(h / gap);
+      var offX = (w - (cols - 1) * gap) / 2, offY = (h - (rows - 1) * gap) / 2;
+
+      for (var r = 0; r < rows; r++) {
+        var y = offY + r * gap;
+        var th = (y / h) * turns * Math.PI * 2 + phase;
+        var xa = cx + amp * Math.sin(th), xb = cx - amp * Math.sin(th);
+        var front = Math.cos(th) >= 0;
+        var decoded = y <= scanY;
+        var near = Math.abs(y - scanY) < gap * 1.5 && progress < 1;
+        var rungRow = r % 2 === 0 && Math.abs(Math.sin(th)) > 0.3;
+        var lo = Math.min(xa, xb), hi = Math.max(xa, xb);
+
+        for (var c = 0; c < cols; c++) {
+          var x = offX + c * gap;
+          var da = Math.abs(x - xa), db = Math.abs(x - xb);
+          var rad, col;
+          if (da < gap * 1.05 || db < gap * 1.05) {
+            var isFront = da < db ? front : !front;
+            if (decoded) { rad = isFront ? 3 : 2.2; col = isFront ? '#2B49DB' : '#8EA5F5'; }
+            else { rad = isFront ? 2.4 : 1.8; col = isFront ? '#B9C8F5' : '#DCE4F7'; }
+          } else if (rungRow && x > lo + gap && x < hi - gap) {
+            rad = decoded ? 1.8 : 1.3; col = decoded ? '#A9BEFF' : '#E1E7F4';
+          } else {
+            rad = 1; col = decoded ? 'rgba(43,73,219,0.16)' : 'rgba(43,73,219,0.08)';
+          }
+          if (near) { rad += 0.8; if (col.charAt(0) !== '#') col = 'rgba(43,73,219,0.35)'; }
+          ctx.fillStyle = col;
+          ctx.beginPath(); ctx.arc(x, y, rad, 0, 6.2832); ctx.fill();
+        }
+      }
+
+      if (progress < 1) {
+        var g = ctx.createLinearGradient(0, 0, w, 0);
+        g.addColorStop(0, 'rgba(43,73,219,0)');
+        g.addColorStop(0.5, 'rgba(43,73,219,0.55)');
+        g.addColorStop(1, 'rgba(43,73,219,0)');
+        ctx.fillStyle = g;
+        ctx.fillRect(0, scanY - 1, w, 2);
+      }
+
+      for (var i = 0; i < tags.length; i++) {
+        var on = parseFloat(tags[i].getAttribute('data-y')) * h <= scanY;
+        tags[i].classList.toggle('is-on', on);
+      }
+
+      if (!reduceMotion) requestAnimationFrame(draw);
+    }
+    requestAnimationFrame(draw);
+  })();
+
+  // ---------- Connected layers ----------
+  (function initLayers() {
+    var list = document.getElementById('auLayerList');
+    var stack = document.getElementById('auStack');
+    if (!list || !stack) return;
+    var rows = list.querySelectorAll('.au-layer-row');
+    var slabs = stack.querySelectorAll('.au-slab');
+    var current = 0, paused = false;
+
+    function setActive(i) {
+      current = i;
+      rows.forEach(function (r) { r.classList.toggle('is-active', +r.getAttribute('data-i') === i); });
+      slabs.forEach(function (s) { s.classList.toggle('is-active', +s.getAttribute('data-i') === i); });
+    }
+    rows.forEach(function (r) {
+      r.addEventListener('mouseenter', function () { paused = true; setActive(+r.getAttribute('data-i')); });
+      r.addEventListener('focus', function () { paused = true; setActive(+r.getAttribute('data-i')); });
+    });
+    list.addEventListener('mouseleave', function () { paused = false; });
+    setActive(0);
+    if (!reduceMotion) {
+      setInterval(function () { if (!paused) setActive((current + 1) % rows.length); }, 2600);
+    }
+  })();
+
+  // ---------- Stat count-up ----------
+  (function initCounters() {
+    var nums = document.querySelectorAll('[data-count]');
+    if (!nums.length || reduceMotion || !('IntersectionObserver' in window)) return;
+    nums.forEach(function (el) { el.textContent = '0'; });
+    var io = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        obs.unobserve(entry.target);
+        var el = entry.target, target = +el.getAttribute('data-count'), t0 = performance.now(), dur = 1400;
+        (function tick(now) {
+          var p = Math.min((now - t0) / dur, 1);
+          el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+          if (p < 1) requestAnimationFrame(tick);
+        })(t0);
+      });
+    }, { threshold: 0.4 });
+    nums.forEach(function (el) { io.observe(el); });
+  })();
 
   // ---------- Scroll-reveal motion ----------
   (function initScrollReveal() {
