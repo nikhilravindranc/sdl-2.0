@@ -269,18 +269,16 @@
 
   /* ---------- About: mission / vision ---------- */
   .au-mv { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-  .au-mv-card { position: relative; overflow: hidden; border-radius: 28px; padding: 56px 48px 60px; min-height: 380px; display: flex; flex-direction: column; }
-  .au-mv-card--light { background: #F6F8FC; border: 1px solid #EEF1F6; }
-  .au-mv-card--accent { background: var(--accent); }
+  .au-mv-card { position: relative; overflow: hidden; background: var(--accent); border-radius: 28px; padding: 56px 48px 60px; min-height: 380px; display: flex; flex-direction: column; }
   .au-mv-card .au-kicker--onblue { color: rgba(255,255,255,0.8); }
   .au-mv-card .au-kicker--onblue .kicker-line { background: #FFFFFF; }
   .au-mv-title {
     margin-top: 22px; font-family: 'Manrope', sans-serif; font-weight: 500;
-    font-size: clamp(28px, 2.8vw, 38px); line-height: 1.2; letter-spacing: -0.015em; color: #162833; max-width: 460px;
+    font-size: clamp(28px, 2.8vw, 38px); line-height: 1.2; letter-spacing: -0.015em; color: #162833; max-width: 560px;
   }
-  .au-mv-text { margin: auto 0 0; padding-top: 36px; font-size: 16.5px; line-height: 1.75; color: #46535F; max-width: 480px; position: relative; }
-  .au-mv-card--accent .au-mv-title { color: #FFFFFF; }
-  .au-mv-card--accent .au-mv-text { color: rgba(255,255,255,0.82); }
+  .au-mv-text { margin: auto 0 0; padding-top: 36px; font-size: 16.5px; line-height: 1.75; color: #46535F; max-width: 520px; position: relative; }
+  .au-mv-card .au-mv-title { color: #FFFFFF; }
+  .au-mv-card .au-mv-text { color: rgba(255,255,255,0.82); }
 
   /* ---------- About: values ---------- */
   .au-values-head { max-width: 760px; }
@@ -365,7 +363,7 @@
     margin-top: 20px; font-family: 'Manrope', sans-serif; font-weight: 500;
     font-size: clamp(32px, 3.8vw, 50px); line-height: 1.15; letter-spacing: -0.02em; color: #FFFFFF;
   }
-  .au-cta-sub { margin: 20px auto 0; max-width: 620px; font-size: 17px; line-height: 1.7; color: rgba(255,255,255,0.62); }
+  .au-cta-sub { margin: 20px auto 0; max-width: 940px; text-wrap: balance; font-size: 17px; line-height: 1.7; color: rgba(255,255,255,0.62); }
   .au-cta-ask { margin: 22px 0 0; font-family: 'Manrope', sans-serif; font-size: 19px; font-weight: 600; color: #FFFFFF; }
   .au-cta-card .au-btn { margin-top: 32px; }
 
@@ -616,12 +614,13 @@
   <section class="sdl-section sdl-section--white">
     <div class="sdl-section-inner">
       <div class="au-mv reveal-group">
-        <div class="au-mv-card au-mv-card--light">
-          <span class="au-kicker"><span class="kicker-line"></span> Our mission</span>
-          <h2 class="au-mv-title">Understand deeply. Build with purpose.</h2>
-          <p class="au-mv-text">Understand the problems behind the request, bring together the right perspectives and create intelligent, useful and well-built solutions.</p>
+        <div class="au-mv-card">
+          <div class="au-dot-texture" aria-hidden="true"></div>
+          <span class="au-kicker au-kicker--onblue" style="position:relative"><span class="kicker-line"></span> Our mission</span>
+          <h2 class="au-mv-title" style="position:relative">Understand deeply. Make intelligence useful.</h2>
+          <p class="au-mv-text">Understand the business behind the problem and bring together AI, technology, experience and human thinking to make intelligence useful in the real world.</p>
         </div>
-        <div class="au-mv-card au-mv-card--accent">
+        <div class="au-mv-card">
           <div class="au-dot-texture" aria-hidden="true"></div>
           <span class="au-kicker au-kicker--onblue" style="position:relative"><span class="kicker-line"></span> Our vision</span>
           <h2 class="au-mv-title" style="position:relative">A world where businesses can rewrite their possibilities.</h2>
