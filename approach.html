@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Our approach — Social DNA Labs</title>
-<meta name="description" content="How Social DNA Labs moves from potential to impact — a method applied across AI, engineering, transformation, experience and growth.">
+<meta name="description" content="Business understanding, intelligent execution and measurable results — how Social DNA Labs runs AI, engineering, transformation, experience and growth engagements.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -101,11 +101,6 @@
   .sdl-section-inner { max-width: 1360px; margin: 0 auto; }
   .sdl-section--alt { background: #F6F8FC; }
   .sdl-section--white { background: #FFFFFF; }
-  .sdl-section-title {
-    font-family: 'Manrope', sans-serif;
-    font-size: clamp(30px, 3.2vw, 40px); line-height: 1.22; font-weight: 500;
-    letter-spacing: -0.01em; color: #162833;
-  }
   .au-kicker {
     display: inline-flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 700;
     letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent);
@@ -118,10 +113,9 @@
     font-size: clamp(30px, 3.2vw, 42px); line-height: 1.2; letter-spacing: -0.015em; color: #162833;
   }
   .au-title--light { color: #FFFFFF; }
-  .au-lead {
-    font-family: 'Manrope', sans-serif; font-weight: 600; font-size: clamp(19px, 1.7vw, 22px);
-    line-height: 1.45; letter-spacing: -0.01em; color: #162833; margin: 0;
-  }
+  .au-body p { margin: 16px 0 0; font-size: 16.5px; line-height: 1.75; color: #46535F; max-width: 760px; }
+  .au-body p:first-child { margin-top: 18px; }
+  .au-body--light p { color: rgba(255,255,255,0.66); }
   .au-btn {
     display: inline-flex; align-items: center; gap: 10px; background: var(--accent);
     color: #FFFFFF; font-weight: 700; font-size: 16px; padding: 16px 32px; border-radius: 999px;
@@ -130,8 +124,6 @@
   .au-btn:hover { background: var(--accent-hover); color: #FFFFFF; transform: translateY(-1px); }
   .au-btn .arrow { display: inline-block; transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
   .au-btn:hover .arrow { transform: translateX(4px); }
-  .au-btn--ghost { background: rgba(255,255,255,0.08); border: 1.5px solid rgba(255,255,255,0.3); }
-  .au-btn--ghost:hover { background: rgba(255,255,255,0.14); }
   .au-dot-texture {
     position: absolute; inset: 0; pointer-events: none;
     background-image: radial-gradient(rgba(255,255,255,0.14) 1px, transparent 1.2px);
@@ -164,73 +156,191 @@
   .sdl-footer-bottom-right { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
 
   /* ---------- Approach: hero ---------- */
-  .ap-hero { padding: 76px 48px 32px; }
-  .ap-hero-inner { max-width: 1360px; margin: 0 auto; display: grid; grid-template-columns: 1.05fr 1fr; gap: 64px; align-items: center; }
-  .ap-hero-copy { max-width: 600px; }
-  .ap-hero-title { margin-top: 20px; font-family: 'Manrope', sans-serif; font-weight: 500; font-size: clamp(38px, 3.9vw, 54px); line-height: 1.12; letter-spacing: -0.02em; color: #162833; }
+  .ap-hero { padding: 72px 48px 80px; overflow: hidden; }
+  .ap-hero-inner { max-width: 1360px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+  .ap-hero-copy { max-width: 560px; }
+  .ap-hero-title { margin-top: 20px; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: clamp(32px, 3.6vw, 48px); line-height: 1.14; letter-spacing: -0.02em; color: #162833; }
   .ap-hero-title .accent { color: var(--accent); }
-  .ap-hero-sub { margin: 24px 0 0; font-size: 16.5px; line-height: 1.75; color: #46535F; max-width: 540px; }
-  .ap-hero-actions { margin-top: 34px; }
+  .ap-hero-sub { margin: 22px 0 0; font-size: 16.5px; line-height: 1.7; color: #46535F; max-width: 520px; }
+  .ap-hero-sub + .ap-hero-sub { margin-top: 14px; }
+  .ap-hero-actions { margin-top: 32px; display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
+  .ap-hero-link { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-size: 15px; color: #162833; }
+  .ap-hero-link:hover { color: var(--accent); }
+  .ap-hero-link .arrow { transition: transform 0.2s ease; }
+  .ap-hero-link:hover .arrow { transform: translateX(3px); }
 
-  .ap-shader-panel { position: relative; width: 100%; aspect-ratio: 1 / 0.92; border-radius: 28px; overflow: hidden; background: linear-gradient(145deg, #101826, #1B2B57 55%, #223C78); }
-  .ap-shader-panel-content { position: relative; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding: 36px; }
-  .ap-shader-tag { display: inline-flex; align-self: flex-start; align-items: center; gap: 8px; background: rgba(8,14,26,0.55); backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,0.14); border-radius: 999px; padding: 8px 16px; font-size: 12.5px; font-weight: 600; color: #FFFFFF; }
-  .ap-shader-tag .dot { width: 6px; height: 6px; border-radius: 50%; background: #2FD4C4; }
+  /* ---------- Approach: hero diagram ---------- */
+  .ap-diagram { position: relative; width: 100%; aspect-ratio: 1 / 1.02; max-width: 580px; margin: 0 auto; }
+  .ap-diagram-lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .ap-diagram-node { position: absolute; z-index: 1; transform: translate(-50%, -50%); width: 32%; text-align: center; }
+  .ap-diagram-node--1 { left: 14%; top: 13%; }
+  .ap-diagram-node--2 { left: 50%; top: 13%; }
+  .ap-diagram-node--3 { left: 86%; top: 13%; }
+  .ap-diagram-circle {
+    width: 92px; height: 92px; margin: 0 auto; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: #EEF1F6; color: #162833; border: 1px solid #E0E6F0;
+  }
+  .ap-diagram-circle svg { width: 34px; height: 34px; }
+  .ap-diagram-label { margin-top: 16px; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 15.5px; color: #162833; }
+  .ap-diagram-list { position: relative; z-index: 1; margin-top: 8px; font-size: 13px; line-height: 1.7; color: #5B6472; }
+  .ap-diagram-core { position: absolute; left: 50%; top: 61%; transform: translate(-50%, -50%); }
+  .ap-diagram-core-halo {
+    width: 128px; height: 128px; border-radius: 50%;
+    border: 1px dashed #C7CFDC;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ap-diagram-core-circle {
+    width: 72px; height: 72px; border-radius: 50%; background: #FFFFFF; color: #162833; border: 1.5px solid #162833;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 17px; letter-spacing: 0.02em;
+  }
+  .ap-diagram-tag {
+    position: absolute; left: 88%; top: 61%; transform: translate(-50%, -50%);
+    background: #FFFFFF; border: 1px solid #E4E9F2; border-radius: 14px; padding: 10px 16px;
+    font-size: 12.5px; font-weight: 600; line-height: 1.4; color: #46535F; text-align: center; white-space: nowrap;
+    box-shadow: 0 10px 24px rgba(16,24,40,0.06);
+  }
+  .ap-diagram-arrow {
+    position: absolute; left: 50%; top: 77%; transform: translate(-50%, -50%);
+    width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; color: #9AA4B5;
+  }
+  .ap-diagram-arrow svg { width: 100%; height: 100%; }
+  .ap-diagram-outcome {
+    position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); width: 94%;
+    display: flex; align-items: center; gap: 16px;
+    background: #FFFFFF; border: 1px solid #E4E9F2; border-radius: 20px; padding: 18px 24px;
+    box-shadow: 0 20px 40px rgba(16,24,40,0.07);
+  }
+  .ap-diagram-outcome-icon {
+    width: 50px; height: 50px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: #EEF1F6; color: #162833;
+  }
+  .ap-diagram-outcome-icon svg { width: 24px; height: 24px; }
+  .ap-diagram-outcome-title { font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 16px; color: #162833; }
+  .ap-diagram-outcome-sub { margin-top: 2px; font-size: 13px; color: #8891A0; }
 
-  /* ---------- Approach: method (scroll-driven) ---------- */
-  .ap-method-section { position: relative; overflow: hidden; background: #101826; }
-  .ap-method-inner { position: relative; max-width: 1360px; margin: 0 auto; padding: 104px 48px 24px; }
-  .ap-method-head { max-width: 640px; }
-  .ap-method-head .au-body p { margin: 16px 0 0; font-size: 16.5px; line-height: 1.75; color: rgba(255,255,255,0.64); }
-  .ap-method-rail { margin-top: 64px; border-top: 1px solid rgba(255,255,255,0.12); }
-  .ap-phase {
-    min-height: clamp(380px, 54vh, 600px); display: flex; flex-direction: column; justify-content: center;
-    max-width: 740px; border-bottom: 1px solid rgba(255,255,255,0.12);
-    opacity: 0.4; transition: opacity 0.5s ease;
-  }
-  .ap-phase.is-active { opacity: 1; }
-  .ap-phase-num { font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.1em; color: rgba(255,255,255,0.5); }
-  .ap-phase-title { margin-top: 16px; font-family: 'Manrope', sans-serif; font-weight: 500; font-size: clamp(32px, 4vw, 52px); line-height: 1.15; letter-spacing: -0.02em; color: #FFFFFF; }
-  .ap-phase-desc { margin-top: 18px; font-size: 17px; line-height: 1.75; color: rgba(255,255,255,0.66); max-width: 560px; }
-  .ap-phase-loop { margin-top: 24px; display: inline-flex; align-items: center; gap: 9px; font-size: 13.5px; font-weight: 600; color: #7DD8F0; width: fit-content; }
-  .ap-phase-loop svg { animation: apSpin 7s linear infinite; }
-  @keyframes apSpin { to { transform: rotate(360deg); } }
+  /* ---------- Approach: delivery lifecycle (tabs + full-width panel) ---------- */
+  .ap-lc-section { position: relative; background: #F6F8FC; padding: 104px 48px 112px; }
+  .ap-lc-inner { position: relative; max-width: 1360px; margin: 0 auto; }
+  .ap-lc-head { max-width: 700px; }
+  .ap-lc-layout { margin-top: 56px; }
 
-  /* ---------- Approach: capabilities bento ---------- */
-  .ap-bento { margin-top: 56px; display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: 232px; gap: 20px; }
-  .ap-bento-intro {
-    grid-column: span 2; grid-row: span 2; position: relative; border-radius: 24px; overflow: hidden;
-    padding: 40px; display: flex; flex-direction: column; justify-content: flex-end;
-    background: linear-gradient(150deg, #101826, #1E2E52 60%, #233E7D); color: #FFFFFF;
+  .ap-lc-tabs {
+    display: flex; gap: 4px; overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none;
+    padding: 6px; background: #EDF0F6; border-radius: 16px;
   }
-  .ap-bento-intro-title { position: relative; font-family: 'Manrope', sans-serif; font-weight: 500; font-size: clamp(24px, 2.4vw, 32px); line-height: 1.3; letter-spacing: -0.015em; max-width: 440px; }
-  .ap-bento-intro-sub { position: relative; margin-top: 14px; font-size: 15px; line-height: 1.65; color: rgba(255,255,255,0.68); max-width: 420px; }
-  .ap-bento-tile {
-    position: relative; border-radius: 24px; padding: 26px; background: #FFFFFF; border: 1px solid #E8EDF5;
-    display: flex; flex-direction: column; justify-content: space-between; color: inherit;
-    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  .ap-lc-tabs::-webkit-scrollbar { display: none; }
+  .ap-lc-tab {
+    flex-shrink: 0; display: flex; align-items: center; gap: 9px;
+    background: none; border: none; border-radius: 11px; cursor: pointer; font-family: inherit;
+    padding: 13px 20px; white-space: nowrap; transition: background 0.2s ease;
   }
-  .ap-bento-tile:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(16,24,40,0.08); border-color: rgba(43,73,219,0.25); color: inherit; }
-  .ap-bento-tile-num { font-family: 'Manrope', sans-serif; font-size: 12px; font-weight: 700; color: #A9B4C6; }
-  .ap-bento-tile-name { margin-top: auto; font-family: 'Manrope', sans-serif; font-size: 18.5px; font-weight: 600; letter-spacing: -0.01em; color: #162833; line-height: 1.3; }
-  .ap-bento-tile-arrow { margin-top: 14px; color: var(--accent); font-size: 18px; transition: transform 0.25s ease; }
-  .ap-bento-tile:hover .ap-bento-tile-arrow { transform: translate(3px, -3px); }
+  .ap-lc-tab:hover { background: rgba(22,40,51,0.06); }
+  .ap-lc-tab-num { font-family: 'Manrope', sans-serif; font-size: 12.5px; font-weight: 700; color: #9AA4B5; transition: color 0.2s ease; }
+  .ap-lc-tab-title { font-family: 'Manrope', sans-serif; font-size: 15px; font-weight: 600; letter-spacing: -0.01em; color: #5B6678; transition: color 0.2s ease; }
+  .ap-lc-tab.is-active { background: #162833; }
+  .ap-lc-tab.is-active:hover { background: #162833; }
+  .ap-lc-tab.is-active .ap-lc-tab-num { color: rgba(255,255,255,0.55); }
+  .ap-lc-tab.is-active .ap-lc-tab-title { color: #FFFFFF; }
+
+  .ap-lc-panel {
+    margin-top: 40px; border-radius: 28px;
+    background: #FFFFFF; border: 1px solid #E8EDF5;
+    box-shadow: 0 30px 60px rgba(16,24,40,0.07);
+  }
+  .ap-lc-panel-content { position: relative; padding: 44px; animation: sdlRevealIn 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
+  .ap-lc-stages { margin-top: 10px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 8px; }
+  .ap-lc-stage-chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 600; white-space: nowrap;
+    padding: 6px 14px 6px 6px; border-radius: 999px;
+    color: #2E3646;
+    background: #F2F4F9;
+    border: 1px solid #E4E9F2;
+  }
+  .ap-lc-stage-chip-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
+    background: #162833; color: #FFFFFF; font-size: 10.5px; font-weight: 700;
+  }
+  .ap-lc-stage-arrow { color: #C3CBD9; font-size: 13px; }
+  .ap-lc-desc { margin-top: 22px; font-size: 15px; line-height: 1.75; color: #46535F; }
+  .ap-lc-meta-grid { margin-top: 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 28px; padding-top: 24px; border-top: 1px solid #E4E9F2; }
+  .ap-lc-label { font-size: 11.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #A9B4C6; }
+  .ap-lc-inline { margin-top: 10px; font-size: 13.5px; line-height: 1.75; color: #46535F; }
+  .ap-lc-note { margin-top: 22px; padding-top: 18px; border-top: 1px solid #E4E9F2; font-size: 13px; line-height: 1.65; font-style: italic; color: #8891A0; }
+  .ap-lc-cta {
+    margin-top: 28px; display: inline-flex; align-items: center; gap: 10px; width: fit-content;
+    font-size: 14.5px; font-weight: 700; color: var(--accent);
+    padding: 13px 22px; border-radius: 999px; border: 1.5px solid var(--accent);
+    transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
+  }
+  .ap-lc-cta:hover { background: var(--accent); color: #FFFFFF; transform: translateY(-1px); }
+  .ap-lc-cta .arrow { transition: transform 0.2s ease; }
+  .ap-lc-cta:hover .arrow { transform: translateX(3px); }
+
+  /* ---------- Approach: AI-native delivery flow ---------- */
+  .ap-ai-flow { margin-top: 48px; display: flex; align-items: stretch; }
+  .ap-ai-flow-item {
+    flex: 1 1 0; min-width: 0; padding: 32px 26px; background: #FFFFFF;
+    border: 1px solid #E4E9F2; border-radius: 20px;
+  }
+  .ap-ai-flow-num { font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.06em; color: var(--accent); }
+  .ap-ai-flow-title { margin-top: 14px; font-family: 'Manrope', sans-serif; font-size: 18px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3; color: #162833; }
+  .ap-ai-flow-desc { margin-top: 10px; font-size: 13.5px; line-height: 1.6; color: #46535F; }
+  .ap-ai-flow-arrow { flex-shrink: 0; width: 44px; display: flex; align-items: center; justify-content: center; color: #C7CFDC; }
+  .ap-ai-flow-arrow svg { width: 20px; height: 20px; }
+
+  /* ---------- Approach: measuring success (scroll carousel) ---------- */
+  .ap-measures-wrap { position: relative; margin-top: 44px; }
+  .ap-measures-track {
+    display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory;
+    -ms-overflow-style: none; scrollbar-width: none; padding-bottom: 2px;
+  }
+  .ap-measures-track::-webkit-scrollbar { display: none; }
+  .ap-measure-card {
+    scroll-snap-align: start; flex: 0 0 auto; width: 300px;
+    background: #EEF1F6; border-radius: 24px; padding: 20px 22px 28px; display: flex; flex-direction: column;
+  }
+  .ap-measure-art { height: 170px; display: flex; align-items: center; justify-content: center; color: #162833; }
+  .ap-measure-art svg { width: 86%; height: 86%; }
+  .ap-measure-body { margin-top: 6px; }
+  .ap-measure-title { font-family: 'Manrope', sans-serif; font-size: 16.5px; font-weight: 600; letter-spacing: -0.01em; color: #162833; }
+  .ap-measure-desc { margin-top: 8px; font-size: 13.5px; line-height: 1.6; color: #5B6678; }
+  .ap-measures-nav {
+    position: absolute; top: 85px; width: 40px; height: 40px; border-radius: 50%;
+    background: #FFFFFF; border: 1px solid #E4E9F2; box-shadow: 0 10px 24px rgba(16,24,40,0.1);
+    display: flex; align-items: center; justify-content: center; color: #162833; cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.15s ease; z-index: 2;
+  }
+  .ap-measures-nav:hover { transform: translateY(-1px); }
+  .ap-measures-nav svg { width: 17px; height: 17px; }
+  .ap-measures-nav--prev { left: 10px; }
+  .ap-measures-nav--next { right: 10px; }
+  .ap-measures-nav[disabled] { opacity: 0; pointer-events: none; }
+  @media (pointer: coarse) { .ap-measures-nav { display: none; } }
+  .ap-pullquote { margin-top: 48px; padding-top: 32px; border-top: 1px solid #E4E9F2; font-family: 'Manrope', sans-serif; font-size: clamp(18px, 1.8vw, 21px); font-weight: 500; line-height: 1.6; color: #162833; max-width: 860px; }
+  .ap-closing-note { margin-top: 40px; font-size: 14.5px; line-height: 1.75; color: #6B7686; max-width: 760px; }
 
   /* ---------- Approach: principles ---------- */
   .ap-principles { position: relative; overflow: hidden; background: #0B1320; padding: 104px 48px 108px; }
-  .ap-principles-inner { position: relative; max-width: 940px; margin: 0 auto; }
-  .ap-principles-head { max-width: 600px; }
+  .ap-principles-inner { position: relative; max-width: 980px; margin: 0 auto; }
+  .ap-principles-head { max-width: 640px; }
   .ap-principles-list { margin-top: 52px; }
   .ap-principle {
-    padding: 30px 0; border-top: 1px solid rgba(255,255,255,0.12);
-    display: flex; align-items: baseline; justify-content: space-between; gap: 32px; flex-wrap: wrap;
+    padding: 26px 0; border-top: 1px solid rgba(255,255,255,0.12);
+    display: grid; grid-template-columns: 1fr 1.1fr; gap: 32px; align-items: baseline;
   }
   .ap-principle:last-child { border-bottom: 1px solid rgba(255,255,255,0.12); }
-  .ap-principle-word { font-family: 'Manrope', sans-serif; font-weight: 600; font-size: clamp(28px, 4.4vw, 52px); letter-spacing: -0.02em; color: #FFFFFF; }
-  .ap-principle-desc { max-width: 420px; font-size: 15px; line-height: 1.7; color: rgba(255,255,255,0.6); }
+  .ap-principle-num { font-family: 'Manrope', sans-serif; font-size: 12.5px; font-weight: 700; color: rgba(255,255,255,0.4); margin-bottom: 8px; display: block; }
+  .ap-principle-word { font-family: 'Manrope', sans-serif; font-weight: 600; font-size: clamp(19px, 1.8vw, 23px); line-height: 1.35; letter-spacing: -0.01em; color: #FFFFFF; }
+  .ap-principle-desc { font-size: 15px; line-height: 1.7; color: rgba(255,255,255,0.6); }
 
   /* ---------- Approach: stats ---------- */
   .ap-stats-section { padding: 72px 48px; background: #F6F8FC; }
+  .sdl-section--alt + .ap-stats-section { padding-top: 8px; }
   .ap-stats { max-width: 1360px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid #E4E9F2; }
   .ap-stat { padding: 36px 32px 0 0; }
   .ap-stat + .ap-stat { padding-left: 32px; border-left: 1px solid #E4E9F2; }
@@ -257,31 +367,40 @@
   .reveal-group > *:nth-child(5) { animation-delay: 0.28s; }
   .reveal-group > *:nth-child(6) { animation-delay: 0.35s; }
   .ap-hero-copy { opacity: 0; transform: translateY(18px); animation: sdlRevealIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-  .ap-shader-panel { opacity: 0; transform: translateY(18px); animation: sdlRevealIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards 0.15s; }
 
   @media (max-width: 1080px) {
     .sdl-header-nav-wrap { display: none; }
     .sdl-desktop-cta { display: none; }
     .sdl-mobile-toggle { display: flex; }
     .sdl-header-right { gap: 0; }
-    .ap-hero { padding: 48px 24px 32px; }
-    .ap-hero-inner { grid-template-columns: 1fr; gap: 28px; }
-    .ap-shader-panel { order: -1; aspect-ratio: 16/9; }
-    .ap-method-inner { padding: 72px 24px 16px; }
-    .ap-bento { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 200px; }
-    .ap-bento-intro { grid-column: span 2; grid-row: span 1; aspect-ratio: auto; min-height: 220px; }
+    .ap-hero { padding: 48px 24px 48px; }
+    .ap-hero-inner { grid-template-columns: 1fr; gap: 48px; }
+    .ap-hero-copy { max-width: none; }
+    .ap-diagram { max-width: 460px; aspect-ratio: 3 / 4; }
+    .ap-diagram-circle { width: 64px; height: 64px; }
+    .ap-diagram-circle svg { width: 26px; height: 26px; }
+    .ap-diagram-label { font-size: 13px; }
+    .ap-diagram-list { font-size: 11px; }
+    .ap-diagram-core-halo { width: 80px; height: 80px; }
+    .ap-diagram-core-circle { width: 50px; height: 50px; font-size: 13px; }
+    .ap-diagram-tag { font-size: 11px; padding: 6px 10px; }
+    .ap-lc-section { padding: 72px 24px 80px; }
+    .ap-lc-tab { padding: 11px 16px; }
+    .ap-lc-panel-content { padding: 28px 24px; }
+    .ap-lc-meta-grid { grid-template-columns: 1fr; gap: 20px; }
+    .ap-ai-flow { flex-direction: column; }
+    .ap-ai-flow-arrow { width: auto; height: 36px; }
+    .ap-ai-flow-arrow svg { transform: rotate(90deg); }
     .ap-principles { padding: 72px 24px 80px; }
+    .ap-principle { grid-template-columns: 1fr; gap: 10px; }
     .ap-cta-section { padding: 16px 24px 64px; }
     .ap-cta-card { padding: 60px 28px 64px; }
   }
 
   @media (max-width: 700px) {
-    .ap-bento { grid-template-columns: 1fr; grid-auto-rows: auto; }
-    .ap-bento-intro { grid-column: span 1; }
-    .ap-bento-tile { min-height: 160px; }
     .ap-stats { grid-template-columns: 1fr; }
     .ap-stat, .ap-stat + .ap-stat { padding: 28px 0; border-left: none; border-bottom: 1px solid #E4E9F2; }
-    .ap-principle { flex-direction: column; gap: 10px; }
+    .ap-measure-card { width: 78vw; }
   }
 
   @media (max-width: 560px) {
@@ -290,9 +409,7 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .reveal, .reveal-group > *, .ap-hero-copy, .ap-shader-panel { animation: none !important; opacity: 1 !important; transform: none !important; }
-    .ap-phase-loop svg { animation: none !important; }
-    .ap-phase { transition: none !important; }
+    .reveal, .reveal-group > *, .ap-hero-copy { animation: none !important; opacity: 1 !important; transform: none !important; }
   }
 </style>
 </head>
@@ -325,50 +442,75 @@
     <div class="ap-hero-inner">
       <div class="ap-hero-copy">
         <span class="au-kicker"><span class="kicker-line"></span> Our approach</span>
-        <h1 class="ap-hero-title">A method, not a <span class="accent">formula.</span></h1>
-        <p class="au-lead" style="margin-top:24px">Every engagement starts the same way: understand first, then move.</p>
-        <p class="ap-hero-sub">The combination of AI, engineering, transformation, experience and growth changes with every business. What stays constant is how we get there — a way of working that applies across every capability, refined over 16+ years of delivery.</p>
+        <h1 class="ap-hero-title">Business understanding. <span class="accent">Intelligent execution.</span> Measurable results.</h1>
+        <p class="ap-hero-sub">Every business has different priorities, systems and constraints. Delivering the right solution requires more than technical expertise — it requires understanding the business, selecting the right approach and connecting the right disciplines.</p>
+        <p class="ap-hero-sub">We combine business thinking, human expertise and technology to identify valuable opportunities and deliver solutions that measurably work, with AI accelerating the process while people stay accountable for the outcome.</p>
         <div class="ap-hero-actions">
           <a href="index.html#contact" class="au-btn">Talk to us <span class="arrow" aria-hidden="true">→</span></a>
+          <a href="#apLcSection" class="ap-hero-link">Explore our approach <span class="arrow" aria-hidden="true">→</span></a>
         </div>
       </div>
-      <div class="ap-shader-panel" id="apHeroShader" aria-hidden="true">
-        <div class="ap-shader-panel-content">
-          <span class="ap-shader-tag"><span class="dot"></span> Understand → Accelerate → Evolve</span>
+
+      <div class="ap-diagram reveal" aria-hidden="true">
+        <svg class="ap-diagram-lines" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <path d="M14,42 C14,47 42,47 49,51" fill="none" stroke="#B7C0D1" stroke-width="1"/>
+          <path d="M50,42 L50,51" fill="none" stroke="#B7C0D1" stroke-width="1"/>
+          <path d="M86,42 C86,47 58,47 51,51" fill="none" stroke="#B7C0D1" stroke-width="1"/>
+          <path d="M61,61 L80,61" fill="none" stroke="#B7C0D1" stroke-width="1" stroke-dasharray="2.6 2.6"/>
+          <circle cx="14" cy="42" r="1.3" fill="none" stroke="#9AA4B5" stroke-width="1"/>
+          <circle cx="50" cy="42" r="1.3" fill="none" stroke="#9AA4B5" stroke-width="1"/>
+          <circle cx="86" cy="42" r="1.3" fill="none" stroke="#9AA4B5" stroke-width="1"/>
+        </svg>
+
+        <div class="ap-diagram-node ap-diagram-node--1">
+          <div class="ap-diagram-circle"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 32V20M20 32V10M30 32V24"/></svg></div>
+          <div class="ap-diagram-label">Business thinking</div>
+          <div class="ap-diagram-list">Goals<br>Opportunities<br>Priorities</div>
+        </div>
+
+        <div class="ap-diagram-node ap-diagram-node--2">
+          <div class="ap-diagram-circle"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="14" cy="13" r="5"/><circle cx="27" cy="15" r="4"/><path d="M5 33c1-8 5-12 9-12s8 4 9 12"/><path d="M23 33c.8-6 3-10 8-10"/></svg></div>
+          <div class="ap-diagram-label">Human expertise</div>
+          <div class="ap-diagram-list">Experience<br>Judgment<br>Accountability</div>
+        </div>
+
+        <div class="ap-diagram-node ap-diagram-node--3">
+          <div class="ap-diagram-circle"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="20,6 33,14 20,22 7,14"/><polygon points="20,18 33,26 20,34 7,26"/></svg></div>
+          <div class="ap-diagram-label">Technology</div>
+          <div class="ap-diagram-list">Applications<br>Data<br>Platforms</div>
+        </div>
+
+        <div class="ap-diagram-core">
+          <div class="ap-diagram-core-halo"><div class="ap-diagram-core-circle">AI</div></div>
+        </div>
+        <div class="ap-diagram-tag">Accelerates<br>the process</div>
+        <div class="ap-diagram-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v14M6 13l6 6 6-6"/></svg></div>
+
+        <div class="ap-diagram-outcome">
+          <div class="ap-diagram-outcome-icon"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 32V20M20 32V10M30 32V24"/></svg></div>
+          <div>
+            <div class="ap-diagram-outcome-title">Solutions that work</div>
+            <div class="ap-diagram-outcome-sub">Measured value · Real outcomes</div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="ap-method-section" id="apMethodSection">
-    <div class="ap-method-inner">
-      <div class="ap-method-head reveal">
-        <span class="au-kicker au-kicker--dark"><span class="kicker-line"></span> How we work</span>
-        <h2 class="au-title au-title--light">Three movements. One method.</h2>
+  <section class="ap-lc-section" id="apLcSection">
+    <div class="ap-lc-inner">
+      <div class="ap-lc-head reveal">
+        <span class="au-kicker"><span class="kicker-line"></span> 02 / Our delivery lifecycle</span>
+        <h2 class="au-title">A clear direction. An adaptable process.</h2>
         <div class="au-body">
-          <p>The method doesn't change by project — only what it's applied to does. Scroll through it once; you'll see it again in every capability that follows.</p>
+          <p>Our delivery approach follows a shared set of principles, with a specialist lifecycle for each service pillar. The stages provide structure while allowing teams to iterate, validate assumptions and adapt to the needs of each engagement.</p>
         </div>
       </div>
 
-      <div class="ap-method-rail">
-        <div class="ap-phase" data-i="0">
-          <span class="ap-phase-num">01 — UNDERSTAND</span>
-          <h3 class="ap-phase-title">See the business before touching the technology.</h3>
-          <p class="ap-phase-desc">Every engagement starts with the business behind the problem — the people, systems and decisions that shape it. That context is what keeps the work aimed at outcomes that matter, not just technically correct ones.</p>
-        </div>
-        <div class="ap-phase" data-i="1">
-          <span class="ap-phase-num">02 — ACCELERATE</span>
-          <h3 class="ap-phase-title">Move from idea to working reality, fast.</h3>
-          <p class="ap-phase-desc">Once the direction is clear, we apply the right combination of AI, engineering and experience to build it — prioritizing the shortest path to something real, measurable and in front of users.</p>
-        </div>
-        <div class="ap-phase" data-i="2">
-          <span class="ap-phase-num">03 — EVOLVE</span>
-          <h3 class="ap-phase-title">Keep improving as the business changes.</h3>
-          <p class="ap-phase-desc">Launch isn't the finish line. We stay close to what's shipped, measure what it actually does, and feed that back into the next iteration.</p>
-          <span class="ap-phase-loop" aria-hidden="true">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 12a8 8 0 0 1 14-5M20 4v4h-4"/><path d="M20 12a8 8 0 0 1-14 5M4 20v-4h4"/></svg>
-            Then back to understand — sharper this time
-          </span>
+      <div class="ap-lc-layout">
+        <div class="ap-lc-tabs" id="lcTabs" role="tablist"></div>
+        <div class="ap-lc-panel" id="lcPanel">
+          <div class="ap-lc-panel-content" id="lcPanelContent"></div>
         </div>
       </div>
     </div>
@@ -376,74 +518,139 @@
 
   <section class="sdl-section sdl-section--white">
     <div class="sdl-section-inner">
-      <div class="reveal" style="max-width:640px">
-        <span class="au-kicker"><span class="kicker-line"></span> Applied across capabilities</span>
-        <h2 class="au-title">One method. Five capabilities.</h2>
-      </div>
-      <div class="ap-bento reveal-group">
-        <div class="ap-bento-intro" id="apBentoIntro">
-          <div class="ap-bento-intro-title">The same three movements, aimed at whichever capability the business needs most.</div>
-          <div class="ap-bento-intro-sub">Most engagements combine more than one — intelligence rarely works in isolation from the systems and experiences around it.</div>
+      <div class="reveal" style="max-width:700px">
+        <span class="au-kicker"><span class="kicker-line"></span> 03 / AI-native delivery</span>
+        <h2 class="au-title">AI throughout the lifecycle.</h2>
+        <div class="au-body">
+          <p>AI is not simply an execution tool. It can contribute at every stage, from understanding business needs to evaluating solutions in production.</p>
         </div>
-        <a class="ap-bento-tile" href="ai-transformation.html">
-          <span class="ap-bento-tile-num">01</span>
-          <span class="ap-bento-tile-name">AI transformation</span>
-          <span class="ap-bento-tile-arrow" aria-hidden="true">↗</span>
-        </a>
-        <a class="ap-bento-tile" href="digital-engineering.html">
-          <span class="ap-bento-tile-num">02</span>
-          <span class="ap-bento-tile-name">Digital engineering</span>
-          <span class="ap-bento-tile-arrow" aria-hidden="true">↗</span>
-        </a>
-        <a class="ap-bento-tile" href="business-transformation.html">
-          <span class="ap-bento-tile-num">03</span>
-          <span class="ap-bento-tile-name">Business transformation</span>
-          <span class="ap-bento-tile-arrow" aria-hidden="true">↗</span>
-        </a>
-        <a class="ap-bento-tile" href="digital-experience.html">
-          <span class="ap-bento-tile-num">04</span>
-          <span class="ap-bento-tile-name">Digital experience</span>
-          <span class="ap-bento-tile-arrow" aria-hidden="true">↗</span>
-        </a>
-        <a class="ap-bento-tile" href="growth-transformation.html">
-          <span class="ap-bento-tile-num">05</span>
-          <span class="ap-bento-tile-name">Growth transformation</span>
-          <span class="ap-bento-tile-arrow" aria-hidden="true">↗</span>
-        </a>
       </div>
+      <div class="ap-ai-flow reveal-group">
+        <div class="ap-ai-flow-item">
+          <span class="ap-ai-flow-num">01</span>
+          <div class="ap-ai-flow-title">Understand and explore</div>
+          <p class="ap-ai-flow-desc">Analyze information, summarize research, identify patterns and explore potential opportunities.</p>
+        </div>
+        <div class="ap-ai-flow-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <div class="ap-ai-flow-item">
+          <span class="ap-ai-flow-num">02</span>
+          <div class="ap-ai-flow-title">Design and evaluate</div>
+          <p class="ap-ai-flow-desc">Explore concepts, generate prototypes, compare approaches and test assumptions earlier.</p>
+        </div>
+        <div class="ap-ai-flow-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <div class="ap-ai-flow-item">
+          <span class="ap-ai-flow-num">03</span>
+          <div class="ap-ai-flow-title">Execute and validate</div>
+          <p class="ap-ai-flow-desc">Assist with development, analysis, testing and automation, supported by appropriate review and quality controls.</p>
+        </div>
+        <div class="ap-ai-flow-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <div class="ap-ai-flow-item">
+          <span class="ap-ai-flow-num">04</span>
+          <div class="ap-ai-flow-title">Learn and optimize</div>
+          <p class="ap-ai-flow-desc">Evaluate performance, detect patterns and identify opportunities to improve solutions after deployment.</p>
+        </div>
+      </div>
+      <p class="ap-pullquote reveal">AI is applied where it adds value, not simply because it is available. People remain accountable for decisions, quality, security and outcomes.</p>
     </div>
   </section>
 
   <section class="ap-principles" id="apPrinciples">
     <div class="ap-principles-inner">
       <div class="ap-principles-head reveal">
-        <span class="au-kicker au-kicker--dark"><span class="kicker-line"></span> Principles in practice</span>
-        <h2 class="au-title au-title--light">What the method protects.</h2>
+        <span class="au-kicker au-kicker--dark"><span class="kicker-line"></span> 04 / Our principles</span>
+        <h2 class="au-title au-title--light">What guides every engagement.</h2>
       </div>
       <div class="ap-principles-list reveal-group">
         <div class="ap-principle">
-          <span class="ap-principle-word">Humane</span>
-          <span class="ap-principle-desc">We work from how people actually behave, not how a system assumes they should.</span>
+          <div><span class="ap-principle-num">01</span><span class="ap-principle-word">Business value before technology choices</span></div>
+          <span class="ap-principle-desc">Start with the problem and intended result. Select technologies, platforms and methods that fit the business need.</span>
         </div>
         <div class="ap-principle">
-          <span class="ap-principle-word">Integrity</span>
-          <span class="ap-principle-desc">What we recommend is what we believe will work — not what's easiest to build.</span>
+          <div><span class="ap-principle-num">02</span><span class="ap-principle-word">Human expertise, amplified by AI</span></div>
+          <span class="ap-principle-desc">Use AI to extend analytical and execution capabilities while keeping people accountable for judgment, quality and important decisions.</span>
         </div>
         <div class="ap-principle">
-          <span class="ap-principle-word">Ingenuity</span>
-          <span class="ap-principle-desc">When the obvious approach won't hold up, we look for the one that will.</span>
+          <div><span class="ap-principle-num">03</span><span class="ap-principle-word">Cross-functional by design</span></div>
+          <span class="ap-principle-desc">Bring business, design, engineering, AI and operational expertise together around the work.</span>
         </div>
         <div class="ap-principle">
-          <span class="ap-principle-word">Harmony</span>
-          <span class="ap-principle-desc">Engineering, design, strategy and AI move together, not in handoffs.</span>
+          <div><span class="ap-principle-num">04</span><span class="ap-principle-word">Quality throughout delivery</span></div>
+          <span class="ap-principle-desc">Address security, privacy, accessibility, reliability and governance from the beginning and validate them throughout the lifecycle.</span>
+        </div>
+        <div class="ap-principle">
+          <div><span class="ap-principle-num">05</span><span class="ap-principle-word">Evidence over assumptions</span></div>
+          <span class="ap-principle-desc">Test early, gather feedback and use real data to guide decisions.</span>
+        </div>
+        <div class="ap-principle">
+          <div><span class="ap-principle-num">06</span><span class="ap-principle-word">Outcomes over output</span></div>
+          <span class="ap-principle-desc">Measure the value delivered, not just the number of features, tasks or AI-generated artifacts produced.</span>
         </div>
       </div>
     </div>
   </section>
 
+  <section class="sdl-section sdl-section--alt">
+    <div class="sdl-section-inner">
+      <div class="reveal" style="max-width:700px">
+        <span class="au-kicker"><span class="kicker-line"></span> 05 / Measuring success</span>
+        <h2 class="au-title">Delivery is not the finish line.</h2>
+        <div class="au-body">
+          <p>A solution creates value when it works in its intended environment and contributes to the business. Success measures are defined around the goals of each engagement and reviewed as evidence becomes available.</p>
+        </div>
+      </div>
+      <div class="ap-measures-wrap reveal">
+        <button type="button" class="ap-measures-nav ap-measures-nav--prev" id="measuresPrev" aria-label="Previous">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+        </button>
+        <div class="ap-measures-track" id="measuresTrack">
+          <div class="ap-measure-card">
+            <div class="ap-measure-art">
+              <svg viewBox="0 0 160 160" fill="none" stroke="currentColor" stroke-width="1"><line x1="14" y1="132" x2="148" y2="132" stroke-dasharray="2 4"/><polyline points="24,132 24,100 54,100 54,132"/><polyline points="68,132 68,78 98,78 98,132"/><polyline points="112,132 112,46 142,46 142,132"/><line x1="127" y1="46" x2="127" y2="18" stroke-dasharray="2 4"/><circle cx="127" cy="14" r="3.5"/></svg>
+            </div>
+            <div class="ap-measure-body">
+              <div class="ap-measure-title">Business performance</div>
+              <p class="ap-measure-desc">Revenue contribution, operating cost and process efficiency.</p>
+            </div>
+          </div>
+          <div class="ap-measure-card">
+            <div class="ap-measure-art">
+              <svg viewBox="0 0 160 160" fill="none" stroke="currentColor" stroke-width="1"><circle cx="80" cy="80" r="54" stroke-dasharray="2 4"/><circle cx="80" cy="80" r="9"/><circle cx="38" cy="48" r="5.5"/><circle cx="128" cy="42" r="5.5"/><circle cx="138" cy="104" r="5.5"/><circle cx="92" cy="136" r="5.5"/><circle cx="32" cy="112" r="5.5"/><line x1="80" y1="80" x2="38" y2="48"/><line x1="80" y1="80" x2="128" y2="42"/><line x1="80" y1="80" x2="138" y2="104"/><line x1="80" y1="80" x2="92" y2="136"/><line x1="80" y1="80" x2="32" y2="112"/></svg>
+            </div>
+            <div class="ap-measure-body">
+              <div class="ap-measure-title">Adoption and experience</div>
+              <p class="ap-measure-desc">User engagement, task completion and satisfaction.</p>
+            </div>
+          </div>
+          <div class="ap-measure-card">
+            <div class="ap-measure-art">
+              <svg viewBox="0 0 160 160" fill="none" stroke="currentColor" stroke-width="1"><path d="M80,18 L142,80 L80,142 L18,80 Z"/><path d="M111,49 L111,111 L49,111 L49,49 Z"/><line x1="80" y1="18" x2="80" y2="142" stroke-dasharray="2 4"/><line x1="18" y1="80" x2="142" y2="80" stroke-dasharray="2 4"/></svg>
+            </div>
+            <div class="ap-measure-body">
+              <div class="ap-measure-title">Quality and reliability</div>
+              <p class="ap-measure-desc">Defect rates, service reliability, security and compliance.</p>
+            </div>
+          </div>
+          <div class="ap-measure-card">
+            <div class="ap-measure-art">
+              <svg viewBox="0 0 160 160" fill="none" stroke="currentColor" stroke-width="1"><line x1="22" y1="128" x2="134" y2="40" stroke-dasharray="2 4"/><path d="M22,128 Q95,128 134,40"/><circle cx="22" cy="128" r="4"/><path d="M119,36 L136,40 L127,56"/></svg>
+            </div>
+            <div class="ap-measure-body">
+              <div class="ap-measure-title">Delivery effectiveness</div>
+              <p class="ap-measure-desc">Lead time, release frequency and effort saved.</p>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="ap-measures-nav ap-measures-nav--next" id="measuresNext" aria-label="Next">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+      <p class="ap-closing-note reveal">The measures depend on the engagement. We establish relevant baselines where possible and evaluate results against agreed objectives rather than assuming the same outcomes for every project.</p>
+    </div>
+  </section>
+
   <section class="ap-stats-section">
     <div class="ap-stats reveal-group">
-      <div class="ap-stat"><div class="ap-stat-num"><span data-count="16">16</span><span class="plus">+</span></div><div class="ap-stat-label">Years applying this method</div></div>
+      <div class="ap-stat"><div class="ap-stat-num"><span data-count="16">16</span><span class="plus">+</span></div><div class="ap-stat-label">Years applying this approach</div></div>
       <div class="ap-stat"><div class="ap-stat-num"><span data-count="700">700</span><span class="plus">+</span></div><div class="ap-stat-label">Projects delivered</div></div>
       <div class="ap-stat"><div class="ap-stat-num"><span data-count="200">200</span><span class="plus">+</span></div><div class="ap-stat-label">Businesses served</div></div>
     </div>
@@ -453,9 +660,9 @@
     <div class="ap-cta-card reveal">
       <div class="au-dot-texture" aria-hidden="true"></div>
       <div class="ap-cta-inner">
-        <span class="au-kicker au-kicker--dark"><span class="kicker-line"></span> Start a conversation</span>
-        <h2 class="ap-cta-title">See the method applied to what you're building.</h2>
-        <p class="ap-cta-sub">Bring us the problem as it actually is. We'll show you how understand, accelerate and evolve would apply to it.</p>
+        <span class="au-kicker au-kicker--dark"><span class="kicker-line"></span> 06 / Let's work together</span>
+        <h2 class="ap-cta-title">Start with the business problem.</h2>
+        <p class="ap-cta-sub">Whether you're exploring AI, engineering a digital platform, modernizing operations, improving an experience or strengthening digital growth, the first step is understanding what you need to achieve. Let's determine the right approach for your business.</p>
         <a href="index.html#contact" class="au-btn">Talk to us <span class="arrow" aria-hidden="true">→</span></a>
       </div>
     </div>
@@ -799,21 +1006,189 @@
     targets.forEach(function (el) { io.observe(el); });
   })();
 
-  // ---------- Method phase activation ----------
-  (function initPhases() {
-    var phases = document.querySelectorAll('.ap-phase');
-    if (!phases.length) return;
-    if (!('IntersectionObserver' in window)) {
-      phases.forEach(function (p) { p.classList.add('is-active'); });
-      return;
+  // ---------- Delivery lifecycle: hover-reveal list + live panel ----------
+  var LIFECYCLE = [
+    {
+      title: 'AI transformation',
+      stages: ['Discover', 'Assess', 'Experiment', 'Integrate', 'Evaluate', 'Optimize'],
+      desc: 'Identify valuable AI use cases, assess data and technical readiness, validate solutions through experimentation, integrate them into business workflows and continuously evaluate their performance.',
+      methods: ['AI strategy', 'Use-case prioritization', 'Data readiness', 'Rapid experimentation', 'MLOps/LLMOps', 'AI evaluation', 'Governance'],
+      measures: ['Business value realized', 'Task completion', 'Accuracy', 'Adoption', 'Cost per outcome', 'Risk'],
+      note: 'Governance, security, privacy and risk evaluation span the entire AI lifecycle.',
+      href: 'ai-transformation.html'
+    },
+    {
+      title: 'Digital engineering',
+      stages: ['Define', 'Architect', 'Develop', 'Validate', 'Release', 'Operate'],
+      desc: 'Translate business requirements into secure, scalable applications and platforms. Use AI-assisted development where appropriate, supported by engineering standards, continuous testing and human review throughout delivery.',
+      methods: ['Agile', 'DevSecOps', 'CI/CD', 'Test automation', 'Platform engineering', 'AI-assisted software development'],
+      measures: ['Delivery lead time', 'Deployment frequency', 'Reliability', 'Defect rates', 'Maintainability', 'User satisfaction'],
+      note: 'Quality, security and validation are integrated throughout the engineering lifecycle, not reserved for a final testing stage.',
+      href: 'digital-engineering.html'
+    },
+    {
+      title: 'Business transformation',
+      stages: ['Diagnose', 'Redesign', 'Configure', 'Integrate', 'Embed', 'Measure'],
+      desc: 'Examine business processes and applications, identify operational friction and redesign workflows around business needs. Modernize systems and introduce automation where it delivers practical value.',
+      methods: ['Business process management', 'Process mining, where suitable', 'Lean', 'Workflow automation', 'Enterprise architecture', 'Organizational adoption'],
+      measures: ['Cycle time', 'Operating cost', 'Error rates', 'Process compliance', 'Employee adoption', 'Service quality'],
+      note: 'The right solution may involve simplifying an existing process, improving a business application, integrating systems or introducing automation. Not every problem requires new technology.',
+      href: 'business-transformation.html'
+    },
+    {
+      title: 'Digital experience',
+      stages: ['Research', 'Map', 'Prototype', 'Validate', 'Implement', 'Optimize'],
+      desc: 'Understand customer and employee needs, map journeys, prototype experiences and validate usability before implementation. Use feedback and performance data to refine digital interactions, applying AI where it improves relevance, accessibility or task completion.',
+      methods: ['Design thinking', 'UX research', 'Service design', 'Journey mapping', 'Usability testing', 'Experimentation', 'Accessibility practices'],
+      measures: ['Task completion', 'Conversion', 'Engagement', 'Satisfaction', 'Accessibility', 'Support demand'],
+      note: 'Experience evaluation continues after launch, informing further refinement based on real user behavior.',
+      href: 'digital-experience.html'
+    },
+    {
+      title: 'Growth transformation',
+      stages: ['Research', 'Position', 'Activate', 'Experiment', 'Convert', 'Optimize'],
+      desc: 'Understand market and audience intent, develop positioning and content, coordinate search and digital campaigns, and improve conversion paths. Use performance data and structured experimentation to guide investment and marketing decisions.',
+      methods: ['Growth experimentation', 'SEO and AI search optimization', 'Analytics', 'Conversion rate optimization', 'Marketing automation', 'Personalization'],
+      measures: ['Qualified demand', 'Conversion rates', 'Acquisition cost', 'Pipeline contribution', 'Retention', 'Return on marketing investment'],
+      note: 'Validate audiences, messaging and channels early, then use evidence to prioritize the activities with the strongest potential.',
+      href: 'growth-transformation.html'
     }
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        entry.target.classList.toggle('is-active', entry.isIntersecting);
-        if (entry.isIntersecting) window.__apActivePhase = +entry.target.getAttribute('data-i');
+  ];
+
+  (function initLifecycle() {
+    var lcTabs = document.getElementById('lcTabs');
+    var lcPanel = document.getElementById('lcPanel');
+    var lcPanelContent = document.getElementById('lcPanelContent');
+    if (!lcTabs || !lcPanel || !lcPanelContent) return;
+
+    function buildDetail(p) {
+      var wrap = document.createDocumentFragment();
+
+      var stagesLabel = document.createElement('div');
+      stagesLabel.className = 'ap-lc-label';
+      stagesLabel.textContent = 'Process';
+      wrap.appendChild(stagesLabel);
+
+      var stages = document.createElement('div');
+      stages.className = 'ap-lc-stages';
+      p.stages.forEach(function (s, si) {
+        if (si > 0) {
+          var arrow = document.createElement('span');
+          arrow.className = 'ap-lc-stage-arrow';
+          arrow.textContent = '→';
+          stages.appendChild(arrow);
+        }
+        var chip = document.createElement('span');
+        chip.className = 'ap-lc-stage-chip';
+        chip.innerHTML = '<span class="ap-lc-stage-chip-num">' + (si + 1) + '</span>' + s;
+        stages.appendChild(chip);
       });
-    }, { threshold: 0.55 });
-    phases.forEach(function (p) { io.observe(p); });
+      wrap.appendChild(stages);
+
+      var desc = document.createElement('p');
+      desc.className = 'ap-lc-desc';
+      desc.textContent = p.desc;
+      wrap.appendChild(desc);
+
+      var metaGrid = document.createElement('div');
+      metaGrid.className = 'ap-lc-meta-grid';
+
+      var methodsCol = document.createElement('div');
+      var methodsLabel = document.createElement('div');
+      methodsLabel.className = 'ap-lc-label';
+      methodsLabel.textContent = 'Methods';
+      methodsCol.appendChild(methodsLabel);
+      var methods = document.createElement('div');
+      methods.className = 'ap-lc-inline';
+      methods.textContent = p.methods.join('  ·  ');
+      methodsCol.appendChild(methods);
+      metaGrid.appendChild(methodsCol);
+
+      var measuresCol = document.createElement('div');
+      var measuresLabel = document.createElement('div');
+      measuresLabel.className = 'ap-lc-label';
+      measuresLabel.textContent = 'Success measures';
+      measuresCol.appendChild(measuresLabel);
+      var measures = document.createElement('div');
+      measures.className = 'ap-lc-inline';
+      measures.textContent = p.measures.join('  ·  ');
+      measuresCol.appendChild(measures);
+      metaGrid.appendChild(measuresCol);
+
+      wrap.appendChild(metaGrid);
+
+      if (p.note) {
+        var note = document.createElement('p');
+        note.className = 'ap-lc-note';
+        note.textContent = p.note;
+        wrap.appendChild(note);
+      }
+
+      var ctaLink = document.createElement('a');
+      ctaLink.className = 'ap-lc-cta';
+      ctaLink.href = p.href;
+      var ctaLabel = p.title === 'AI transformation' ? p.title : p.title.toLowerCase();
+      ctaLink.innerHTML = 'Explore ' + ctaLabel + ' <span class="arrow" aria-hidden="true">→</span>';
+      wrap.appendChild(ctaLink);
+
+      return wrap;
+    }
+
+    var tabs = [];
+    LIFECYCLE.forEach(function (p, i) {
+      var tab = document.createElement('button');
+      tab.type = 'button';
+      tab.className = 'ap-lc-tab';
+      tab.setAttribute('role', 'tab');
+      tab.setAttribute('data-i', i);
+      tab.innerHTML =
+        '<span class="ap-lc-tab-num">' + String(i + 1).padStart(2, '0') + '</span>' +
+        '<span class="ap-lc-tab-title">' + p.title + '</span>';
+
+      tab.addEventListener('click', function () { setActive(i); });
+      lcTabs.appendChild(tab);
+      tabs.push(tab);
+    });
+
+    var activeIndex = -1;
+    function setActive(i) {
+      if (i === activeIndex) return;
+      activeIndex = i;
+      var p = LIFECYCLE[i];
+
+      tabs.forEach(function (t, ti) { t.classList.toggle('is-active', ti === i); });
+      tabs[i].setAttribute('aria-selected', 'true');
+
+      lcPanelContent.innerHTML = '';
+      lcPanelContent.appendChild(buildDetail(p));
+    }
+
+    setActive(0);
+  })();
+
+  // ---------- Measuring success: card carousel ----------
+  (function initMeasures() {
+    var track = document.getElementById('measuresTrack');
+    var prevBtn = document.getElementById('measuresPrev');
+    var nextBtn = document.getElementById('measuresNext');
+    if (!track || !prevBtn || !nextBtn) return;
+
+    function step() {
+      var card = track.querySelector('.ap-measure-card');
+      return card ? card.offsetWidth + 20 : 300;
+    }
+
+    function updateNav() {
+      var max = track.scrollWidth - track.clientWidth - 2;
+      prevBtn.disabled = track.scrollLeft <= 0;
+      nextBtn.disabled = track.scrollLeft >= max;
+    }
+
+    prevBtn.addEventListener('click', function () { track.scrollBy({ left: -step(), behavior: 'smooth' }); });
+    nextBtn.addEventListener('click', function () { track.scrollBy({ left: step(), behavior: 'smooth' }); });
+    track.addEventListener('scroll', updateNav, { passive: true });
+    window.addEventListener('resize', updateNav);
+    updateNav();
   })();
 
   window.__apReduceMotion = reduceMotion;
@@ -863,41 +1238,9 @@
       }
     }
 
-    mountShader(document.getElementById('apHeroShader'), {
-      colors: ['#101826', '#1E35B8', '#2B49DB', '#6A8CFF'], distortion: 0.75, swirl: 0.15, speed: 0.4
-    });
-
-    mountShader(document.getElementById('apBentoIntro'), {
-      colors: ['#101826', '#1E35B8', '#2B49DB'], distortion: 0.5, swirl: 0.1, speed: 0.25
-    });
-
     mountShader(document.getElementById('apPrinciples'), {
       colors: ['#0B1320', '#162833', '#2B49DB'], distortion: 0.4, swirl: 0.05, grainOverlay: 0.06, speed: 0.2
     });
-
-    var methodMount = mountShader(document.getElementById('apMethodSection'), {
-      colors: ['#101826', '#17345E', '#2B49DB', '#38BDF8'], distortion: 0.6, swirl: 0.08, speed: 0.3
-    });
-
-    if (methodMount) {
-      var PHASE_PRESETS = [
-        { colors: ['#101826', '#17345E', '#2B49DB', '#38BDF8'], distortion: 0.6, swirl: 0.08 },
-        { colors: ['#101826', '#2B49DB', '#6A8CFF', '#7C6BF0'], distortion: 0.8, swirl: 0.25 },
-        { colors: ['#101826', '#172B96', '#2FD4C4', '#38BDF8'], distortion: 0.9, swirl: 0.85 }
-      ];
-      var phases = document.querySelectorAll('.ap-phase');
-      if ('IntersectionObserver' in window && phases.length) {
-        var io = new IntersectionObserver(function (entries) {
-          entries.forEach(function (entry) {
-            if (!entry.isIntersecting) return;
-            var idx = +entry.target.getAttribute('data-i');
-            var preset = PHASE_PRESETS[idx];
-            if (preset) methodMount.setUniforms(buildUniforms(preset));
-          });
-        }, { threshold: 0.55 });
-        phases.forEach(function (p) { io.observe(p); });
-      }
-    }
   }).catch(function () {
     // Network or WebGL2 unavailable — the CSS gradient fallback already in place stays visible.
   });
