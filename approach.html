@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Our approach — Social DNA Labs</title>
+<meta name="description" content="How Social DNA Labs moves from potential to impact — a method applied across AI, engineering, transformation, experience and growth.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --accent: #2B49DB; --accent-hover: #1E35B8; --heading: #162833; --body-text: #46535F;
+    --success: #28C76F; --attention: #F4C430; --critical: #E64A3C;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #F6F8FC; overflow-x: hidden; font-family: 'Inter', sans-serif; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { color: var(--accent-hover); }
+
+  .sdl-header { position: sticky; top: 0; z-index: 50; background: #F6F8FC; border-bottom: 1px solid rgba(16,24,40,0.07); }
+  .sdl-header-inner { max-width: 1360px; margin: 0 auto; padding: 0 48px; height: 88px; display: flex; align-items: center; }
+  .sdl-logo { height: 38px; width: auto; display: block; flex-shrink: 0; }
+
+  .sdl-header-left { display: flex; align-items: center; flex: 0 0 auto; }
+  .sdl-header-nav-wrap { flex: 1 1 auto; display: flex; align-items: center; justify-content: center; min-width: 0; }
+  .sdl-header-right { display: flex; align-items: center; gap: 32px; flex: 0 0 auto; }
+
+  .sdl-desktop-nav { display: flex; align-items: center; gap: 6px; }
+  .sdl-nav-item { position: relative; }
+  .sdl-nav-btn {
+    position: relative; display: flex; align-items: center; gap: 6px; background: none; border: none;
+    font-family: inherit; font-size: 15px; font-weight: 600; color: #162833;
+    cursor: pointer; padding: 12px 13px; border-radius: 8px; white-space: nowrap; flex-shrink: 0;
+  }
+  .sdl-nav-btn:hover { background: rgba(43,73,219,0.06); }
+  .sdl-nav-btn .caret { font-size: 10px; color: #8891A0; margin-top: 2px; transition: transform 0.15s ease; }
+  .sdl-nav-btn.active { color: var(--accent); }
+  .sdl-nav-btn.active .caret { color: var(--accent); transform: rotate(180deg); }
+  .sdl-nav-btn.active::after {
+    content: ''; position: absolute; left: 13px; right: 13px; bottom: 3px; height: 2px; border-radius: 2px;
+    background: linear-gradient(90deg, var(--accent), #6AA8FA);
+  }
+
+  .sdl-cta {
+    display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid var(--accent);
+    color: var(--accent); font-weight: 700; font-size: 14px; padding: 10px 22px;
+    border-radius: 999px; white-space: nowrap; flex-shrink: 0;
+  }
+  .sdl-cta:hover { background: rgba(43,73,219,0.06); color: var(--accent); }
+
+  .sdl-mobile-toggle {
+    display: none; align-items: center; justify-content: center; width: 40px; height: 40px;
+    background: none; border: none; cursor: pointer; flex-shrink: 0;
+  }
+
+  .sdl-mega-panel { position: absolute; top: 100%; left: 48px; padding-top: 14px; z-index: 100; display: none; }
+  .sdl-mega-panel.open { display: block; }
+  .sdl-mega-panel-inner {
+    width: max-content; max-width: min(760px, calc(100vw - 96px)); padding: 30px 32px 24px;
+    display: grid; grid-template-columns: repeat(2, minmax(240px, 1fr));
+    column-gap: 36px; row-gap: 26px;
+    background: #FFFFFF; border-radius: 20px; border: 1px solid rgba(16,24,40,0.06);
+    box-shadow: 0 30px 60px rgba(16,24,40,0.16), 0 4px 14px rgba(16,24,40,0.06);
+    overflow: hidden;
+  }
+  .sdl-mega-item { display: flex; align-items: flex-start; gap: 14px; }
+  .sdl-mega-item-icon {
+    width: 36px; height: 36px; border-radius: 9px; background: rgba(43,73,219,0.08); color: var(--accent);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .sdl-mega-item-title { font-weight: 700; color: #162833; margin-bottom: 5px; font-size: 15px; }
+  .sdl-mega-item-desc { color: #46535F; font-size: 13px; line-height: 1.55; }
+  .sdl-mega-cta { grid-column: 1 / -1; border-top: 1px solid #EEF1F6; padding-top: 18px; }
+  .sdl-mega-cta a { color: var(--accent); font-weight: 700; font-size: 14px; display: inline-flex; align-items: center; gap: 6px; }
+
+  .sdl-mobile-panel {
+    display: none; background: #FFFFFF; border-top: 1px solid rgba(16,24,40,0.07);
+    padding: 8px 24px 24px; max-height: calc(100vh - 88px); overflow-y: auto;
+  }
+  .sdl-mobile-panel.open { display: block; }
+  .sdl-mobile-item { border-bottom: 1px solid #EEF1F6; }
+  .sdl-mobile-item-btn {
+    width: 100%; display: flex; align-items: center; justify-content: space-between;
+    background: none; border: none; font-family: inherit; font-size: 16px; font-weight: 700;
+    color: #162833; padding: 16px 4px; cursor: pointer;
+  }
+  .sdl-mobile-item-btn .caret { font-size: 12px; color: #8891A0; }
+  .sdl-mobile-sub { padding: 0 4px 18px; display: none; flex-direction: column; gap: 14px; }
+  .sdl-mobile-sub.open { display: flex; }
+  .sdl-mobile-sub-title { font-weight: 700; color: #162833; font-size: 14px; }
+  .sdl-mobile-sub-desc { color: #46535F; font-size: 13px; line-height: 1.5; margin-top: 2px; }
+  .sdl-mobile-sub a { color: var(--accent); font-weight: 700; font-size: 14px; }
+  .sdl-mobile-cta {
+    display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--accent);
+    color: #FFFFFF; font-weight: 700; font-size: 15px; padding: 14px; border-radius: 999px; margin-top: 20px;
+  }
+  .sdl-mobile-cta:hover { color: #FFFFFF; }
+
+  /* ---------- shared section primitives ---------- */
+  .sdl-section { padding: 96px 48px 108px; }
+  .sdl-section-inner { max-width: 1360px; margin: 0 auto; }
+  .sdl-section--alt { background: #F6F8FC; }
+  .sdl-section--white { background: #FFFFFF; }
+  .sdl-section-title {
+    font-family: 'Manrope', sans-serif;
+    font-size: clamp(30px, 3.2vw, 40px); line-height: 1.22; font-weight: 500;
+    letter-spacing: -0.01em; color: #162833;
+  }
+  .au-kicker {
+    display: inline-flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent);
+  }
+  .au-kicker .kicker-line { display: inline-block; width: 22px; height: 1px; background: var(--accent); }
+  .au-kicker--dark { color: rgba(255,255,255,0.7); }
+  .au-kicker--dark .kicker-line { background: var(--success); }
+  .au-title {
+    margin-top: 18px; font-family: 'Manrope', sans-serif; font-weight: 500;
+    font-size: clamp(30px, 3.2vw, 42px); line-height: 1.2; letter-spacing: -0.015em; color: #162833;
+  }
+  .au-title--light { color: #FFFFFF; }
+  .au-lead {
+    font-family: 'Manrope', sans-serif; font-weight: 600; font-size: clamp(19px, 1.7vw, 22px);
+    line-height: 1.45; letter-spacing: -0.01em; color: #162833; margin: 0;
+  }
+  .au-btn {
+    display: inline-flex; align-items: center; gap: 10px; background: var(--accent);
+    color: #FFFFFF; font-weight: 700; font-size: 16px; padding: 16px 32px; border-radius: 999px;
+    transition: background 0.15s ease, transform 0.15s ease;
+  }
+  .au-btn:hover { background: var(--accent-hover); color: #FFFFFF; transform: translateY(-1px); }
+  .au-btn .arrow { display: inline-block; transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .au-btn:hover .arrow { transform: translateX(4px); }
+  .au-btn--ghost { background: rgba(255,255,255,0.08); border: 1.5px solid rgba(255,255,255,0.3); }
+  .au-btn--ghost:hover { background: rgba(255,255,255,0.14); }
+  .au-dot-texture {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image: radial-gradient(rgba(255,255,255,0.14) 1px, transparent 1.2px);
+    background-size: 18px 18px;
+    -webkit-mask-image: linear-gradient(115deg, transparent 35%, #000 100%);
+            mask-image: linear-gradient(115deg, transparent 35%, #000 100%);
+  }
+
+  /* ---------- footer ---------- */
+  .sdl-footer { position: relative; background: #101826; color: #A9B2C0; padding: 56px 48px 28px; }
+  .sdl-footer-inner { max-width: 1360px; margin: 0 auto; }
+  .sdl-footer-top {
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 48px; flex-wrap: wrap;
+    padding-bottom: 32px; margin-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .sdl-footer-brand { max-width: 280px; flex-shrink: 0; }
+  .sdl-footer-logo { height: 34px; width: auto; display: block; filter: brightness(0) invert(1); }
+  .sdl-footer-tagline { margin-top: 14px; font-size: 14px; line-height: 1.6; color: #8891A0; }
+  .sdl-footer-cols { flex: 1 1 auto; display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; }
+  .sdl-footer-col-title { font-size: 12px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #FFFFFF; margin-bottom: 14px; }
+  .sdl-footer-links { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .sdl-footer-links a { color: #A9B2C0; font-size: 13.5px; transition: color 0.15s ease; }
+  .sdl-footer-links a:hover { color: #FFFFFF; }
+  .sdl-footer-social-icon {
+    width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.06); color: #A9B2C0 !important;
+    display: flex; align-items: center; justify-content: center; transition: background 0.15s ease, color 0.15s ease !important;
+  }
+  .sdl-footer-social-icon:hover { background: var(--accent); color: #FFFFFF !important; }
+  .sdl-footer-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; font-size: 13px; color: #7A8494; }
+  .sdl-footer-bottom-right { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+
+  /* ---------- Approach: hero ---------- */
+  .ap-hero { padding: 76px 48px 32px; }
+  .ap-hero-inner { max-width: 1360px; margin: 0 auto; display: grid; grid-template-columns: 1.05fr 1fr; gap: 64px; align-items: center; }
+  .ap-hero-copy { max-width: 600px; }
+  .ap-hero-title { margin-top: 20px; font-family: 'Manrope', sans-serif; font-weight: 500; font-size: clamp(38px, 3.9vw, 54px); line-height: 1.12; letter-spacing: -0.02em; color: #162833; }
+  .ap-hero-title .accent { color: var(--accent); }
+  .ap-hero-sub { margin: 24px 0 0; font-size: 16.5px; line-height: 1.75; color: #46535F; max-width: 540px; }
+  .ap-hero-actions { margin-top: 34px; }
+
+  .ap-shader-panel { position: relative; width: 100%; aspect-ratio: 1 / 0.92; border-radius: 28px; overflow: hidden; background: linear-gradient(145deg, #101826, #1B2B57 55%, #223C78); }
+  .ap-shader-panel-content { position: relative; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding: 36px; }
+  .ap-shader-tag { display: inline-flex; align-self: flex-start; align-items: center; gap: 8px; background: rgba(8,14,26,0.55); backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,0.14); border-radius: 999px; padding: 8px 16px; font-size: 12.5px; font-weight: 600; color: #FFFFFF; }
+  .ap-shader-tag .dot { width: 6px; height: 6px; border-radius: 50%; background: #2FD4C4; }
+
+  /* ---------- Approach: method (scroll-driven) ---------- */
+  .ap-method-section { position: relative; overflow: hidden; background: #101826; }
+  .ap-method-inner { position: relative; max-width: 1360px; margin: 0 auto; padding: 104px 48px 24px; }
+  .ap-method-head { max-width: 640px; }
+  .ap-method-head .au-body p { margin: 16px 0 0; font-size: 16.5px; line-height: 1.75; color: rgba(255,255,255,0.64); }
+  .ap-method-rail { margin-top: 64px; border-top: 1px solid rgba(255,255,255,0.12); }
+  .ap-phase {
+    min-height: clamp(380px, 54vh, 600px); display: flex; flex-direction: column; justify-content: center;
+    max-width: 740px; border-bottom: 1px solid rgba(255,255,255,0.12);
+    opacity: 0.4; transition: opacity 0.5s ease;
+  }
+  .ap-phase.is-active { opacity: 1; }
+  .ap-phase-num { font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.1em; color: rgba(255,255,255,0.5); }
+  .ap-phase-title { margin-top: 16px; font-family: 'Manrope', sans-serif; font-weight: 500; font-size: clamp(32px, 4vw, 52px); line-height: 1.15; letter-spacing: -0.02em; color: #FFFFFF; }
+  .ap-phase-desc { margin-top: 18px; font-size: 17px; line-height: 1.75; color: rgba(255,255,255,0.66); max-width: 560px; }
+  .ap-phase-loop { margin-top: 24px; display: inline-flex; align-items: center; gap: 9px; font-size: 13.5px; font-weight: 600; color: #7DD8F0; width: fit-content; }
+  .ap-phase-loop svg { animation: apSpin 7s linear infinite; }
+  @keyframes apSpin { to { transform: rotate(360deg); } }
+
+  /* ---------- Approach: capabilities bento ---------- */
+  .ap-bento { margin-top: 56px; display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: 232px; gap: 20px; }
+  .ap-bento-intro {
+    grid-column: span 2; grid-row: span 2; position: relative; border-radius: 24px; overflow: hidden;
+    padding: 40px; display: flex; flex-direction: column; justify-content: flex-end;
+    background: linear-gradient(150deg, #101826, #1E2E52 60%, #233E7D); color: #FFFFFF;
+  }
+  .ap-bento-intro-title { position: relative; font-family: 'Manrope', sans-serif; font-weight: 500; font-size: clamp(24px, 2.4vw, 32px); line-height: 1.3; letter-spacing: -0.015em; max-width: 440px; }
+  .ap-bento-intro-sub { position: relative; margin-top: 14px; font-size: 15px; line-height: 1.65; color: rgba(255,255,255,0.68); max-width: 420px; }
+  .ap-bento-tile {
+    position: relative; border-radius: 24px; padding: 26px; background: #FFFFFF; border: 1px solid #E8EDF5;
+    display: flex; flex-direction: column; justify-content: space-between; color: inherit;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+  .ap-bento-tile:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(16,24,40,0.08); border-color: rgba(43,73,219,0.25); color: inherit; }
+  .ap-bento-tile-num { font-family: 'Manrope', sans-serif; font-size: 12px; font-weight: 700; color: #A9B4C6; }
+  .ap-bento-tile-name { margin-top: auto; font-family: 'Manrope', sans-serif; font-size: 18.5px; font-weight: 600; letter-spacing: -0.01em; color: #162833; line-height: 1.3; }
+  .ap-bento-tile-arrow { margin-top: 14px; color: var(--accent); font-size: 18px; transition: transform 0.25s ease; }
+  .ap-bento-tile:hover .ap-bento-tile-arrow { transform: translate(3px, -3px); }
+
+  /* ---------- Approach: principles ---------- */
+  .ap-principles { position: relative; overflow: hidden; background: #0B1320; padding: 104px 48px 108px; }
+  .ap-principles-inner { position: relative; max-width: 940px; margin: 0 auto; }
+  .ap-principles-head { max-width: 600px; }
+  .ap-principles-list { margin-top: 52px; }
+  .ap-principle {
+    padding: 30px 0; border-top: 1px solid rgba(255,255,255,0.12);
+    display: flex; align-items: baseline; justify-content: space-between; gap: 32px; flex-wrap: wrap;
+  }
+  .ap-principle:last-child { border-bottom: 1px solid rgba(255,255,255,0.12); }
+  .ap-principle-word { font-family: 'Manrope', sans-serif; font-weight: 600; font-size: clamp(28px, 4.4vw, 52px); letter-spacing: -0.02em; color: #FFFFFF; }
+  .ap-principle-desc { max-width: 420px; font-size: 15px; line-height: 1.7; color: rgba(255,255,255,0.6); }
+
+  /* ---------- Approach: stats ---------- */
+  .ap-stats-section { padding: 72px 48px; background: #F6F8FC; }
+  .ap-stats { max-width: 1360px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid #E4E9F2; }
+  .ap-stat { padding: 36px 32px 0 0; }
+  .ap-stat + .ap-stat { padding-left: 32px; border-left: 1px solid #E4E9F2; }
+  .ap-stat-num { font-family: 'Manrope', sans-serif; font-weight: 600; font-size: clamp(42px, 4.6vw, 60px); line-height: 1; letter-spacing: -0.03em; color: #162833; font-variant-numeric: tabular-nums; }
+  .ap-stat-num .plus { color: var(--accent); }
+  .ap-stat-label { margin-top: 12px; font-size: 14.5px; color: #46535F; }
+
+  /* ---------- Approach: closing CTA ---------- */
+  .ap-cta-section { padding: 24px 48px 96px; }
+  .ap-cta-card { position: relative; overflow: hidden; max-width: 1360px; margin: 0 auto; background: #101826; border-radius: 28px; padding: 84px 56px 88px; text-align: center; }
+  .ap-cta-inner { position: relative; }
+  .ap-cta-title { margin-top: 20px; font-family: 'Manrope', sans-serif; font-weight: 500; font-size: clamp(32px, 3.8vw, 50px); line-height: 1.15; letter-spacing: -0.02em; color: #FFFFFF; }
+  .ap-cta-sub { margin: 20px 0 0; max-width: none; text-wrap: balance; font-size: 17px; line-height: 1.7; color: rgba(255,255,255,0.62); }
+  .ap-cta-card .au-btn { margin-top: 32px; }
+
+  /* ---------- scroll-reveal motion ---------- */
+  .reveal, .reveal-group > * { opacity: 0; transform: translateY(24px); }
+  .reveal.is-visible, .reveal-group.is-visible > * { animation: sdlRevealIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+  @keyframes sdlRevealIn { to { opacity: 1; transform: translateY(0); } }
+  .reveal-group > *:nth-child(1) { animation-delay: 0s; }
+  .reveal-group > *:nth-child(2) { animation-delay: 0.07s; }
+  .reveal-group > *:nth-child(3) { animation-delay: 0.14s; }
+  .reveal-group > *:nth-child(4) { animation-delay: 0.21s; }
+  .reveal-group > *:nth-child(5) { animation-delay: 0.28s; }
+  .reveal-group > *:nth-child(6) { animation-delay: 0.35s; }
+  .ap-hero-copy { opacity: 0; transform: translateY(18px); animation: sdlRevealIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+  .ap-shader-panel { opacity: 0; transform: translateY(18px); animation: sdlRevealIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards 0.15s; }
+
+  @media (max-width: 1080px) {
+    .sdl-header-nav-wrap { display: none; }
+    .sdl-desktop-cta { display: none; }
+    .sdl-mobile-toggle { display: flex; }
+    .sdl-header-right { gap: 0; }
+    .ap-hero { padding: 48px 24px 32px; }
+    .ap-hero-inner { grid-template-columns: 1fr; gap: 28px; }
+    .ap-shader-panel { order: -1; aspect-ratio: 16/9; }
+    .ap-method-inner { padding: 72px 24px 16px; }
+    .ap-bento { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 200px; }
+    .ap-bento-intro { grid-column: span 2; grid-row: span 1; aspect-ratio: auto; min-height: 220px; }
+    .ap-principles { padding: 72px 24px 80px; }
+    .ap-cta-section { padding: 16px 24px 64px; }
+    .ap-cta-card { padding: 60px 28px 64px; }
+  }
+
+  @media (max-width: 700px) {
+    .ap-bento { grid-template-columns: 1fr; grid-auto-rows: auto; }
+    .ap-bento-intro { grid-column: span 1; }
+    .ap-bento-tile { min-height: 160px; }
+    .ap-stats { grid-template-columns: 1fr; }
+    .ap-stat, .ap-stat + .ap-stat { padding: 28px 0; border-left: none; border-bottom: 1px solid #E4E9F2; }
+    .ap-principle { flex-direction: column; gap: 10px; }
+  }
+
+  @media (max-width: 560px) {
+    .sdl-footer-top { flex-direction: column; align-items: flex-start; }
+    .sdl-footer-cols { grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal, .reveal-group > *, .ap-hero-copy, .ap-shader-panel { animation: none !important; opacity: 1 !important; transform: none !important; }
+    .ap-phase-loop svg { animation: none !important; }
+    .ap-phase { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div style="font-family:'Inter',sans-serif;background:#F6F8FC;min-height:100vh">
+
+  <header class="sdl-header" id="sdlHeader">
+    <div class="sdl-header-inner">
+      <div class="sdl-header-left">
+        <a href="index.html" style="display: flex; align-items: center; flex-shrink: 0; color: inherit; text-decoration: none;">
+          <img src="assets/sdl-logo.svg" alt="Social DNA Labs" class="sdl-logo" />
+        </a>
+      </div>
+      <div class="sdl-header-nav-wrap">
+        <nav class="sdl-desktop-nav" id="desktopNav"></nav>
+      </div>
+      <div class="sdl-header-right">
+        <a href="index.html#contact" class="sdl-cta sdl-desktop-cta">Let's talk →</a>
+        <button class="sdl-mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+          <svg width="22" height="16" viewBox="0 0 22 16"><rect width="22" height="2" fill="#162833"></rect><rect y="7" width="22" height="2" fill="#162833"></rect><rect y="14" width="22" height="2" fill="#162833"></rect></svg>
+        </button>
+      </div>
+    </div>
+    <div class="sdl-mega-panel" id="megaPanel"></div>
+    <div class="sdl-mobile-panel" id="mobilePanel"></div>
+  </header>
+
+  <section class="ap-hero">
+    <div class="ap-hero-inner">
+      <div class="ap-hero-copy">
+        <span class="au-kicker"><span class="kicker-line"></span> Our approach</span>
+        <h1 class="ap-hero-title">A method, not a <span class="accent">formula.</span></h1>
+        <p class="au-lead" style="margin-top:24px">Every engagement starts the same way: understand first, then move.</p>
+        <p class="ap-hero-sub">The combination of AI, engineering, transformation, experience and growth changes with every business. What stays constant is how we get there — a way of working that applies across every capability, refined over 16+ years of delivery.</p>
+        <div class="ap-hero-actions">
+          <a href="index.html#contact" class="au-btn">Talk to us <span class="arrow" aria-hidden="true">→</span></a>
+        </div>
+      </div>
+      <div class="ap-shader-panel" id="apHeroShader" aria-hidden="true">
+        <div class="ap-shader-panel-content">
+          <span class="ap-shader-tag"><span class="dot"></span> Understand → Accelerate → Evolve</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ap-method-section" id="apMethodSection">
+    <div class="ap-method-inner">
+      <div class="ap-method-head reveal">
+        <span class="au-kicker au-kicker--dark"><span class="kicker-line"></span> How we work</span>
+        <h2 class="au-title au-title--light">Three movements. One method.</h2>
+        <div class="au-body">
+          <p>The method doesn't change by project — only what it's applied to does. Scroll through it once; you'll see it again in every capability that follows.</p>
+        </div>
+      </div>
+
+      <div class="ap-method-rail">
+        <div class="ap-phase" data-i="0">
+          <span class="ap-phase-num">01 — UNDERSTAND</span>
+          <h3 class="ap-phase-title">See the business before touching the technology.</h3>
+          <p class="ap-phase-desc">Every engagement starts with the business behind the problem — the people, systems and decisions that shape it. That context is what keeps the work aimed at outcomes that matter, not just technically correct ones.</p>
+        </div>
+        <div class="ap-phase" data-i="1">
+          <span class="ap-phase-num">02 — ACCELERATE</span>
+          <h3 class="ap-phase-title">Move from idea to working reality, fast.</h3>
+          <p class="ap-phase-desc">Once the direction is clear, we apply the right combination of AI, engineering and experience to build it — prioritizing the shortest path to something real, measurable and in front of users.</p>
+        </div>
+        <div class="ap-phase" data-i="2">
+          <span class="ap-phase-num">03 — EVOLVE</span>
+          <h3 class="ap-phase-title">Keep improving as the business changes.</h3>
+          <p class="ap-phase-desc">Launch isn't the finish line. We stay close to what's shipped, measure what it actually does, and feed that back into the next iteration.</p>
+          <span class="ap-phase-loop" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 12a8 8 0 0 1 14-5M20 4v4h-4"/><path d="M20 12a8 8 0 0 1-14 5M4 20v-4h4"/></svg>
+            Then back to understand — sharper this time
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sdl-section sdl-section--white">
+    <div class="sdl-section-inner">
+      <div class="reveal" style="max-width:640px">
+        <span class="au-kicker"><span class="kicker-line"></span> Applied across capabilities</span>
+        <h2 class="au-title">One method. Five capabilities.</h2>
+      </div>
+      <div class="ap-bento reveal-group">
+        <div class="ap-bento-intro" id="apBentoIntro">
+          <div class="ap-bento-intro-title">The same three movements, aimed at whichever capability the business needs most.</div>
+          <div class="ap-bento-intro-sub">Most engagements combine more than one — intelligence rarely works in isolation from the systems and experiences around it.</div>
+        </div>
+        <a class="ap-bento-tile" href="ai-transformation.html">
+          <span class="ap-bento-tile-num">01</span>
+          <span class="ap-bento-tile-name">AI transformation</span>
+          <span class="ap-bento-tile-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="ap-bento-tile" href="digital-engineering.html">
+          <span class="ap-bento-tile-num">02</span>
+          <span class="ap-bento-tile-name">Digital engineering</span>
+          <span class="ap-bento-tile-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="ap-bento-tile" href="business-transformation.html">
+          <span class="ap-bento-tile-num">03</span>
+          <span class="ap-bento-tile-name">Business transformation</span>
+          <span class="ap-bento-tile-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="ap-bento-tile" href="digital-experience.html">
+          <span class="ap-bento-tile-num">04</span>
+          <span class="ap-bento-tile-name">Digital experience</span>
+          <span class="ap-bento-tile-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="ap-bento-tile" href="growth-transformation.html">
+          <span class="ap-bento-tile-num">05</span>
+          <span class="ap-bento-tile-name">Growth transformation</span>
+          <span class="ap-bento-tile-arrow" aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="ap-principles" id="apPrinciples">
+    <div class="ap-principles-inner">
+      <div class="ap-principles-head reveal">
+        <span class="au-kicker au-kicker--dark"><span class="kicker-line"></span> Principles in practice</span>
+        <h2 class="au-title au-title--light">What the method protects.</h2>
+      </div>
+      <div class="ap-principles-list reveal-group">
+        <div class="ap-principle">
+          <span class="ap-principle-word">Humane</span>
+          <span class="ap-principle-desc">We work from how people actually behave, not how a system assumes they should.</span>
+        </div>
+        <div class="ap-principle">
+          <span class="ap-principle-word">Integrity</span>
+          <span class="ap-principle-desc">What we recommend is what we believe will work — not what's easiest to build.</span>
+        </div>
+        <div class="ap-principle">
+          <span class="ap-principle-word">Ingenuity</span>
+          <span class="ap-principle-desc">When the obvious approach won't hold up, we look for the one that will.</span>
+        </div>
+        <div class="ap-principle">
+          <span class="ap-principle-word">Harmony</span>
+          <span class="ap-principle-desc">Engineering, design, strategy and AI move together, not in handoffs.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ap-stats-section">
+    <div class="ap-stats reveal-group">
+      <div class="ap-stat"><div class="ap-stat-num"><span data-count="16">16</span><span class="plus">+</span></div><div class="ap-stat-label">Years applying this method</div></div>
+      <div class="ap-stat"><div class="ap-stat-num"><span data-count="700">700</span><span class="plus">+</span></div><div class="ap-stat-label">Projects delivered</div></div>
+      <div class="ap-stat"><div class="ap-stat-num"><span data-count="200">200</span><span class="plus">+</span></div><div class="ap-stat-label">Businesses served</div></div>
+    </div>
+  </section>
+
+  <section class="ap-cta-section">
+    <div class="ap-cta-card reveal">
+      <div class="au-dot-texture" aria-hidden="true"></div>
+      <div class="ap-cta-inner">
+        <span class="au-kicker au-kicker--dark"><span class="kicker-line"></span> Start a conversation</span>
+        <h2 class="ap-cta-title">See the method applied to what you're building.</h2>
+        <p class="ap-cta-sub">Bring us the problem as it actually is. We'll show you how understand, accelerate and evolve would apply to it.</p>
+        <a href="index.html#contact" class="au-btn">Talk to us <span class="arrow" aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer class="sdl-footer">
+  <div class="sdl-footer-inner">
+    <div class="sdl-footer-top">
+      <div class="sdl-footer-brand">
+        <img src="assets/sdl-logo.svg" alt="Social DNA Labs" class="sdl-footer-logo" />
+        <p class="sdl-footer-tagline">Technology, experience and AI for businesses building what comes next.</p>
+      </div>
+      <div class="sdl-footer-cols" id="footerCols"></div>
+    </div>
+    <div class="sdl-footer-bottom">
+      <div id="footerYear">© Social DNA Labs</div>
+      <div class="sdl-footer-bottom-right">
+        <div>Business impact, by design.</div>
+        <a href="#" class="sdl-footer-social-icon" aria-label="LinkedIn"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zm7 0h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.6c0-1.34-.02-3.06-1.87-3.06-1.87 0-2.16 1.46-2.16 2.96V21h-4z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var ACCENT = '#2B49DB';
+  var MEGA_MENU_ENABLED = true;
+
+  var MENUS = [
+    { key: 'services', label: 'Services', href: 'services.html', cta: { label: 'View all services', href: 'services.html' }, items: [
+      { title: 'AI transformation', desc: 'Turn intelligence into action.', href: 'ai-transformation.html' },
+      { title: 'Digital engineering', desc: 'Transform technology into digital advantage.', href: 'digital-engineering.html' },
+      { title: 'Business transformation', desc: 'Simplify complexity. Strengthen the business.', href: 'business-transformation.html' },
+      { title: 'Digital experience', desc: 'Make every digital interaction count.', href: 'digital-experience.html' },
+      { title: 'Growth transformation', desc: 'Precision. Performance. Growth.', href: 'growth-transformation.html' }
+    ]},
+    { key: 'products', label: 'Products & Platforms', cta: { label: 'Explore EVOQ', href: 'evoq.html' }, items: [
+      { title: 'EVOQ', desc: 'The unified business suite for modern operations.', href: 'evoq.html' }
+    ]},
+    { key: 'insights', label: 'Insights', cta: { label: 'Explore insights', href: '#' }, items: [
+      { title: 'Blogs', desc: 'Ideas, perspectives and practical thinking.' },
+      { title: 'Case studies', desc: 'Real projects. Real business outcomes.' },
+      { title: 'Whitepapers', desc: 'In-depth research and perspectives.' },
+      { title: 'Featured projects', desc: 'Selected work and digital experiences.' }
+    ]},
+    { key: 'company', label: 'Company', cta: null, items: [
+      { title: 'About', desc: 'The people and experience behind SDL.', href: 'about-us.html' },
+      { title: 'Our approach', desc: 'How SDL thinks, builds and works.', href: 'approach.html' },
+      { title: 'Clients', desc: 'The businesses SDL works with.' },
+      { title: 'Careers', desc: "Build what's next with SDL." }
+    ]}
+  ];
+
+  var ICONS = {
+    'AI transformation': '<path d="M24 6l4.2 9.4L38 20l-9.8 4.6L24 34l-4.2-9.4L10 20l9.8-4.6L24 6z"/><circle cx="24" cy="20" r="3.4"/>',
+    'Digital engineering': '<path d="M17 15l-8 8 8 8M31 15l8 8-8 8M27 12l-6 24"/>',
+    'Business transformation': '<circle cx="24" cy="24" r="7"/><path d="M24 8v5M24 39v5M8 24h5M39 24h5M12.9 12.9l3.5 3.5M31.6 31.6l3.5 3.5M35.1 12.9l-3.5 3.5M16.4 31.6l-3.5 3.5"/>',
+    'Digital experience': '<rect x="10" y="12" width="28" height="20" rx="2.5"/><path d="M18 40h12M24 32v8"/>',
+    'Growth transformation': '<path d="M9 33l9-11 7 7 14-17"/><path d="M31 12h8v8"/>',
+    'Products & platforms': '<rect x="9" y="9" width="13" height="13" rx="2"/><rect x="26" y="9" width="13" height="13" rx="2"/><rect x="9" y="26" width="13" height="13" rx="2"/><rect x="26" y="26" width="13" height="13" rx="2"/>',
+    'EVOQ': '<rect x="9" y="9" width="13" height="13" rx="2"/><rect x="26" y="9" width="13" height="13" rx="2"/><rect x="9" y="26" width="13" height="13" rx="2"/><rect x="26" y="26" width="13" height="13" rx="2"/>',
+    'Blogs': '<path d="M14 8h14l6 6v22a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2z"/><path d="M28 8v6h6M17 24h14M17 30h14"/>',
+    'Case studies': '<path d="M14 8h14l6 6v22a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2z"/><path d="M28 8v6h6M18 26l4 4 8-9"/>',
+    'Whitepapers': '<path d="M14 8h14l6 6v22a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2z"/><path d="M28 8v6h6M17 22h14M17 28h9"/>',
+    'Featured projects': '<path d="M24 6l4.6 12.6L42 21l-9 9 2.3 13-11.3-6.5L12.7 43 15 30l-9-9 13.4-2.4L24 6z"/>',
+    'About': '<rect x="12" y="10" width="24" height="28" rx="2"/><path d="M18 18h4M26 18h4M18 26h4M26 26h4M20 38v-6h8v6"/>',
+    'Our approach': '<circle cx="24" cy="24" r="13"/><circle cx="24" cy="24" r="7"/><circle cx="24" cy="24" r="1.6" fill="currentColor" stroke="none"/>',
+    'Clients': '<circle cx="18" cy="18" r="5"/><circle cx="32" cy="20" r="4"/><path d="M9 38c1-6 5-10 9-10s8 4 9 10M27 38c1-5 4-9 8-9 3 0 6 2 7 6"/>',
+    'Careers': '<rect x="8" y="16" width="32" height="20" rx="3"/><path d="M17 16v-4a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v4"/><path d="M8 25h32"/>'
+  };
+  var ICON_DEFAULT = '<circle cx="24" cy="24" r="4" fill="currentColor" stroke="none"/>';
+
+  // ---------- Footer ----------
+  var FOOTER_COLS = [
+    { title: 'Services', links: [
+      { label: 'AI transformation', href: 'ai-transformation.html' },
+      { label: 'Digital engineering', href: 'digital-engineering.html' },
+      { label: 'Business transformation', href: 'business-transformation.html' },
+      { label: 'Digital experience', href: 'digital-experience.html' },
+      { label: 'Growth transformation', href: 'growth-transformation.html' }
+    ]},
+    { title: 'Products & Platforms', links: [
+      { label: 'EVOQ', href: 'evoq.html' }
+    ]},
+    { title: 'Insights', links: [
+      { label: 'Blogs', href: '#' },
+      { label: 'Case studies', href: '#' },
+      { label: 'Whitepapers', href: '#' },
+      { label: 'Featured projects', href: '#' }
+    ]},
+    { title: 'Company', links: [
+      { label: 'About', href: 'about-us.html' },
+      { label: 'Our approach', href: 'approach.html' },
+      { label: 'Clients', href: '#' },
+      { label: 'Careers', href: '#' }
+    ]},
+    { title: 'Connect', links: [
+      { label: "Let's talk", href: 'index.html#contact' },
+      { label: 'Contact us', href: 'index.html#contact' }
+    ]}
+  ];
+  var footerCols = document.getElementById('footerCols');
+  FOOTER_COLS.forEach(function (col) {
+    var wrap = document.createElement('div');
+    var title = document.createElement('div');
+    title.className = 'sdl-footer-col-title';
+    title.textContent = col.title;
+    var list = document.createElement('ul');
+    list.className = 'sdl-footer-links';
+    col.links.forEach(function (l) {
+      var li = document.createElement('li');
+      var a = document.createElement('a');
+      a.href = l.href;
+      a.textContent = l.label;
+      li.appendChild(a);
+      list.appendChild(li);
+    });
+    wrap.appendChild(title);
+    wrap.appendChild(list);
+    footerCols.appendChild(wrap);
+  });
+
+  document.getElementById('footerYear').textContent = '© ' + new Date().getFullYear() + ' Social DNA Labs';
+
+  // ---------- Desktop nav + mega menu ----------
+  var desktopNav = document.getElementById('desktopNav');
+  var megaPanel = document.getElementById('megaPanel');
+  var header = document.getElementById('sdlHeader');
+  var navButtons = [];
+
+  function closeMegaMenu() {
+    megaPanel.classList.remove('open');
+    megaPanel.innerHTML = '';
+    navButtons.forEach(function (b) { b.classList.remove('active'); });
+  }
+
+  function renderMegaMenu(menu, triggerBtn, triggerItem) {
+    if (!MEGA_MENU_ENABLED) return;
+    var inner = document.createElement('div');
+    inner.className = 'sdl-mega-panel-inner';
+    if (menu.items.length < 2) inner.style.gridTemplateColumns = '1fr';
+    menu.items.forEach(function (item) {
+      var wrap = document.createElement('div');
+      wrap.className = 'sdl-mega-item';
+      var icon = document.createElement('div');
+      icon.className = 'sdl-mega-item-icon';
+      icon.innerHTML = '<svg width="18" height="18" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">' + (ICONS[item.title] || ICON_DEFAULT) + '</svg>';
+      var textWrap = document.createElement('div');
+      var title = document.createElement('div');
+      title.className = 'sdl-mega-item-title';
+      title.textContent = item.title;
+      var desc = document.createElement('div');
+      desc.className = 'sdl-mega-item-desc';
+      desc.textContent = item.desc;
+      textWrap.appendChild(title);
+      textWrap.appendChild(desc);
+      wrap.appendChild(icon);
+      wrap.appendChild(textWrap);
+
+      if (item.href) {
+        var link = document.createElement('a');
+        link.href = item.href;
+        link.style.display = 'contents';
+        link.style.cursor = 'pointer';
+        link.style.color = 'inherit';
+        link.style.textDecoration = 'none';
+        link.appendChild(wrap);
+        inner.appendChild(link);
+      } else {
+        inner.appendChild(wrap);
+      }
+    });
+    if (menu.cta) {
+      var ctaWrap = document.createElement('div');
+      ctaWrap.className = 'sdl-mega-cta';
+      var ctaLink = document.createElement('a');
+      ctaLink.href = menu.cta.href;
+      ctaLink.textContent = menu.cta.label + ' →';
+      ctaLink.style.color = ACCENT;
+      ctaWrap.appendChild(ctaLink);
+      inner.appendChild(ctaWrap);
+    }
+    megaPanel.innerHTML = '';
+    megaPanel.appendChild(inner);
+    megaPanel.classList.add('open');
+
+    navButtons.forEach(function (b) { b.classList.toggle('active', b === triggerBtn); });
+
+    var headerRect = header.getBoundingClientRect();
+    var itemRect = triggerItem.getBoundingClientRect();
+    var panelWidth = megaPanel.offsetWidth;
+    var itemCenter = (itemRect.left - headerRect.left) + itemRect.width / 2;
+    var left = itemCenter - panelWidth / 2;
+    var maxLeft = header.offsetWidth - panelWidth - 24;
+    if (maxLeft < 24) maxLeft = 24;
+    left = Math.max(24, Math.min(left, maxLeft));
+    megaPanel.style.left = left + 'px';
+  }
+
+  MENUS.forEach(function (menu) {
+    var item = document.createElement('div');
+    item.className = 'sdl-nav-item';
+
+    if (menu.href && !menu.items.length) {
+      var link = document.createElement('a');
+      link.className = 'sdl-nav-btn';
+      link.href = menu.href;
+      link.textContent = menu.label;
+      item.appendChild(link);
+    } else {
+      var btn = document.createElement('button');
+      btn.className = 'sdl-nav-btn';
+      btn.innerHTML = menu.label + ' <span class="caret">▾</span>';
+      item.appendChild(btn);
+      item.addEventListener('mouseenter', function () { renderMegaMenu(menu, btn, item); });
+      navButtons.push(btn);
+    }
+
+    desktopNav.appendChild(item);
+  });
+
+  header.addEventListener('mouseleave', closeMegaMenu);
+
+  // ---------- Mobile nav ----------
+  var mobileToggle = document.getElementById('mobileToggle');
+  var mobilePanel = document.getElementById('mobilePanel');
+  var mobileOpenKey = null;
+
+  function renderMobilePanel() {
+    mobilePanel.innerHTML = '';
+    MENUS.forEach(function (menu) {
+      var itemEl = document.createElement('div');
+      itemEl.className = 'sdl-mobile-item';
+
+      if (menu.href && !menu.items.length) {
+        var link = document.createElement('a');
+        link.className = 'sdl-mobile-item-btn';
+        link.href = menu.href;
+        link.textContent = menu.label;
+        link.style.display = 'block';
+        link.style.cursor = 'pointer';
+        itemEl.appendChild(link);
+      } else {
+        var btn = document.createElement('button');
+        btn.className = 'sdl-mobile-item-btn';
+        btn.innerHTML = menu.label + ' <span class="caret">▾</span>';
+        btn.addEventListener('click', function () {
+          mobileOpenKey = mobileOpenKey === menu.key ? null : menu.key;
+          renderMobilePanel();
+        });
+        itemEl.appendChild(btn);
+
+        var sub = document.createElement('div');
+        sub.className = 'sdl-mobile-sub' + (mobileOpenKey === menu.key ? ' open' : '');
+        menu.items.forEach(function (subItem) {
+          var subWrap = document.createElement('div');
+          if (subItem.href) {
+            var t = document.createElement('a');
+            t.className = 'sdl-mobile-sub-title';
+            t.href = subItem.href;
+            t.style.display = 'block';
+            t.textContent = subItem.title;
+            subWrap.appendChild(t);
+          } else {
+            var tPlain = document.createElement('div');
+            tPlain.className = 'sdl-mobile-sub-title';
+            tPlain.textContent = subItem.title;
+            subWrap.appendChild(tPlain);
+          }
+          var d = document.createElement('div');
+          d.className = 'sdl-mobile-sub-desc';
+          d.textContent = subItem.desc;
+          subWrap.appendChild(d);
+          sub.appendChild(subWrap);
+        });
+        if (menu.cta) {
+          var ctaLink = document.createElement('a');
+          ctaLink.href = menu.cta.href;
+          ctaLink.textContent = menu.cta.label + ' →';
+          sub.appendChild(ctaLink);
+        }
+        itemEl.appendChild(sub);
+      }
+      mobilePanel.appendChild(itemEl);
+    });
+
+    var talkLink = document.createElement('a');
+    talkLink.href = 'index.html#contact';
+    talkLink.className = 'sdl-mobile-cta';
+    talkLink.textContent = "Let's talk →";
+    mobilePanel.appendChild(talkLink);
+  }
+  renderMobilePanel();
+
+  mobileToggle.addEventListener('click', function () {
+    mobilePanel.classList.toggle('open');
+  });
+
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ---------- Stat count-up ----------
+  (function initCounters() {
+    var nums = document.querySelectorAll('[data-count]');
+    if (!nums.length || reduceMotion || !('IntersectionObserver' in window)) return;
+    nums.forEach(function (el) { el.textContent = '0'; });
+    var io = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        obs.unobserve(entry.target);
+        var el = entry.target, target = +el.getAttribute('data-count'), t0 = performance.now(), dur = 1400;
+        (function tick(now) {
+          var p = Math.min((now - t0) / dur, 1);
+          el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+          if (p < 1) requestAnimationFrame(tick);
+        })(t0);
+      });
+    }, { threshold: 0.4 });
+    nums.forEach(function (el) { io.observe(el); });
+  })();
+
+  // ---------- Scroll-reveal motion ----------
+  (function initScrollReveal() {
+    var targets = document.querySelectorAll('.reveal, .reveal-group');
+    if (!targets.length) return;
+    if (!('IntersectionObserver' in window)) {
+      targets.forEach(function (el) { el.classList.add('is-visible'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries, observer) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+    targets.forEach(function (el) { io.observe(el); });
+  })();
+
+  // ---------- Method phase activation ----------
+  (function initPhases() {
+    var phases = document.querySelectorAll('.ap-phase');
+    if (!phases.length) return;
+    if (!('IntersectionObserver' in window)) {
+      phases.forEach(function (p) { p.classList.add('is-active'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        entry.target.classList.toggle('is-active', entry.isIntersecting);
+        if (entry.isIntersecting) window.__apActivePhase = +entry.target.getAttribute('data-i');
+      });
+    }, { threshold: 0.55 });
+    phases.forEach(function (p) { io.observe(p); });
+  })();
+
+  window.__apReduceMotion = reduceMotion;
+})();
+</script>
+
+<script>
+(function () {
+  "use strict";
+  if (!window.WebGL2RenderingContext) return;
+
+  var PAPER_SHADERS_URL = 'https://esm.sh/@paper-design/shaders@0.0.81';
+  var reduceMotion = !!window.__apReduceMotion;
+
+  import(PAPER_SHADERS_URL).then(function (mod) {
+    var ShaderMount = mod.ShaderMount;
+    var meshGradientFragmentShader = mod.meshGradientFragmentShader;
+    var getShaderColorFromString = mod.getShaderColorFromString;
+    var ShaderFitOptions = mod.ShaderFitOptions;
+
+    function buildUniforms(p) {
+      return {
+        u_colors: p.colors.map(getShaderColorFromString),
+        u_colorsCount: p.colors.length,
+        u_distortion: p.distortion,
+        u_swirl: p.swirl,
+        u_grainMixer: p.grainMixer || 0,
+        u_grainOverlay: p.grainOverlay || 0,
+        u_fit: ShaderFitOptions.cover,
+        u_rotation: 0,
+        u_scale: 1,
+        u_offsetX: 0,
+        u_offsetY: 0,
+        u_originX: 0.5,
+        u_originY: 0.5,
+        u_worldWidth: 0,
+        u_worldHeight: 0
+      };
+    }
+
+    function mountShader(el, preset) {
+      if (!el) return null;
+      try {
+        return new ShaderMount(el, meshGradientFragmentShader, buildUniforms(preset), undefined, reduceMotion ? 0 : (preset.speed || 0.35));
+      } catch (e) {
+        return null;
+      }
+    }
+
+    mountShader(document.getElementById('apHeroShader'), {
+      colors: ['#101826', '#1E35B8', '#2B49DB', '#6A8CFF'], distortion: 0.75, swirl: 0.15, speed: 0.4
+    });
+
+    mountShader(document.getElementById('apBentoIntro'), {
+      colors: ['#101826', '#1E35B8', '#2B49DB'], distortion: 0.5, swirl: 0.1, speed: 0.25
+    });
+
+    mountShader(document.getElementById('apPrinciples'), {
+      colors: ['#0B1320', '#162833', '#2B49DB'], distortion: 0.4, swirl: 0.05, grainOverlay: 0.06, speed: 0.2
+    });
+
+    var methodMount = mountShader(document.getElementById('apMethodSection'), {
+      colors: ['#101826', '#17345E', '#2B49DB', '#38BDF8'], distortion: 0.6, swirl: 0.08, speed: 0.3
+    });
+
+    if (methodMount) {
+      var PHASE_PRESETS = [
+        { colors: ['#101826', '#17345E', '#2B49DB', '#38BDF8'], distortion: 0.6, swirl: 0.08 },
+        { colors: ['#101826', '#2B49DB', '#6A8CFF', '#7C6BF0'], distortion: 0.8, swirl: 0.25 },
+        { colors: ['#101826', '#172B96', '#2FD4C4', '#38BDF8'], distortion: 0.9, swirl: 0.85 }
+      ];
+      var phases = document.querySelectorAll('.ap-phase');
+      if ('IntersectionObserver' in window && phases.length) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            var idx = +entry.target.getAttribute('data-i');
+            var preset = PHASE_PRESETS[idx];
+            if (preset) methodMount.setUniforms(buildUniforms(preset));
+          });
+        }, { threshold: 0.55 });
+        phases.forEach(function (p) { io.observe(p); });
+      }
+    }
+  }).catch(function () {
+    // Network or WebGL2 unavailable — the CSS gradient fallback already in place stays visible.
+  });
+})();
+</script>
+
+</body>
+</html>

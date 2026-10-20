@@ -170,86 +170,64 @@
   }
   .sdl-pillars-footer-row { margin-top: 40px; display: flex; justify-content: center; }
 
-  .sdl-pillars-grid {
-    margin-top: 56px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; align-items: stretch;
-  }
-  .sdl-pillar-card {
-    background: #FFFFFF; padding: 32px 32px 28px;
-    position: relative; overflow: hidden; border: 1px solid #EEF1F6; border-radius: 20px;
-    box-shadow: 0 24px 48px rgba(16,24,40,0.1);
-    display: flex; flex-direction: column;
-    transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.3s ease, transform 0.3s ease;
-  }
+  /* ---------- capabilities: hover-reveal list + live panel ---------- */
+  .sdl-cap-layout { margin-top: 56px; display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px; align-items: start; }
+  .sdl-cap-list { border-top: 1px solid #E4E9F2; }
 
-  .sdl-pillar-visual { position: relative; height: 76px; display: flex; align-items: center; justify-content: flex-end; }
-  .sdl-pillar-glow {
-    position: absolute; right: -16px; top: 50%; transform: translateY(-50%) scale(1.08);
-    width: 120px; height: 120px; border-radius: 50%; filter: blur(20px); opacity: 0.85;
-    background: radial-gradient(circle, var(--motif-light, #A9BEFF) 0%, var(--motif-mid, #2B49DB) 45%, rgba(43,73,219,0) 75%);
-    transition: opacity 0.4s ease, transform 0.4s ease, background 0.4s ease;
+  .sdl-cap-row {
+    display: block; width: 100%; background: none; border: none; border-bottom: 1px solid #E4E9F2;
+    padding: 26px 4px; text-align: left; cursor: pointer; font-family: inherit;
   }
-  .sdl-pillar-glyph, .sdl-pillar-orb { position: relative; width: 64px; height: 64px; }
-  .sdl-pillar-glyph svg { display: block; width: 100%; height: 100%; }
-  .sdl-pillar-glyph { color: var(--motif-mid, #2B49DB); transition: color 0.4s ease; }
-  .sdl-pillar-orb {
-    border-radius: 50%; transition: background 0.4s ease;
-    background: radial-gradient(circle at 36% 30%, #A9BEFF 0%, #2B49DB 45%, rgba(43,73,219,0.55) 68%, rgba(43,73,219,0) 82%);
+  .sdl-cap-row-main { display: flex; align-items: baseline; gap: 20px; }
+  .sdl-cap-row-num {
+    font-family: 'Manrope', sans-serif; font-size: 14px; font-weight: 700; color: #B7C0D1;
+    transition: color 0.3s ease; flex-shrink: 0; width: 24px;
   }
+  .sdl-cap-row-title {
+    flex: 1 1 auto; font-family: 'Manrope', sans-serif; font-size: clamp(22px, 2.3vw, 28px); font-weight: 600;
+    letter-spacing: -0.01em; color: #B7C0D1; transition: color 0.3s ease, transform 0.3s ease;
+  }
+  .sdl-cap-row-arrow {
+    flex-shrink: 0; font-size: 20px; color: var(--motif-mid, var(--accent)); opacity: 0;
+    transform: translate(-4px, 4px); transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  .sdl-cap-row.is-active .sdl-cap-row-num { color: var(--motif-mid, var(--accent)); }
+  .sdl-cap-row.is-active .sdl-cap-row-title { color: #162833; transform: translateX(6px); }
+  .sdl-cap-row.is-active .sdl-cap-row-arrow { opacity: 1; transform: translate(0, 0); }
 
-  .sdl-pillar-title {
-    margin-top: 20px; font-size: 21px; font-weight: 700; line-height: 1.3; color: #162833; letter-spacing: -0.01em;
-    min-height: calc(1.3em * 2); transition: color 0.35s ease;
-  }
+  .sdl-cap-row-detail { display: none; }
 
-  .sdl-pillar-reveal { margin-top: 14px; }
-  .sdl-pillar-tagline {
-    font-size: 15px; font-weight: 600; line-height: 1.3; color: var(--accent);
-    min-height: calc(1.3em * 2); transition: color 0.35s ease;
+  .sdl-cap-panel {
+    position: sticky; top: 108px; aspect-ratio: 1 / 0.92; border-radius: 28px; overflow: hidden;
+    background: linear-gradient(150deg, #0B1320, #1C2E5C 55%, #26417F);
   }
-  .sdl-pillar-desc {
-    margin-top: 10px; font-size: 15px; line-height: 1.65; color: #46535F;
-    min-height: calc(1.65em * 4); transition: color 0.35s ease;
+  .sdl-cap-panel-content { position: relative; height: 100%; padding: 44px; display: flex; flex-direction: column; justify-content: flex-end; }
+  .sdl-cap-tagline { font-family: 'Manrope', sans-serif; font-weight: 500; font-size: clamp(22px, 2.2vw, 28px); line-height: 1.3; letter-spacing: -0.01em; color: #FFFFFF; }
+  .sdl-cap-desc { margin-top: 14px; font-size: 15.5px; line-height: 1.7; color: rgba(255,255,255,0.68); max-width: 440px; }
+  .sdl-cap-tags-inline { margin-top: 18px; font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.7; }
+  .sdl-cap-cta {
+    margin-top: 26px; display: inline-flex; align-items: center; gap: 8px; width: fit-content;
+    font-size: 14.5px; font-weight: 700; color: #FFFFFF; padding-bottom: 2px; border-bottom: 1px solid rgba(255,255,255,0.4);
   }
-
-  .sdl-pillar-footer { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-top: auto; padding-top: 18px; }
-  .sdl-pillar-tags { display: flex; flex-wrap: wrap; gap: 6px; }
-  .sdl-pillar-tag {
-    font-size: 12px; font-weight: 600; color: #3A5C8C; background: rgba(43,73,219,0.08);
-    padding: 5px 10px; border-radius: 999px; white-space: nowrap;
-    transition: color 0.35s ease, background 0.35s ease;
-  }
-
-  .sdl-pillar-cta {
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    width: 44px; height: 44px; border-radius: 50%; border: 1px solid #E4E9F2; color: #162833;
-    transition: border-color 0.25s ease, background 0.25s ease, transform 0.18s ease, color 0.25s ease;
-  }
-  .sdl-pillar-cta-arrow { display: inline-block; font-size: 16px; transition: transform 0.18s ease; }
-  .sdl-pillar-cta:hover .sdl-pillar-cta-arrow { transform: translate(2px, -2px); }
-
-  @media (hover: hover) and (pointer: fine) {
-    .sdl-pillar-card:hover {
-      background: var(--accent); border-color: var(--accent);
-      box-shadow: 0 16px 32px rgba(43,73,219,0.2); transform: translateY(-3px);
-    }
-    .sdl-pillar-card:hover .sdl-pillar-glow {
-      opacity: 0.55; transform: translateY(-50%);
-      background: radial-gradient(circle, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 72%);
-    }
-    .sdl-pillar-card:hover .sdl-pillar-glyph { color: rgba(255,255,255,0.95); }
-    .sdl-pillar-card:hover .sdl-pillar-orb {
-      background: radial-gradient(circle at 36% 30%, #FFFFFF 0%, rgba(255,255,255,0.7) 45%, rgba(255,255,255,0) 82%);
-    }
-    .sdl-pillar-card:hover .sdl-pillar-title { color: #FFFFFF; }
-    .sdl-pillar-card:hover .sdl-pillar-tagline { color: #FFFFFF; }
-    .sdl-pillar-card:hover .sdl-pillar-desc { color: rgba(255,255,255,0.78); }
-    .sdl-pillar-card:hover .sdl-pillar-tag { color: rgba(255,255,255,0.92); background: rgba(255,255,255,0.16); }
-    .sdl-pillar-card:hover .sdl-pillar-cta { border-color: rgba(255,255,255,0.4); color: #FFFFFF; }
-    .sdl-pillar-card:hover .sdl-pillar-cta:hover { border-color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.12); }
-  }
+  .sdl-cap-cta:hover { color: #FFFFFF; border-color: #FFFFFF; }
+  .sdl-cap-cta .arrow { transition: transform 0.2s ease; }
+  .sdl-cap-cta:hover .arrow { transform: translate(3px, -3px); }
 
   @media (max-width: 900px) {
-    .sdl-pillars-grid { grid-template-columns: repeat(2, 1fr); }
+    .sdl-cap-layout { grid-template-columns: 1fr; gap: 0; }
+    .sdl-cap-panel { display: none; }
+    .sdl-cap-row-arrow { display: none; }
+    .sdl-cap-row.is-active .sdl-cap-row-title { transform: none; }
+    .sdl-cap-row-detail {
+      display: block; max-height: 0; overflow: hidden; opacity: 0;
+      transition: max-height 0.4s ease, opacity 0.3s ease, margin-top 0.4s ease; margin-top: 0;
+    }
+    .sdl-cap-row.is-active .sdl-cap-row-detail { max-height: 400px; opacity: 1; margin-top: 16px; }
+    .sdl-cap-row-detail .sdl-cap-tagline { color: var(--motif-mid, var(--accent)); font-size: 17px; }
+    .sdl-cap-row-detail .sdl-cap-desc { color: #46535F; max-width: none; }
+    .sdl-cap-row-detail .sdl-cap-tags-inline { color: #8891A0; }
+    .sdl-cap-row-detail .sdl-cap-cta { color: var(--motif-mid, var(--accent)); border-color: currentColor; }
+    .sdl-cap-row-detail .sdl-cap-cta:hover { color: var(--motif-mid, var(--accent)); }
   }
 
   /* ---------- hero-explainer: from potential to impact ---------- */
@@ -914,7 +892,12 @@
         </div>
       </div>
 
-      <div class="sdl-pillars-grid reveal-group" id="pillarsGrid"></div>
+      <div class="sdl-cap-layout reveal-group">
+        <div class="sdl-cap-list" id="capList"></div>
+        <div class="sdl-cap-panel" id="capPanel" aria-hidden="true">
+          <div class="sdl-cap-panel-content" id="capPanelContent"></div>
+        </div>
+      </div>
 
       <div class="sdl-pillars-footer-row">
         <a class="sdl-cta-link" href="services.html">View all services →</a>
@@ -1128,7 +1111,7 @@
     ]},
     { key: 'company', label: 'Company', cta: null, items: [
       { title: 'About', desc: 'The people and experience behind SDL.', href: 'about-us.html' },
-      { title: 'Our approach', desc: 'How SDL thinks, builds and works.' },
+      { title: 'Our approach', desc: 'How SDL thinks, builds and works.', href: 'approach.html' },
       { title: 'Clients', desc: 'The businesses SDL works with.' },
       { title: 'Careers', desc: "Build what's next with SDL." }
     ]}
@@ -1153,35 +1136,7 @@
   };
   var ICON_DEFAULT = '<circle cx="24" cy="24" r="4" fill="currentColor" stroke="none"/>';
 
-  // Per-pillar motifs: distinct silhouettes rendered with currentColor so each
-  // can take its own accent from PILLAR_MOTIF_COLORS, matching the glowing
-  // gradient treatment used on the AI transformation page.
-  var PILLAR_GLYPHS = {
-    'Digital engineering':
-      '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">' +
-      '<path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M50 4L84 25L84 75L50 96L16 75L16 25Z M50 30A20 20 0 1 0 50.01 30Z"/></svg>',
-
-    'Business transformation':
-      '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">' +
-      '<path d="M74 28A34 34 0 1 1 28 24" fill="none" stroke="currentColor" stroke-width="14" stroke-linecap="round"/>' +
-      '<path d="M18 10 L30 24 L14 30 Z" fill="currentColor"/></svg>',
-
-    'Digital experience':
-      '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">' +
-      '<path d="M22 8 L22 84 L41 67 L53 92 L66 86 L54 61 L78 61 Z" fill="currentColor"/></svg>',
-
-    'Growth transformation':
-      '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">' +
-      '<path d="M18 82 L82 18" stroke="currentColor" stroke-width="14" stroke-linecap="round" fill="none"/>' +
-      '<path d="M46 18 L82 18 L82 54" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>',
-
-    'Products & platforms':
-      '<svg viewBox="0 0 100 116" xmlns="http://www.w3.org/2000/svg">' +
-      '<polygon points="50,6 92,28 50,50 8,28" fill="currentColor"/>' +
-      '<polygon points="50,36 92,58 50,80 8,58" fill="currentColor" opacity="0.7"/>' +
-      '<polygon points="50,66 92,88 50,110 8,88" fill="currentColor" opacity="0.45"/></svg>'
-  };
-
+  // Per-capability accent used for the active list row, the panel shader and the CTA link.
   var PILLAR_MOTIF_COLORS = [
     ['#7C97FF', '#2B49DB'],
     ['#8FD6FF', '#2B8FDB'],
@@ -1236,84 +1191,101 @@
     }
   ];
 
-  var pillarsGrid = document.getElementById('pillarsGrid');
-  PILLARS.forEach(function (p, i) {
-    var card = document.createElement('div');
-    card.className = 'sdl-pillar-card';
+  // ---------- Capabilities: hover-reveal list + live panel ----------
+  (function initCapabilities() {
+    var capList = document.getElementById('capList');
+    var capPanel = document.getElementById('capPanel');
+    var capPanelContent = document.getElementById('capPanelContent');
+    if (!capList || !capPanel || !capPanelContent) return;
 
-    var colors = PILLAR_MOTIF_COLORS[i % PILLAR_MOTIF_COLORS.length];
+    function buildDetail(p) {
+      var wrap = document.createDocumentFragment();
 
-    var visual = document.createElement('div');
-    visual.className = 'sdl-pillar-visual';
-    visual.style.setProperty('--motif-light', colors[0]);
-    visual.style.setProperty('--motif-mid', colors[1]);
+      var tagline = document.createElement('div');
+      tagline.className = 'sdl-cap-tagline';
+      tagline.textContent = p.tagline;
+      wrap.appendChild(tagline);
 
-    var glow = document.createElement('div');
-    glow.className = 'sdl-pillar-glow';
-    visual.appendChild(glow);
+      var desc = document.createElement('p');
+      desc.className = 'sdl-cap-desc';
+      desc.textContent = p.desc;
+      wrap.appendChild(desc);
 
-    if (p.title === 'AI transformation') {
-      var orb = document.createElement('div');
-      orb.className = 'sdl-pillar-orb';
-      visual.appendChild(orb);
-    } else if (PILLAR_GLYPHS[p.title]) {
-      var glyph = document.createElement('div');
-      glyph.className = 'sdl-pillar-glyph';
-      glyph.innerHTML = PILLAR_GLYPHS[p.title];
-      visual.appendChild(glyph);
+      if (p.tags && p.tags.length) {
+        var tagsEl = document.createElement('div');
+        tagsEl.className = 'sdl-cap-tags-inline';
+        tagsEl.textContent = p.tags.join('  ·  ');
+        wrap.appendChild(tagsEl);
+      }
+
+      if (p.cta) {
+        var ctaLink = document.createElement('a');
+        ctaLink.className = 'sdl-cap-cta';
+        ctaLink.href = p.cta.href;
+        ctaLink.innerHTML = p.cta.label + ' <span class="arrow" aria-hidden="true">→</span>';
+        wrap.appendChild(ctaLink);
+      }
+      return wrap;
     }
 
-    card.appendChild(visual);
+    var rows = [];
+    PILLARS.forEach(function (p, i) {
+      var colors = PILLAR_MOTIF_COLORS[i % PILLAR_MOTIF_COLORS.length];
 
-    var title = document.createElement('div');
-    title.className = 'sdl-pillar-title';
-    title.textContent = p.title;
-    card.appendChild(title);
+      var row = document.createElement('div');
+      row.className = 'sdl-cap-row';
+      row.setAttribute('data-i', i);
+      row.style.setProperty('--motif-mid', colors[1]);
 
-    var reveal = document.createElement('div');
-    reveal.className = 'sdl-pillar-reveal';
+      var main = document.createElement('div');
+      main.className = 'sdl-cap-row-main';
+      main.innerHTML =
+        '<span class="sdl-cap-row-num">' + String(i + 1).padStart(2, '0') + '</span>' +
+        '<span class="sdl-cap-row-title">' + p.title + '</span>' +
+        '<span class="sdl-cap-row-arrow" aria-hidden="true">↗</span>';
+      row.appendChild(main);
 
-    var tagline = document.createElement('div');
-    tagline.className = 'sdl-pillar-tagline';
-    tagline.textContent = p.tagline;
-    reveal.appendChild(tagline);
+      var detail = document.createElement('div');
+      detail.className = 'sdl-cap-row-detail';
+      detail.appendChild(buildDetail(p));
+      row.appendChild(detail);
 
-    var desc = document.createElement('p');
-    desc.className = 'sdl-pillar-desc';
-    desc.textContent = p.desc;
-    reveal.appendChild(desc);
+      capList.appendChild(row);
+      rows.push(row);
+    });
 
-    var footer = document.createElement('div');
-    footer.className = 'sdl-pillar-footer';
+    var activeIndex = -1;
+    function setActive(i, options) {
+      options = options || {};
+      if (i === activeIndex && !options.force) return;
+      activeIndex = i;
+      var p = PILLARS[i];
+      var colors = PILLAR_MOTIF_COLORS[i % PILLAR_MOTIF_COLORS.length];
 
-    if (p.tags && p.tags.length) {
-      var tagsWrap = document.createElement('div');
-      tagsWrap.className = 'sdl-pillar-tags';
-      p.tags.forEach(function (t) {
-        var chip = document.createElement('span');
-        chip.className = 'sdl-pillar-tag';
-        chip.textContent = t;
-        tagsWrap.appendChild(chip);
+      rows.forEach(function (r, ri) { r.classList.toggle('is-active', ri === i); });
+
+      capPanel.style.setProperty('--motif-mid', colors[1]);
+      capPanelContent.innerHTML = '';
+      capPanelContent.appendChild(buildDetail(p));
+
+      window.__capActiveIndex = i;
+      if (window.__capSetShaderPalette) window.__capSetShaderPalette(i);
+    }
+
+    rows.forEach(function (row, i) {
+      row.addEventListener('mouseenter', function () { setActive(i); });
+      row.addEventListener('focus', function () { setActive(i); });
+      row.addEventListener('click', function () {
+        // Touch / no-hover devices: tapping toggles the inline accordion detail.
+        if (window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+        var wasActive = row.classList.contains('is-active') && activeIndex === i;
+        setActive(i, { force: true });
+        if (wasActive) { activeIndex = -1; rows.forEach(function (r) { r.classList.remove('is-active'); }); }
       });
-      footer.appendChild(tagsWrap);
-    }
+    });
 
-    if (p.cta) {
-      var ctaLink = document.createElement('a');
-      ctaLink.className = 'sdl-pillar-cta';
-      ctaLink.href = p.cta.href;
-      ctaLink.setAttribute('aria-label', p.cta.label);
-      var ctaArrow = document.createElement('span');
-      ctaArrow.className = 'sdl-pillar-cta-arrow';
-      ctaArrow.textContent = '↗';
-      ctaLink.appendChild(ctaArrow);
-      footer.appendChild(ctaLink);
-    }
-
-    reveal.appendChild(footer);
-    card.appendChild(reveal);
-    pillarsGrid.appendChild(card);
-  });
+    setActive(0, { force: true });
+  })();
 
   // ---------- Investment steps ----------
   var INVEST_STEPS = [
@@ -1570,7 +1542,7 @@
     ]},
     { title: 'Company', links: [
       { label: 'About', href: 'about-us.html' },
-      { label: 'Our approach', href: '#' },
+      { label: 'Our approach', href: 'approach.html' },
       { label: 'Clients', href: '#' },
       { label: 'Careers', href: '#' }
     ]},
@@ -2089,6 +2061,67 @@
     }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
     targets.forEach(function (el) { io.observe(el); });
   })();
+})();
+</script>
+
+<script>
+(function () {
+  "use strict";
+  if (!window.WebGL2RenderingContext) return;
+
+  var PAPER_SHADERS_URL = 'https://esm.sh/@paper-design/shaders@0.0.81';
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var CAP_PALETTES = [
+    ['#0B1320', '#1E35B8', '#2B49DB', '#6A8CFF'],
+    ['#0B1320', '#0E4F7A', '#2B8FDB', '#6AD4FF'],
+    ['#0B1320', '#6B4F0E', '#F4C430', '#FFE38A'],
+    ['#0B1320', '#0E5C3A', '#28C76F', '#6FDBA0'],
+    ['#0B1320', '#20348F', '#3E5FE0', '#A9BBFF'],
+    ['#0B1320', '#0E5C45', '#22B368', '#9BEFC4']
+  ];
+
+  import(PAPER_SHADERS_URL).then(function (mod) {
+    var ShaderMount = mod.ShaderMount;
+    var meshGradientFragmentShader = mod.meshGradientFragmentShader;
+    var getShaderColorFromString = mod.getShaderColorFromString;
+    var ShaderFitOptions = mod.ShaderFitOptions;
+
+    function buildUniforms(colors) {
+      return {
+        u_colors: colors.map(getShaderColorFromString),
+        u_colorsCount: colors.length,
+        u_distortion: 0.7,
+        u_swirl: 0.15,
+        u_grainMixer: 0,
+        u_grainOverlay: 0,
+        u_fit: ShaderFitOptions.cover,
+        u_rotation: 0,
+        u_scale: 1,
+        u_offsetX: 0,
+        u_offsetY: 0,
+        u_originX: 0.5,
+        u_originY: 0.5,
+        u_worldWidth: 0,
+        u_worldHeight: 0
+      };
+    }
+
+    var el = document.getElementById('capPanel');
+    if (!el) return;
+    try {
+      var mount = new ShaderMount(el, meshGradientFragmentShader, buildUniforms(CAP_PALETTES[0]), undefined, reduceMotion ? 0 : 0.35);
+      window.__capSetShaderPalette = function (i) {
+        var palette = CAP_PALETTES[i % CAP_PALETTES.length];
+        mount.setUniforms(buildUniforms(palette));
+      };
+      window.__capSetShaderPalette(window.__capActiveIndex || 0);
+    } catch (e) {
+      // WebGL2 unavailable at runtime — the CSS gradient fallback already in place stays visible.
+    }
+  }).catch(function () {
+    // Network or WebGL2 unavailable — the CSS gradient fallback already in place stays visible.
+  });
 })();
 </script>
 
