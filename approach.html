@@ -157,7 +157,7 @@
 
   /* ---------- Approach: hero ---------- */
   .ap-hero { padding: 72px 48px 80px; overflow: hidden; }
-  .ap-hero-inner { max-width: 1360px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+  .ap-hero-inner { max-width: 1360px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: stretch; }
   .ap-hero-copy { max-width: 560px; }
   .ap-hero-title { margin-top: 20px; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: clamp(32px, 3.6vw, 48px); line-height: 1.14; letter-spacing: -0.02em; color: #162833; }
   .ap-hero-title .accent { color: var(--accent); }
@@ -170,7 +170,7 @@
   .ap-hero-link:hover .arrow { transform: translateX(3px); }
 
   /* ---------- Approach: hero diagram ---------- */
-  .ap-diagram { position: relative; width: 100%; aspect-ratio: 1 / 1.02; max-width: 580px; margin: 0 auto; }
+  .ap-diagram { position: relative; width: 100%; height: 100%; max-width: 580px; margin: 32px auto 0; }
   .ap-diagram-lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
   .ap-diagram-node { position: absolute; z-index: 1; transform: translate(-50%, -50%); width: 32%; text-align: center; }
   .ap-diagram-node--1 { left: 14%; top: 13%; }
@@ -179,21 +179,22 @@
   .ap-diagram-circle {
     width: 92px; height: 92px; margin: 0 auto; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    background: #EEF1F6; color: #162833; border: 1px solid #E0E6F0;
+    background: color-mix(in srgb, var(--chip, var(--accent)) 14%, white); color: var(--chip, var(--accent));
   }
-  .ap-diagram-circle svg { width: 34px; height: 34px; }
+  .ap-diagram-circle svg { width: 36px; height: 36px; }
   .ap-diagram-label { margin-top: 16px; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 15.5px; color: #162833; }
   .ap-diagram-list { position: relative; z-index: 1; margin-top: 8px; font-size: 13px; line-height: 1.7; color: #5B6472; }
   .ap-diagram-core { position: absolute; left: 50%; top: 61%; transform: translate(-50%, -50%); }
   .ap-diagram-core-halo {
-    width: 128px; height: 128px; border-radius: 50%;
-    border: 1px dashed #C7CFDC;
+    width: 118px; height: 118px; border-radius: 50%;
+    background: color-mix(in srgb, var(--accent) 12%, white);
     display: flex; align-items: center; justify-content: center;
   }
   .ap-diagram-core-circle {
-    width: 72px; height: 72px; border-radius: 50%; background: #FFFFFF; color: #162833; border: 1.5px solid #162833;
+    width: 72px; height: 72px; border-radius: 50%; background: var(--accent); color: #FFFFFF;
     display: flex; align-items: center; justify-content: center;
     font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 17px; letter-spacing: 0.02em;
+    box-shadow: 0 14px 28px rgba(43,73,219,0.3);
   }
   .ap-diagram-tag {
     position: absolute; left: 88%; top: 61%; transform: translate(-50%, -50%);
@@ -203,7 +204,7 @@
   }
   .ap-diagram-arrow {
     position: absolute; left: 50%; top: 77%; transform: translate(-50%, -50%);
-    width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; color: #9AA4B5;
+    width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; color: var(--accent);
   }
   .ap-diagram-arrow svg { width: 100%; height: 100%; }
   .ap-diagram-outcome {
@@ -215,7 +216,7 @@
   .ap-diagram-outcome-icon {
     width: 50px; height: 50px; border-radius: 50%; flex-shrink: 0;
     display: flex; align-items: center; justify-content: center;
-    background: #EEF1F6; color: #162833;
+    background: color-mix(in srgb, var(--accent) 12%, white); color: var(--accent);
   }
   .ap-diagram-outcome-icon svg { width: 24px; height: 24px; }
   .ap-diagram-outcome-title { font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 16px; color: #162833; }
@@ -224,7 +225,8 @@
   /* ---------- Approach: delivery lifecycle (tabs + full-width panel) ---------- */
   .ap-lc-section { position: relative; background: #F6F8FC; padding: 104px 48px 112px; }
   .ap-lc-inner { position: relative; max-width: 1360px; margin: 0 auto; }
-  .ap-lc-head { max-width: 700px; }
+  .ap-lc-head { max-width: 860px; }
+  .ap-lc-head .au-title { max-width: none; white-space: nowrap; }
   .ap-lc-layout { margin-top: 56px; }
 
   .ap-lc-tabs {
@@ -325,12 +327,12 @@
   .ap-closing-note { margin-top: 40px; font-size: 14.5px; line-height: 1.75; color: #6B7686; max-width: 760px; }
 
   /* ---------- Approach: principles ---------- */
-  .ap-principles { position: relative; overflow: hidden; background: #0B1320; padding: 104px 48px 108px; }
+  .ap-principles { position: relative; overflow: hidden; background: #0B1320; padding: 72px 48px 80px; }
   .ap-principles-inner { position: relative; max-width: 980px; margin: 0 auto; }
   .ap-principles-head { max-width: 640px; }
-  .ap-principles-list { margin-top: 52px; }
+  .ap-principles-list { margin-top: 36px; }
   .ap-principle {
-    padding: 26px 0; border-top: 1px solid rgba(255,255,255,0.12);
+    padding: 18px 0; border-top: 1px solid rgba(255,255,255,0.12);
     display: grid; grid-template-columns: 1fr 1.1fr; gap: 32px; align-items: baseline;
   }
   .ap-principle:last-child { border-bottom: 1px solid rgba(255,255,255,0.12); }
@@ -385,6 +387,7 @@
     .ap-diagram-core-circle { width: 50px; height: 50px; font-size: 13px; }
     .ap-diagram-tag { font-size: 11px; padding: 6px 10px; }
     .ap-lc-section { padding: 72px 24px 80px; }
+    .ap-lc-head .au-title { white-space: normal; }
     .ap-lc-tab { padding: 11px 16px; }
     .ap-lc-panel-content { padding: 28px 24px; }
     .ap-lc-meta-grid { grid-template-columns: 1fr; gap: 20px; }
@@ -453,29 +456,29 @@
 
       <div class="ap-diagram reveal" aria-hidden="true">
         <svg class="ap-diagram-lines" viewBox="0 0 100 100" preserveAspectRatio="none">
-          <path d="M14,42 C14,47 42,47 49,51" fill="none" stroke="#B7C0D1" stroke-width="1"/>
-          <path d="M50,42 L50,51" fill="none" stroke="#B7C0D1" stroke-width="1"/>
-          <path d="M86,42 C86,47 58,47 51,51" fill="none" stroke="#B7C0D1" stroke-width="1"/>
-          <path d="M61,61 L80,61" fill="none" stroke="#B7C0D1" stroke-width="1" stroke-dasharray="2.6 2.6"/>
-          <circle cx="14" cy="42" r="1.3" fill="none" stroke="#9AA4B5" stroke-width="1"/>
-          <circle cx="50" cy="42" r="1.3" fill="none" stroke="#9AA4B5" stroke-width="1"/>
-          <circle cx="86" cy="42" r="1.3" fill="none" stroke="#9AA4B5" stroke-width="1"/>
+          <path d="M14,42 C14,47 42,47 49,51" fill="none" stroke="#2B49DB" stroke-width="1.6" stroke-opacity="0.6"/>
+          <path d="M50,42 L50,51" fill="none" stroke="#28C76F" stroke-width="1.6" stroke-opacity="0.6"/>
+          <path d="M86,42 C86,47 58,47 51,51" fill="none" stroke="#7C6BF0" stroke-width="1.6" stroke-opacity="0.6"/>
+          <path d="M61,61 L80,61" fill="none" stroke="#B7C0D1" stroke-width="1.3" stroke-dasharray="2.6 2.6"/>
+          <circle cx="14" cy="42" r="1.3" fill="#2B49DB"/>
+          <circle cx="50" cy="42" r="1.3" fill="#28C76F"/>
+          <circle cx="86" cy="42" r="1.3" fill="#7C6BF0"/>
         </svg>
 
-        <div class="ap-diagram-node ap-diagram-node--1">
-          <div class="ap-diagram-circle"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 32V20M20 32V10M30 32V24"/></svg></div>
+        <div class="ap-diagram-node ap-diagram-node--1" style="--chip:#2B49DB">
+          <div class="ap-diagram-circle"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 32V20M20 32V10M30 32V24"/></svg></div>
           <div class="ap-diagram-label">Business thinking</div>
           <div class="ap-diagram-list">Goals<br>Opportunities<br>Priorities</div>
         </div>
 
-        <div class="ap-diagram-node ap-diagram-node--2">
-          <div class="ap-diagram-circle"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="14" cy="13" r="5"/><circle cx="27" cy="15" r="4"/><path d="M5 33c1-8 5-12 9-12s8 4 9 12"/><path d="M23 33c.8-6 3-10 8-10"/></svg></div>
+        <div class="ap-diagram-node ap-diagram-node--2" style="--chip:#28C76F">
+          <div class="ap-diagram-circle"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="14" cy="13" r="5"/><circle cx="27" cy="15" r="4"/><path d="M5 33c1-8 5-12 9-12s8 4 9 12"/><path d="M23 33c.8-6 3-10 8-10"/></svg></div>
           <div class="ap-diagram-label">Human expertise</div>
           <div class="ap-diagram-list">Experience<br>Judgment<br>Accountability</div>
         </div>
 
-        <div class="ap-diagram-node ap-diagram-node--3">
-          <div class="ap-diagram-circle"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="20,6 33,14 20,22 7,14"/><polygon points="20,18 33,26 20,34 7,26"/></svg></div>
+        <div class="ap-diagram-node ap-diagram-node--3" style="--chip:#7C6BF0">
+          <div class="ap-diagram-circle"><svg viewBox="0 0 40 40" fill="currentColor" stroke="none"><polygon points="20,6 33,14 20,22 7,14"/><polygon points="20,18 33,26 20,34 7,26" opacity="0.55"/></svg></div>
           <div class="ap-diagram-label">Technology</div>
           <div class="ap-diagram-list">Applications<br>Data<br>Platforms</div>
         </div>
@@ -484,10 +487,10 @@
           <div class="ap-diagram-core-halo"><div class="ap-diagram-core-circle">AI</div></div>
         </div>
         <div class="ap-diagram-tag">Accelerates<br>the process</div>
-        <div class="ap-diagram-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v14M6 13l6 6 6-6"/></svg></div>
+        <div class="ap-diagram-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v14M6 13l6 6 6-6"/></svg></div>
 
         <div class="ap-diagram-outcome">
-          <div class="ap-diagram-outcome-icon"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 32V20M20 32V10M30 32V24"/></svg></div>
+          <div class="ap-diagram-outcome-icon"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 32V20M20 32V10M30 32V24"/></svg></div>
           <div>
             <div class="ap-diagram-outcome-title">Solutions that work</div>
             <div class="ap-diagram-outcome-sub">Measured value · Real outcomes</div>
@@ -651,7 +654,7 @@
   <section class="ap-stats-section">
     <div class="ap-stats reveal-group">
       <div class="ap-stat"><div class="ap-stat-num"><span data-count="16">16</span><span class="plus">+</span></div><div class="ap-stat-label">Years applying this approach</div></div>
-      <div class="ap-stat"><div class="ap-stat-num"><span data-count="700">700</span><span class="plus">+</span></div><div class="ap-stat-label">Projects delivered</div></div>
+      <div class="ap-stat"><div class="ap-stat-num"><span data-count="850">850</span><span class="plus">+</span></div><div class="ap-stat-label">Projects delivered</div></div>
       <div class="ap-stat"><div class="ap-stat-num"><span data-count="200">200</span><span class="plus">+</span></div><div class="ap-stat-label">Businesses served</div></div>
     </div>
   </section>
@@ -713,10 +716,10 @@
       { title: 'Featured projects', desc: 'Selected work and digital experiences.' }
     ]},
     { key: 'company', label: 'Company', cta: null, items: [
-      { title: 'About', desc: 'The people and experience behind SDL.', href: 'about-us.html' },
-      { title: 'Our approach', desc: 'How SDL thinks, builds and works.', href: 'approach.html' },
-      { title: 'Clients', desc: 'The businesses SDL works with.' },
-      { title: 'Careers', desc: "Build what's next with SDL." }
+      { title: 'About', desc: 'The people and experience behind what we do.', href: 'about-us.html' },
+      { title: 'Our approach', desc: 'How we think, build and work.', href: 'approach.html' },
+      { title: 'Clients', desc: 'The businesses we work with.' },
+      { title: 'Careers', desc: "Build what's next with us." }
     ]}
   ];
 
@@ -1164,6 +1167,45 @@
     }
 
     setActive(0);
+
+    // ---------- Auto-advance: give the reader time, then move on ----------
+    var AUTOPLAY_MS = 7000;
+    var autoplayTimer = null;
+    var autoplayPaused = false;
+
+    function scheduleNext() {
+      clearTimeout(autoplayTimer);
+      if (reduceMotion || autoplayPaused) return;
+      autoplayTimer = setTimeout(function () {
+        setActive((activeIndex + 1) % tabs.length);
+        scheduleNext();
+      }, AUTOPLAY_MS);
+    }
+
+    function pauseAutoplay() { autoplayPaused = true; clearTimeout(autoplayTimer); }
+    function resumeAutoplay() { autoplayPaused = false; scheduleNext(); }
+
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () { scheduleNext(); });
+    });
+    lcTabs.addEventListener('mouseenter', pauseAutoplay);
+    lcTabs.addEventListener('mouseleave', resumeAutoplay);
+    lcTabs.addEventListener('focusin', pauseAutoplay);
+    lcTabs.addEventListener('focusout', resumeAutoplay);
+    lcPanel.addEventListener('mouseenter', pauseAutoplay);
+    lcPanel.addEventListener('mouseleave', resumeAutoplay);
+
+    if (!reduceMotion && 'IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) { if (!autoplayPaused) scheduleNext(); }
+          else { clearTimeout(autoplayTimer); }
+        });
+      }, { threshold: 0.4 });
+      io.observe(lcTabs);
+    } else if (!reduceMotion) {
+      scheduleNext();
+    }
   })();
 
   // ---------- Measuring success: card carousel ----------
